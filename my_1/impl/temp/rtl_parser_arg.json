@@ -1,0 +1,28 @@
+{
+    "Device": "GW1NR-9C",
+    "Files": [
+        {
+            "Path": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/top.v",
+            "Type": "verilog"
+        },
+        {
+            "Path": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/key_debounce.v",
+            "Type": "verilog"
+        },
+        {
+            "Path": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+            "Type": "verilog"
+        },
+        {
+            "Path": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_rpll/gowin_rpll.v",
+            "Type": "verilog"
+        }
+    ],
+    "IncludePath": [
+    ],
+    "LoopLimit": 2000,
+    "ResultFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/impl/temp/rtl_parser.result",
+    "Top": "",
+    "VerilogStd": "verilog_2001",
+    "VhdlStd": "vhdl_93"
+}

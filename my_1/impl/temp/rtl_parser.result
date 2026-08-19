@@ -1,0 +1,102 @@
+[
+    {
+        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/top.v",
+        "InstLine": 20,
+        "InstName": "top",
+        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/top.v",
+        "ModuleLine": 20,
+        "ModuleName": "top",
+        "SubInsts": [
+            {
+                "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/top.v",
+                "InstLine": 35,
+                "InstName": "u_pll",
+                "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_rpll/gowin_rpll.v",
+                "ModuleLine": 11,
+                "ModuleName": "Gowin_rPLL"
+            },
+            {
+                "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/top.v",
+                "InstLine": 52,
+                "InstName": "u_key_deb",
+                "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/key_debounce.v",
+                "ModuleLine": 8,
+                "ModuleName": "key_debounce"
+            },
+            {
+                "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/top.v",
+                "InstLine": 71,
+                "InstName": "u_sopc",
+                "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                "ModuleLine": 28901,
+                "ModuleName": "Gowin_PicoRV32_Top",
+                "SubInsts": [
+                    {
+                        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "InstLine": 30611,
+                        "InstName": "core",
+                        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "ModuleLine": 23,
+                        "ModuleName": "picorv32"
+                    },
+                    {
+                        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "InstLine": 30718,
+                        "InstName": "u_dm",
+                        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "ModuleLine": 20102,
+                        "ModuleName": "s_debug_module"
+                    },
+                    {
+                        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "InstLine": 30786,
+                        "InstName": "itcm",
+                        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "ModuleLine": 24040,
+                        "ModuleName": "picosoc_itcm"
+                    },
+                    {
+                        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "InstLine": 30796,
+                        "InstName": "dtcm",
+                        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "ModuleLine": 24737,
+                        "ModuleName": "picosoc_dtcm"
+                    },
+                    {
+                        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "InstLine": 30821,
+                        "InstName": "wb",
+                        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "ModuleLine": 24940,
+                        "ModuleName": "wishbone_bus"
+                    },
+                    {
+                        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "InstLine": 30851,
+                        "InstName": "wb_intercon",
+                        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "ModuleLine": 25261,
+                        "ModuleName": "wisbhone_intercon"
+                    },
+                    {
+                        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "InstLine": 30876,
+                        "InstName": "wbuart_ins",
+                        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "ModuleLine": 25742,
+                        "ModuleName": "wbuart"
+                    },
+                    {
+                        "InstFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "InstLine": 30893,
+                        "InstName": "wbgpio_ins",
+                        "ModuleFile": "F:/ALL_PROJECT/gowin/GMD_workspace/my_1/hardware/picorv32_sopc/my_1/src/gowin_picorv32/gowin_picorv32.v",
+                        "ModuleLine": 28678,
+                        "ModuleName": "wb_gpio"
+                    }
+                ]
+            }
+        ]
+    }
+]

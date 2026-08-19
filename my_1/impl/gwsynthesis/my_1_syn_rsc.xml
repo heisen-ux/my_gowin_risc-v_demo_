@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module name="top" Lut="2" T_Register="3489(0)" T_Alu="528(0)" T_Lut="5122(2)" T_MULT36X36="1(0)" T_Bsram="24(0)" T_Ssram="8(0)">
+ <SubModule name="u_pll"/>
+ <SubModule name="u_key_deb" Register="23" Lut="41" T_Register="23(23)" T_Lut="41(41)"/>
+ <SubModule name="u_sopc" Register="3466" Alu="528" Lut="5079" MULT36X36="1" Bsram="24" Ssram="8" T_Register="3466(3466)" T_Alu="528(528)" T_Lut="5079(5079)" T_MULT36X36="1(1)" T_Bsram="24(24)" T_Ssram="8(8)"/>
+</Module>
