@@ -1,0 +1,963 @@
+   1              		.file	"main.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p1_m2p0_c2p0_zicsr2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.file 0 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\Debug" "../src/main.c"
+  10              		.globl	irq00_flag
+  11              		.section	.sbss.irq00_flag,"aw",@nobits
+  14              	irq00_flag:
+  15 0000 00       		.zero	1
+  16              		.globl	irq13_flag
+  17              		.section	.sbss.irq13_flag,"aw",@nobits
+  20              	irq13_flag:
+  21 0000 00       		.zero	1
+  22              		.globl	irq20_flag
+  23              		.section	.sbss.irq20_flag,"aw",@nobits
+  26              	irq20_flag:
+  27 0000 00       		.zero	1
+  28              		.globl	irq21_flag
+  29              		.section	.sbss.irq21_flag,"aw",@nobits
+  32              	irq21_flag:
+  33 0000 00       		.zero	1
+  34              		.section	.sdata.g_flow_dir,"aw"
+  37              	g_flow_dir:
+  38 0000 01       		.byte	1
+  39              		.section	.sbss.g_flow_pos,"aw",@nobits
+  42              	g_flow_pos:
+  43 0000 00       		.zero	1
+  44              		.section	.sbss.g_gpio_out,"aw",@nobits
+  45              		.align	2
+  48              	g_gpio_out:
+  49 0000 00000000 		.zero	4
+  50              		.section	.sbss.g_tick,"aw",@nobits
+  51              		.align	2
+  54              	g_tick:
+  55 0000 00000000 		.zero	4
+  56              		.section	.text.gpio_flush,"ax",@progbits
+  57              		.align	1
+  59              	gpio_flush:
+  60              	.LFB3:
+  61              		.file 1 "../src/main.c"
+   1:../src/main.c **** /*
+   2:../src/main.c ****  ******************************************************************************************
+   3:../src/main.c ****  * @file		main.c
+   4:../src/main.c ****  * @brief		Tang Nano 9K + Gowin PicoRV32 片上 SOPC 系统
+   5:../src/main.c ****  *
+   6:../src/main.c ****  *              功能1 流水灯   —— WBGPIO bit[5:0] 驱动板载 6 个 LED（低电平点亮
+   7:../src/main.c ****  *              功能2 按键中断 —— S1 按键触发外部中断 IRQ20，切换流水灯方�
+   8:../src/main.c ****  *              功能3 产生方波 —— CPU 定时器中断(IRQ0)翻转 GPIO bit[6]，输出约
+   9:../src/main.c ****  *              功能4 串口通信 —— WBUART @115200：接收回显 + 状态信息输出
+  10:../src/main.c ****  *
+  11:../src/main.c ****  *              说明：仅修改本文件即可，其余库函数(bsp/lib)保持不变；
+  12:../src/main.c ****  *                    硬件配套见 hardware/picorv32_sopc 工程。
+  13:../src/main.c ****  ******************************************************************************************
+  14:../src/main.c ****  */
+  15:../src/main.c **** 
+  16:../src/main.c **** #include "config.h"
+  17:../src/main.c **** #include "picorv32.h"
+  18:../src/main.c **** #include "firmware.h"
+  19:../src/main.c **** #include "irq.h"
+  20:../src/main.c **** #include "wbuart.h"
+  21:../src/main.c **** #include "wbgpio.h"
+  22:../src/main.c **** 
+  23:../src/main.c **** /* 中断标志：由 bsp/irq.c 的 ISR 置位，主循环轮询处理 */
+  24:../src/main.c **** uint8_t irq00_flag = 0;		// IRQ0   定时器中断
+  25:../src/main.c **** uint8_t irq13_flag = 0;		// IRQ13  WBUART 接收中断
+  26:../src/main.c **** uint8_t irq20_flag = 0;		// IRQ20  按键外部中断
+  27:../src/main.c **** uint8_t irq21_flag = 0;		// IRQ21  保留（本设计未使用）
+  28:../src/main.c **** 
+  29:../src/main.c **** /* GPIO 位分配（硬件 IP 的 Gpio_Data_Width = 7） */
+  30:../src/main.c **** #define GPIO_LED_MASK    (0x0000003FUL)	/* bit[5:0] -> 6 个 LED，低电平点亮 */
+  31:../src/main.c **** #define GPIO_SQWAVE_BIT  (6)			/* bit[6]   -> 方波输出 */
+  32:../src/main.c **** 
+  33:../src/main.c **** /* 方波半周期定时器计数值：SYSCLKFREQ/2000 = 13500 个时钟(0.5ms)，
+  34:../src/main.c ****  * 每次定时器中断翻转一次 -> 方波周期 1ms，频率约 1kHz。
+  35:../src/main.c ****  * 若实测频率偏差，直接调整该值即可。 */
+  36:../src/main.c **** #define SQ_WAVE_HALF_PERIOD  (SYSCLKFREQ / 2000)
+  37:../src/main.c **** 
+  38:../src/main.c **** /* 流水灯节奏：每 400 个定时器节拍（0.5ms * 400 = 200ms）移动一位 */
+  39:../src/main.c **** #define FLOW_STEP_TICKS      (400)
+  40:../src/main.c **** 
+  41:../src/main.c **** static uint8_t  g_flow_dir = 1;		/* 1: 左移  0: 右移 */
+  42:../src/main.c **** static uint8_t  g_flow_pos = 0;		/* 当前点亮的 LED 位 */
+  43:../src/main.c **** static uint32_t g_gpio_out = 0;		/* 当前 GPIO 输出值 */
+  44:../src/main.c **** static uint32_t g_tick     = 0;		/* 定时器节拍计数 */
+  45:../src/main.c **** 
+  46:../src/main.c **** /* 将 g_gpio_out 写入 GPIO 寄存器 */
+  47:../src/main.c **** static void gpio_flush(void)
+  48:../src/main.c **** {
+  62              		.loc 1 48 1
+  63              		.cfi_startproc
+  64 0000 4111     		addi	sp,sp,-16
+  65              		.cfi_def_cfa_offset 16
+  66 0002 06C6     		sw	ra,12(sp)
+  67 0004 22C4     		sw	s0,8(sp)
+  68              		.cfi_offset 1, -4
+  69              		.cfi_offset 8, -8
+  70 0006 0008     		addi	s0,sp,16
+  71              		.cfi_def_cfa 8, 0
+  49:../src/main.c **** 	GPIO_WriteData(PICO_WBGPIO, g_gpio_out);
+  72              		.loc 1 49 2
+  73 0008 97070000 		lla	a5,g_gpio_out
+  73      93870700 
+  74 0010 9C43     		lw	a5,0(a5)
+  75 0012 BE85     		mv	a1,a5
+  76 0014 37150011 		li	a0,285216768
+  77 0018 97000000 		call	GPIO_WriteData
+  77      E7800000 
+  50:../src/main.c **** }
+  78              		.loc 1 50 1
+  79 0020 0100     		nop
+  80 0022 B240     		lw	ra,12(sp)
+  81              		.cfi_restore 1
+  82 0024 2244     		lw	s0,8(sp)
+  83              		.cfi_restore 8
+  84              		.cfi_def_cfa 2, 16
+  85 0026 4101     		addi	sp,sp,16
+  86              		.cfi_def_cfa_offset 0
+  87 0028 8280     		jr	ra
+  88              		.cfi_endproc
+  89              	.LFE3:
+  91              		.section	.text.led_flow_step,"ax",@progbits
+  92              		.align	1
+  94              	led_flow_step:
+  95              	.LFB4:
+  51:../src/main.c **** 
+  52:../src/main.c **** /* 流水灯前进一步 */
+  53:../src/main.c **** static void led_flow_step(void)
+  54:../src/main.c **** {
+  96              		.loc 1 54 1
+  97              		.cfi_startproc
+  98 0000 4111     		addi	sp,sp,-16
+  99              		.cfi_def_cfa_offset 16
+ 100 0002 06C6     		sw	ra,12(sp)
+ 101 0004 22C4     		sw	s0,8(sp)
+ 102              		.cfi_offset 1, -4
+ 103              		.cfi_offset 8, -8
+ 104 0006 0008     		addi	s0,sp,16
+ 105              		.cfi_def_cfa 8, 0
+  55:../src/main.c **** 	if (g_flow_dir)
+ 106              		.loc 1 55 6
+ 107 0008 97070000 		lla	a5,g_flow_dir
+ 107      93870700 
+ 108 0010 83C70700 		lbu	a5,0(a5)
+ 109              		.loc 1 55 5
+ 110 0014 8DC7     		beq	a5,zero,.L3
+  56:../src/main.c **** 		g_flow_pos = (g_flow_pos + 1) % 6;		/* 左移 */
+ 111              		.loc 1 56 28
+ 112 0016 97070000 		lla	a5,g_flow_pos
+ 112      93870700 
+ 113 001e 83C70700 		lbu	a5,0(a5)
+ 114 0022 13871700 		addi	a4,a5,1
+ 115              		.loc 1 56 33
+ 116 0026 9947     		li	a5,6
+ 117 0028 B367F702 		rem	a5,a4,a5
+ 118              		.loc 1 56 14
+ 119 002c 13F7F70F 		andi	a4,a5,0xff
+ 120 0030 97070000 		lla	a5,g_flow_pos
+ 120      93870700 
+ 121 0038 2380E700 		sb	a4,0(a5)
+ 122 003c 25A0     		j	.L4
+ 123              	.L3:
+  57:../src/main.c **** 	else
+  58:../src/main.c **** 		g_flow_pos = (g_flow_pos + 5) % 6;		/* 右移（减 1） */
+ 124              		.loc 1 58 28
+ 125 003e 97070000 		lla	a5,g_flow_pos
+ 125      93870700 
+ 126 0046 83C70700 		lbu	a5,0(a5)
+ 127 004a 13875700 		addi	a4,a5,5
+ 128              		.loc 1 58 33
+ 129 004e 9947     		li	a5,6
+ 130 0050 B367F702 		rem	a5,a4,a5
+ 131              		.loc 1 58 14
+ 132 0054 13F7F70F 		andi	a4,a5,0xff
+ 133 0058 97070000 		lla	a5,g_flow_pos
+ 133      93870700 
+ 134 0060 2380E700 		sb	a4,0(a5)
+ 135              	.L4:
+  59:../src/main.c **** 
+  60:../src/main.c **** 	/* LED 低电平点亮：bit 为 1 表示熄灭 */
+  61:../src/main.c **** 	g_gpio_out = (g_gpio_out & ~GPIO_LED_MASK)
+ 136              		.loc 1 61 27
+ 137 0064 97070000 		lla	a5,g_gpio_out
+ 137      93870700 
+ 138 006c 9C43     		lw	a5,0(a5)
+ 139 006e 13F707FC 		andi	a4,a5,-64
+  62:../src/main.c **** 	           | ((~(1UL << g_flow_pos)) & GPIO_LED_MASK);
+ 140              		.loc 1 62 23
+ 141 0072 97070000 		lla	a5,g_flow_pos
+ 141      93870700 
+ 142 007a 83C70700 		lbu	a5,0(a5)
+ 143 007e BE86     		mv	a3,a5
+ 144 0080 8547     		li	a5,1
+ 145 0082 B397D700 		sll	a5,a5,a3
+ 146              		.loc 1 62 17
+ 147 0086 93C7F7FF 		not	a5,a5
+ 148              		.loc 1 62 39
+ 149 008a 93F7F703 		andi	a5,a5,63
+ 150              		.loc 1 62 13
+ 151 008e 5D8F     		or	a4,a4,a5
+  61:../src/main.c **** 	           | ((~(1UL << g_flow_pos)) & GPIO_LED_MASK);
+ 152              		.loc 1 61 13
+ 153 0090 97070000 		lla	a5,g_gpio_out
+ 153      93870700 
+ 154 0098 98C3     		sw	a4,0(a5)
+  63:../src/main.c **** 	gpio_flush();
+ 155              		.loc 1 63 2
+ 156 009a 97000000 		call	gpio_flush
+ 156      E7800000 
+  64:../src/main.c **** }
+ 157              		.loc 1 64 1
+ 158 00a2 0100     		nop
+ 159 00a4 B240     		lw	ra,12(sp)
+ 160              		.cfi_restore 1
+ 161 00a6 2244     		lw	s0,8(sp)
+ 162              		.cfi_restore 8
+ 163              		.cfi_def_cfa 2, 16
+ 164 00a8 4101     		addi	sp,sp,16
+ 165              		.cfi_def_cfa_offset 0
+ 166 00aa 8280     		jr	ra
+ 167              		.cfi_endproc
+ 168              	.LFE4:
+ 170              		.section	.text.square_wave_toggle,"ax",@progbits
+ 171              		.align	1
+ 173              	square_wave_toggle:
+ 174              	.LFB5:
+  65:../src/main.c **** 
+  66:../src/main.c **** /* 翻转方波输出位 */
+  67:../src/main.c **** static void square_wave_toggle(void)
+  68:../src/main.c **** {
+ 175              		.loc 1 68 1
+ 176              		.cfi_startproc
+ 177 0000 4111     		addi	sp,sp,-16
+ 178              		.cfi_def_cfa_offset 16
+ 179 0002 06C6     		sw	ra,12(sp)
+ 180 0004 22C4     		sw	s0,8(sp)
+ 181              		.cfi_offset 1, -4
+ 182              		.cfi_offset 8, -8
+ 183 0006 0008     		addi	s0,sp,16
+ 184              		.cfi_def_cfa 8, 0
+  69:../src/main.c **** 	g_gpio_out ^= (1UL << GPIO_SQWAVE_BIT);
+ 185              		.loc 1 69 13
+ 186 0008 97070000 		lla	a5,g_gpio_out
+ 186      93870700 
+ 187 0010 9C43     		lw	a5,0(a5)
+ 188 0012 13C70704 		xori	a4,a5,64
+ 189 0016 97070000 		lla	a5,g_gpio_out
+ 189      93870700 
+ 190 001e 98C3     		sw	a4,0(a5)
+  70:../src/main.c **** 	gpio_flush();
+ 191              		.loc 1 70 2
+ 192 0020 97000000 		call	gpio_flush
+ 192      E7800000 
+  71:../src/main.c **** }
+ 193              		.loc 1 71 1
+ 194 0028 0100     		nop
+ 195 002a B240     		lw	ra,12(sp)
+ 196              		.cfi_restore 1
+ 197 002c 2244     		lw	s0,8(sp)
+ 198              		.cfi_restore 8
+ 199              		.cfi_def_cfa 2, 16
+ 200 002e 4101     		addi	sp,sp,16
+ 201              		.cfi_def_cfa_offset 0
+ 202 0030 8280     		jr	ra
+ 203              		.cfi_endproc
+ 204              	.LFE5:
+ 206              		.section	.rodata
+ 207              		.align	2
+ 208              	.LC0:
+ 209 0000 0D0A3D3D 		.string	"\r\n==========================================\r\n"
+ 209      3D3D3D3D 
+ 209      3D3D3D3D 
+ 209      3D3D3D3D 
+ 209      3D3D3D3D 
+ 210 002f 00       		.align	2
+ 211              	.LC1:
+ 212 0030 54616E67 		.string	"Tang Nano 9K PicoRV32 SOPC Demo\r\n"
+ 212      204E616E 
+ 212      6F20394B 
+ 212      20506963 
+ 212      6F525633 
+ 213 0052 0000     		.align	2
+ 214              	.LC2:
+ 215 0054 53797374 		.string	"System Clock: %d MHz\r\n"
+ 215      656D2043 
+ 215      6C6F636B 
+ 215      3A202564 
+ 215      204D487A 
+ 216 006b 00       		.align	2
+ 217              	.LC3:
+ 218 006c 3D3D3D3D 		.string	"==========================================\r\n\r\n"
+ 218      3D3D3D3D 
+ 218      3D3D3D3D 
+ 218      3D3D3D3D 
+ 218      3D3D3D3D 
+ 219 009b 00       		.align	2
+ 220              	.LC4:
+ 221 009c 5B4F4B5D 		.string	"[OK] LED flow running...\r\n"
+ 221      204C4544 
+ 221      20666C6F 
+ 221      77207275 
+ 221      6E6E696E 
+ 222 00b7 00       		.align	2
+ 223              	.LC5:
+ 224 00b8 5B4F4B5D 		.string	"[OK] Press S1 key to switch LED direction\r\n"
+ 224      20507265 
+ 224      73732053 
+ 224      31206B65 
+ 224      7920746F 
+ 225              		.align	2
+ 226              	.LC6:
+ 227 00e4 5B4F4B5D 		.string	"[OK] gpio_io[6] outputs ~1kHz square wave\r\n"
+ 227      20677069 
+ 227      6F5F696F 
+ 227      5B365D20 
+ 227      6F757470 
+ 228              		.align	2
+ 229              	.LC7:
+ 230 0110 5B4F4B5D 		.string	"[OK] UART echo enabled, type any char to test\r\n\r\n"
+ 230      20554152 
+ 230      54206563 
+ 230      686F2065 
+ 230      6E61626C 
+ 231 0142 0000     		.align	2
+ 232              	.LC8:
+ 233 0144 4C454654 		.string	"LEFT"
+ 233      00
+ 234 0149 000000   		.align	2
+ 235              	.LC9:
+ 236 014c 52494748 		.string	"RIGHT"
+ 236      5400
+ 237 0152 0000     		.align	2
+ 238              	.LC10:
+ 239 0154 5B494E54 		.string	"[INT] Key pressed! LED direction -> %s\r\n"
+ 239      5D204B65 
+ 239      79207072 
+ 239      65737365 
+ 239      6421204C 
+ 240 017d 000000   		.align	2
+ 241              	.LC11:
+ 242 0180 52583A20 		.string	"RX: 0x%02X '%c'\r\n"
+ 242      30782530 
+ 242      32582027 
+ 242      2563270D 
+ 242      0A00
+ 243              		.section	.text.main,"ax",@progbits
+ 244              		.align	1
+ 245              		.globl	main
+ 247              	main:
+ 248              	.LFB6:
+  72:../src/main.c **** 
+  73:../src/main.c **** /* =================== 主函数 =================== */
+  74:../src/main.c **** int main(void)
+  75:../src/main.c **** {
+ 249              		.loc 1 75 1
+ 250              		.cfi_startproc
+ 251 0000 0111     		addi	sp,sp,-32
+ 252              		.cfi_def_cfa_offset 32
+ 253 0002 06CE     		sw	ra,28(sp)
+ 254 0004 22CC     		sw	s0,24(sp)
+ 255              		.cfi_offset 1, -4
+ 256              		.cfi_offset 8, -8
+ 257 0006 0010     		addi	s0,sp,32
+ 258              		.cfi_def_cfa 8, 0
+  76:../src/main.c **** 	/* 1. 关闭所有中断，初始化外设 */
+  77:../src/main.c **** 	mask_irq(0xFFFFFFFF);
+ 259              		.loc 1 77 2
+ 260 0008 7D55     		li	a0,-1
+ 261 000a 97000000 		call	mask_irq
+ 261      E7800000 
+  78:../src/main.c **** 	wbuart_init(115200);				/* WBUART 115200bps */
+ 262              		.loc 1 78 2
+ 263 0012 F167     		li	a5,114688
+ 264 0014 13850720 		addi	a0,a5,512
+ 265 0018 97000000 		call	wbuart_init
+ 265      E7800000 
+  79:../src/main.c **** 	GPIO_Init(PICO_WBGPIO);
+ 266              		.loc 1 79 2
+ 267 0020 37150011 		li	a0,285216768
+ 268 0024 97000000 		call	GPIO_Init
+ 268      E7800000 
+  80:../src/main.c **** 
+  81:../src/main.c **** 	/* 2. GPIO 全部输出：bit[5:0]=LED, bit[6]=方波 */
+  82:../src/main.c **** 	GPIO_SetDir(PICO_WBGPIO, 0x7F);
+ 269              		.loc 1 82 2
+ 270 002c 9305F007 		li	a1,127
+ 271 0030 37150011 		li	a0,285216768
+ 272 0034 97000000 		call	GPIO_SetDir
+ 272      E7800000 
+  83:../src/main.c **** 	g_gpio_out = GPIO_LED_MASK;			/* 初始 LED 全灭，方波低电平 */
+ 273              		.loc 1 83 13
+ 274 003c 97070000 		lla	a5,g_gpio_out
+ 274      93870700 
+ 275 0044 1307F003 		li	a4,63
+ 276 0048 98C3     		sw	a4,0(a5)
+  84:../src/main.c **** 	gpio_flush();
+ 277              		.loc 1 84 2
+ 278 004a 97000000 		call	gpio_flush
+ 278      E7800000 
+  85:../src/main.c **** 
+  86:../src/main.c **** 	printf("\r\n==========================================\r\n");
+ 279              		.loc 1 86 2
+ 280 0052 17050000 		lla	a0,.LC0
+ 280      13050500 
+ 281 005a 97000000 		call	printf
+ 281      E7800000 
+  87:../src/main.c **** 	printf("Tang Nano 9K PicoRV32 SOPC Demo\r\n");
+ 282              		.loc 1 87 2
+ 283 0062 17050000 		lla	a0,.LC1
+ 283      13050500 
+ 284 006a 97000000 		call	printf
+ 284      E7800000 
+  88:../src/main.c **** 	printf("System Clock: %d MHz\r\n", SYSCLKFREQ / MHz);
+ 285              		.loc 1 88 2
+ 286 0072 ED45     		li	a1,27
+ 287 0074 17050000 		lla	a0,.LC2
+ 287      13050500 
+ 288 007c 97000000 		call	printf
+ 288      E7800000 
+  89:../src/main.c **** 	printf("==========================================\r\n\r\n");
+ 289              		.loc 1 89 2
+ 290 0084 17050000 		lla	a0,.LC3
+ 290      13050500 
+ 291 008c 97000000 		call	printf
+ 291      E7800000 
+  90:../src/main.c **** 
+  91:../src/main.c **** 	/* 3. 使能中断 */
+  92:../src/main.c **** 	irq_enable_one_bit(0);				/* 定时器中断 */
+ 292              		.loc 1 92 2
+ 293 0094 0145     		li	a0,0
+ 294 0096 97000000 		call	irq_enable_one_bit
+ 294      E7800000 
+  93:../src/main.c **** 	irq_enable_one_bit(20);				/* 按键外部中断 */
+ 295              		.loc 1 93 2
+ 296 009e 5145     		li	a0,20
+ 297 00a0 97000000 		call	irq_enable_one_bit
+ 297      E7800000 
+  94:../src/main.c **** 	irq_enable_one_bit(13);				/* WBUART 接收中断 */
+ 298              		.loc 1 94 2
+ 299 00a8 3545     		li	a0,13
+ 300 00aa 97000000 		call	irq_enable_one_bit
+ 300      E7800000 
+  95:../src/main.c **** 	enable_timer_interrupt();
+ 301              		.loc 1 95 2
+ 302 00b2 97000000 		call	enable_timer_interrupt
+ 302      E7800000 
+  96:../src/main.c **** 	enable_external_interrupt();
+ 303              		.loc 1 96 2
+ 304 00ba 97000000 		call	enable_external_interrupt
+ 304      E7800000 
+  97:../src/main.c **** 	enable_interrupt_global();
+ 305              		.loc 1 97 2
+ 306 00c2 97000000 		call	enable_interrupt_global
+ 306      E7800000 
+  98:../src/main.c **** 
+  99:../src/main.c **** 	/* 4. 启动定时器 -> 产生方波 */
+ 100:../src/main.c **** 	set_timer(SQ_WAVE_HALF_PERIOD);
+ 307              		.loc 1 100 2
+ 308 00ca 8D67     		li	a5,12288
+ 309 00cc 1385C74B 		addi	a0,a5,1212
+ 310 00d0 97000000 		call	set_timer
+ 310      E7800000 
+ 101:../src/main.c **** 
+ 102:../src/main.c **** 	printf("[OK] LED flow running...\r\n");
+ 311              		.loc 1 102 2
+ 312 00d8 17050000 		lla	a0,.LC4
+ 312      13050500 
+ 313 00e0 97000000 		call	printf
+ 313      E7800000 
+ 103:../src/main.c **** 	printf("[OK] Press S1 key to switch LED direction\r\n");
+ 314              		.loc 1 103 2
+ 315 00e8 17050000 		lla	a0,.LC5
+ 315      13050500 
+ 316 00f0 97000000 		call	printf
+ 316      E7800000 
+ 104:../src/main.c **** 	printf("[OK] gpio_io[6] outputs ~1kHz square wave\r\n");
+ 317              		.loc 1 104 2
+ 318 00f8 17050000 		lla	a0,.LC6
+ 318      13050500 
+ 319 0100 97000000 		call	printf
+ 319      E7800000 
+ 105:../src/main.c **** 	printf("[OK] UART echo enabled, type any char to test\r\n\r\n");
+ 320              		.loc 1 105 2
+ 321 0108 17050000 		lla	a0,.LC7
+ 321      13050500 
+ 322 0110 97000000 		call	printf
+ 322      E7800000 
+ 323              	.L15:
+ 106:../src/main.c **** 
+ 107:../src/main.c **** 	/* 5. 主循环：非阻塞，轮询中断标志 */
+ 108:../src/main.c **** 	while (1)
+ 109:../src/main.c **** 	{
+ 110:../src/main.c **** 		/* 定时器中断：方波翻转 + 流水灯节拍计数 */
+ 111:../src/main.c **** 		if (irq00_flag)
+ 324              		.loc 1 111 7
+ 325 0118 97070000 		lla	a5,irq00_flag
+ 325      93870700 
+ 326 0120 83C70700 		lbu	a5,0(a5)
+ 327              		.loc 1 111 6
+ 328 0124 ADC3     		beq	a5,zero,.L7
+ 112:../src/main.c **** 		{
+ 113:../src/main.c **** 			irq00_flag = 0;
+ 329              		.loc 1 113 15
+ 330 0126 97070000 		lla	a5,irq00_flag
+ 330      93870700 
+ 331 012e 23800700 		sb	zero,0(a5)
+ 114:../src/main.c **** 			g_tick++;
+ 332              		.loc 1 114 10
+ 333 0132 97070000 		lla	a5,g_tick
+ 333      93870700 
+ 334 013a 9C43     		lw	a5,0(a5)
+ 335 013c 13871700 		addi	a4,a5,1
+ 336 0140 97070000 		lla	a5,g_tick
+ 336      93870700 
+ 337 0148 98C3     		sw	a4,0(a5)
+ 115:../src/main.c **** 			square_wave_toggle();
+ 338              		.loc 1 115 4
+ 339 014a 97000000 		call	square_wave_toggle
+ 339      E7800000 
+ 116:../src/main.c **** 			if ((g_tick % FLOW_STEP_TICKS) == 0)
+ 340              		.loc 1 116 16
+ 341 0152 97070000 		lla	a5,g_tick
+ 341      93870700 
+ 342 015a 9843     		lw	a4,0(a5)
+ 343 015c 93070019 		li	a5,400
+ 344 0160 B377F702 		remu	a5,a4,a5
+ 345              		.loc 1 116 7
+ 346 0164 89E7     		bne	a5,zero,.L8
+ 117:../src/main.c **** 				led_flow_step();
+ 347              		.loc 1 117 5
+ 348 0166 97000000 		call	led_flow_step
+ 348      E7800000 
+ 349              	.L8:
+ 118:../src/main.c **** 			irq_enable_one_bit(0);
+ 350              		.loc 1 118 4
+ 351 016e 0145     		li	a0,0
+ 352 0170 97000000 		call	irq_enable_one_bit
+ 352      E7800000 
+ 119:../src/main.c **** 			set_timer(SQ_WAVE_HALF_PERIOD);	/* 重新装载定时器 */
+ 353              		.loc 1 119 4
+ 354 0178 8D67     		li	a5,12288
+ 355 017a 1385C74B 		addi	a0,a5,1212
+ 356 017e 97000000 		call	set_timer
+ 356      E7800000 
+ 357              	.L7:
+ 120:../src/main.c **** 		}
+ 121:../src/main.c **** 
+ 122:../src/main.c **** 		/* 按键外部中断：切换流水灯方向 */
+ 123:../src/main.c **** 		if (irq20_flag)
+ 358              		.loc 1 123 7
+ 359 0186 97070000 		lla	a5,irq20_flag
+ 359      93870700 
+ 360 018e 83C70700 		lbu	a5,0(a5)
+ 361              		.loc 1 123 6
+ 362 0192 B5C7     		beq	a5,zero,.L9
+ 124:../src/main.c **** 		{
+ 125:../src/main.c **** 			irq20_flag = 0;
+ 363              		.loc 1 125 15
+ 364 0194 97070000 		lla	a5,irq20_flag
+ 364      93870700 
+ 365 019c 23800700 		sb	zero,0(a5)
+ 126:../src/main.c **** 			g_flow_dir = !g_flow_dir;
+ 366              		.loc 1 126 17
+ 367 01a0 97070000 		lla	a5,g_flow_dir
+ 367      93870700 
+ 368 01a8 83C70700 		lbu	a5,0(a5)
+ 369 01ac 93B71700 		seqz	a5,a5
+ 370 01b0 93F7F70F 		andi	a5,a5,0xff
+ 371 01b4 3E87     		mv	a4,a5
+ 372              		.loc 1 126 15
+ 373 01b6 97070000 		lla	a5,g_flow_dir
+ 373      93870700 
+ 374 01be 2380E700 		sb	a4,0(a5)
+ 127:../src/main.c **** 			printf("[INT] Key pressed! LED direction -> %s\r\n",
+ 128:../src/main.c **** 			       g_flow_dir ? "LEFT" : "RIGHT");
+ 375              		.loc 1 128 22
+ 376 01c2 97070000 		lla	a5,g_flow_dir
+ 376      93870700 
+ 377 01ca 83C70700 		lbu	a5,0(a5)
+ 127:../src/main.c **** 			printf("[INT] Key pressed! LED direction -> %s\r\n",
+ 378              		.loc 1 127 4
+ 379 01ce 91C7     		beq	a5,zero,.L10
+ 127:../src/main.c **** 			printf("[INT] Key pressed! LED direction -> %s\r\n",
+ 380              		.loc 1 127 4 is_stmt 0 discriminator 1
+ 381 01d0 97070000 		lla	a5,.LC8
+ 381      93870700 
+ 382 01d8 29A0     		j	.L11
+ 383              	.L10:
+ 127:../src/main.c **** 			printf("[INT] Key pressed! LED direction -> %s\r\n",
+ 384              		.loc 1 127 4 discriminator 2
+ 385 01da 97070000 		lla	a5,.LC9
+ 385      93870700 
+ 386              	.L11:
+ 127:../src/main.c **** 			printf("[INT] Key pressed! LED direction -> %s\r\n",
+ 387              		.loc 1 127 4 discriminator 4
+ 388 01e2 BE85     		mv	a1,a5
+ 389 01e4 17050000 		lla	a0,.LC10
+ 389      13050500 
+ 390 01ec 97000000 		call	printf
+ 390      E7800000 
+ 129:../src/main.c **** 			irq_enable_one_bit(20);
+ 391              		.loc 1 129 4 is_stmt 1
+ 392 01f4 5145     		li	a0,20
+ 393 01f6 97000000 		call	irq_enable_one_bit
+ 393      E7800000 
+ 394              	.L9:
+ 130:../src/main.c **** 		}
+ 131:../src/main.c **** 
+ 132:../src/main.c **** 		/* WBUART 接收中断：读取并回显 */
+ 133:../src/main.c **** 		if (irq13_flag)
+ 395              		.loc 1 133 7
+ 396 01fe 97070000 		lla	a5,irq13_flag
+ 396      93870700 
+ 397 0206 83C70700 		lbu	a5,0(a5)
+ 398              		.loc 1 133 6
+ 399 020a 99D7     		beq	a5,zero,.L15
+ 400              	.LBB2:
+ 134:../src/main.c **** 		{
+ 135:../src/main.c **** 			irq13_flag = 0;
+ 401              		.loc 1 135 15
+ 402 020c 97070000 		lla	a5,irq13_flag
+ 402      93870700 
+ 403 0214 23800700 		sb	zero,0(a5)
+ 136:../src/main.c **** 			uint8_t ch = wbuart_getc();
+ 404              		.loc 1 136 17
+ 405 0218 97000000 		call	wbuart_getc
+ 405      E7800000 
+ 406 0220 AA87     		mv	a5,a0
+ 407              		.loc 1 136 12 discriminator 1
+ 408 0222 A307F4FE 		sb	a5,-17(s0)
+ 137:../src/main.c **** 			printf("RX: 0x%02X '%c'\r\n", ch,
+ 409              		.loc 1 137 4
+ 410 0226 8346F4FE 		lbu	a3,-17(s0)
+ 411 022a 0347F4FE 		lbu	a4,-17(s0)
+ 412 022e FD47     		li	a5,31
+ 413 0230 63FBE700 		bleu	a4,a5,.L13
+ 138:../src/main.c **** 			       (ch >= 32 && ch <= 126) ? ch : '.');
+ 414              		.loc 1 138 21
+ 415 0234 0347F4FE 		lbu	a4,-17(s0)
+ 416 0238 9307E007 		li	a5,126
+ 417 023c 63E5E700 		bgtu	a4,a5,.L13
+ 137:../src/main.c **** 			printf("RX: 0x%02X '%c'\r\n", ch,
+ 418              		.loc 1 137 4
+ 419 0240 8347F4FE 		lbu	a5,-17(s0)
+ 420 0244 19A0     		j	.L14
+ 421              	.L13:
+ 137:../src/main.c **** 			printf("RX: 0x%02X '%c'\r\n", ch,
+ 422              		.loc 1 137 4 is_stmt 0 discriminator 1
+ 423 0246 9307E002 		li	a5,46
+ 424              	.L14:
+ 137:../src/main.c **** 			printf("RX: 0x%02X '%c'\r\n", ch,
+ 425              		.loc 1 137 4 discriminator 3
+ 426 024a 3E86     		mv	a2,a5
+ 427 024c B685     		mv	a1,a3
+ 428 024e 17050000 		lla	a0,.LC11
+ 428      13050500 
+ 429 0256 97000000 		call	printf
+ 429      E7800000 
+ 139:../src/main.c **** 			irq_enable_one_bit(13);
+ 430              		.loc 1 139 4 is_stmt 1
+ 431 025e 3545     		li	a0,13
+ 432 0260 97000000 		call	irq_enable_one_bit
+ 432      E7800000 
+ 433              	.LBE2:
+ 111:../src/main.c **** 		{
+ 434              		.loc 1 111 6
+ 435 0268 45BD     		j	.L15
+ 436              		.cfi_endproc
+ 437              	.LFE6:
+ 439              		.text
+ 440              	.Letext0:
+ 441              		.file 2 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/machine/_default_types.h"
+ 442              		.file 3 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/sys/_stdint.h"
+ 443              		.file 4 "../src/picorv32.h"
+ 444              		.file 5 "../src/irq.h"
+ 445              		.file 6 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/stdio.h"
+ 446              		.file 7 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\src\\bsp/wbgpio.h"
+ 447              		.file 8 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\src\\bsp/wbuart.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:14     .sbss.irq00_flag:00000000 irq00_flag
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:20     .sbss.irq13_flag:00000000 irq13_flag
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:26     .sbss.irq20_flag:00000000 irq20_flag
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:32     .sbss.irq21_flag:00000000 irq21_flag
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:37     .sdata.g_flow_dir:00000000 g_flow_dir
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:42     .sbss.g_flow_pos:00000000 g_flow_pos
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:48     .sbss.g_gpio_out:00000000 g_gpio_out
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:54     .sbss.g_tick:00000000 g_tick
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:59     .text.gpio_flush:00000000 gpio_flush
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:63     .text.gpio_flush:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:64     .text.gpio_flush:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:64     .text.gpio_flush:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:65     .text.gpio_flush:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:68     .text.gpio_flush:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:69     .text.gpio_flush:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:71     .text.gpio_flush:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:73     .text.gpio_flush:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:79     .text.gpio_flush:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:81     .text.gpio_flush:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:83     .text.gpio_flush:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:84     .text.gpio_flush:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:86     .text.gpio_flush:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:88     .text.gpio_flush:0000002a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:94     .text.led_flow_step:00000000 led_flow_step
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:97     .text.led_flow_step:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:98     .text.led_flow_step:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:98     .text.led_flow_step:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:99     .text.led_flow_step:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:102    .text.led_flow_step:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:103    .text.led_flow_step:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:105    .text.led_flow_step:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:107    .text.led_flow_step:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:110    .text.led_flow_step:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:112    .text.led_flow_step:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:116    .text.led_flow_step:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:119    .text.led_flow_step:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:125    .text.led_flow_step:0000003e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:129    .text.led_flow_step:0000004e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:132    .text.led_flow_step:00000054 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:137    .text.led_flow_step:00000064 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:141    .text.led_flow_step:00000072 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:147    .text.led_flow_step:00000086 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:149    .text.led_flow_step:0000008a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:151    .text.led_flow_step:0000008e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:153    .text.led_flow_step:00000090 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:156    .text.led_flow_step:0000009a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:158    .text.led_flow_step:000000a2 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:160    .text.led_flow_step:000000a6 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:162    .text.led_flow_step:000000a8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:163    .text.led_flow_step:000000a8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:165    .text.led_flow_step:000000aa .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:167    .text.led_flow_step:000000ac .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:173    .text.square_wave_toggle:00000000 square_wave_toggle
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:176    .text.square_wave_toggle:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:177    .text.square_wave_toggle:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:177    .text.square_wave_toggle:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:178    .text.square_wave_toggle:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:181    .text.square_wave_toggle:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:182    .text.square_wave_toggle:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:184    .text.square_wave_toggle:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:186    .text.square_wave_toggle:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:192    .text.square_wave_toggle:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:194    .text.square_wave_toggle:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:196    .text.square_wave_toggle:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:198    .text.square_wave_toggle:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:199    .text.square_wave_toggle:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:201    .text.square_wave_toggle:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:203    .text.square_wave_toggle:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:247    .text.main:00000000 main
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:250    .text.main:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:251    .text.main:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:251    .text.main:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:252    .text.main:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:255    .text.main:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:256    .text.main:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:258    .text.main:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:260    .text.main:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:263    .text.main:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:267    .text.main:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:270    .text.main:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:274    .text.main:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:278    .text.main:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:280    .text.main:00000052 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:283    .text.main:00000062 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:286    .text.main:00000072 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:290    .text.main:00000084 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:293    .text.main:00000094 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:296    .text.main:0000009e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:299    .text.main:000000a8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:302    .text.main:000000b2 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:304    .text.main:000000ba .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:306    .text.main:000000c2 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:308    .text.main:000000ca .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:312    .text.main:000000d8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:315    .text.main:000000e8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:318    .text.main:000000f8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:321    .text.main:00000108 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:325    .text.main:00000118 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:328    .text.main:00000124 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:330    .text.main:00000126 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:333    .text.main:00000132 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:339    .text.main:0000014a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:341    .text.main:00000152 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:346    .text.main:00000164 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:348    .text.main:00000166 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:351    .text.main:0000016e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:354    .text.main:00000178 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:359    .text.main:00000186 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:362    .text.main:00000192 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:364    .text.main:00000194 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:367    .text.main:000001a0 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:373    .text.main:000001b6 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:376    .text.main:000001c2 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:379    .text.main:000001ce .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:381    .text.main:000001d0 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:385    .text.main:000001da .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:388    .text.main:000001e2 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:392    .text.main:000001f4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:396    .text.main:000001fe .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:399    .text.main:0000020a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:402    .text.main:0000020c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:405    .text.main:00000218 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:408    .text.main:00000222 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:410    .text.main:00000226 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:415    .text.main:00000234 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:419    .text.main:00000240 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:423    .text.main:00000246 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:426    .text.main:0000024a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:431    .text.main:0000025e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:435    .text.main:00000268 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:436    .text.main:0000026a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:0000006a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:00000071 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:000000b7 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:000000f9 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:00000137 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:00000167 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:0000016e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:00000175 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:00000186 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:00000190 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:0000019b .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:000001a1 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:000001a9 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1285   .debug_line_str:000001b2 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:91     .text.gpio_flush:0000002a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:170    .text.led_flow_step:000000ac .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:206    .text.square_wave_toggle:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:439    .text.main:0000026a .L0 
+                     .debug_frame:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:73     .text.gpio_flush:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:107    .text.led_flow_step:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:112    .text.led_flow_step:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:120    .text.led_flow_step:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:125    .text.led_flow_step:0000003e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:133    .text.led_flow_step:00000058 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:137    .text.led_flow_step:00000064 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:141    .text.led_flow_step:00000072 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:153    .text.led_flow_step:00000090 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:123    .text.led_flow_step:0000003e .L3
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:135    .text.led_flow_step:00000064 .L4
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:186    .text.square_wave_toggle:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:189    .text.square_wave_toggle:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:274    .text.main:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:208    .rodata:00000000 .LC0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:280    .text.main:00000052 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:211    .rodata:00000030 .LC1
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:283    .text.main:00000062 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:214    .rodata:00000054 .LC2
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:287    .text.main:00000074 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:217    .rodata:0000006c .LC3
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:290    .text.main:00000084 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:220    .rodata:0000009c .LC4
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:312    .text.main:000000d8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:223    .rodata:000000b8 .LC5
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:315    .text.main:000000e8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:226    .rodata:000000e4 .LC6
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:318    .text.main:000000f8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:229    .rodata:00000110 .LC7
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:321    .text.main:00000108 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:325    .text.main:00000118 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:330    .text.main:00000126 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:333    .text.main:00000132 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:336    .text.main:00000140 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:341    .text.main:00000152 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:359    .text.main:00000186 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:364    .text.main:00000194 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:367    .text.main:000001a0 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:373    .text.main:000001b6 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:376    .text.main:000001c2 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:232    .rodata:00000144 .LC8
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:381    .text.main:000001d0 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:235    .rodata:0000014c .LC9
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:385    .text.main:000001da .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:238    .rodata:00000154 .LC10
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:389    .text.main:000001e4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:396    .text.main:000001fe .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:402    .text.main:0000020c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:241    .rodata:00000180 .LC11
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:428    .text.main:0000024e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:357    .text.main:00000186 .L7
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:349    .text.main:0000016e .L8
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:394    .text.main:000001fe .L9
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:383    .text.main:000001da .L10
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:386    .text.main:000001e2 .L11
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:323    .text.main:00000118 .L15
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:421    .text.main:00000246 .L13
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:424    .text.main:0000024a .L14
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:793    .debug_abbrev:00000000 .Ldebug_abbrev0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1203   .debug_str:00000024 .LASF40
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1280   .debug_line_str:00000000 .LASF0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1282   .debug_line_str:0000000e .LASF1
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1179   .debug_rnglists:0000000c .LLRL0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1195   .debug_line:00000000 .Ldebug_line0
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1269   .debug_str:0000029c .LASF2
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1199   .debug_str:00000007 .LASF7
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1205   .debug_str:0000010d .LASF3
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1255   .debug_str:00000247 .LASF4
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1211   .debug_str:00000139 .LASF5
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1265   .debug_str:00000287 .LASF6
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1219   .debug_str:0000016d .LASF8
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1207   .debug_str:0000011b .LASF9
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1243   .debug_str:0000020a .LASF10
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1231   .debug_str:000001bb .LASF11
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1227   .debug_str:000001a0 .LASF12
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1233   .debug_str:000001d2 .LASF13
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1263   .debug_str:0000027e .LASF14
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1267   .debug_str:00000290 .LASF15
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1247   .debug_str:00000227 .LASF16
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1229   .debug_str:000001ad .LASF17
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1215   .debug_str:00000157 .LASF18
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1217   .debug_str:00000162 .LASF19
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1235   .debug_str:000001da .LASF20
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1277   .debug_str:000002df .LASF21
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1239   .debug_str:000001f1 .LASF22
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1251   .debug_str:00000233 .LASF23
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1261   .debug_str:00000273 .LASF24
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1197   .debug_str:00000000 .LASF25
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1237   .debug_str:000001e5 .LASF41
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1273   .debug_str:000002c2 .LASF29
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1259   .debug_str:0000025b .LASF26
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1271   .debug_str:000002a8 .LASF27
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1221   .debug_str:00000178 .LASF28
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1275   .debug_str:000002cc .LASF31
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1249   .debug_str:0000022c .LASF30
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1209   .debug_str:0000012d .LASF32
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1257   .debug_str:00000251 .LASF33
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1223   .debug_str:0000018f .LASF34
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1253   .debug_str:0000023e .LASF35
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1245   .debug_str:00000218 .LASF36
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1225   .debug_str:0000019b .LASF42
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:248    .text.main:00000000 .LFB6
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:437    .text.main:0000026a .LFE6
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:400    .text.main:0000020c .LBB2
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:433    .text.main:00000268 .LBE2
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1201   .debug_str:00000011 .LASF37
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:174    .text.square_wave_toggle:00000000 .LFB5
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:204    .text.square_wave_toggle:00000032 .LFE5
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1241   .debug_str:000001fc .LASF38
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:95     .text.led_flow_step:00000000 .LFB4
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:168    .text.led_flow_step:000000ac .LFE4
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:1213   .debug_str:0000014c .LASF39
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:60     .text.gpio_flush:00000000 .LFB3
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:89     .text.gpio_flush:0000002a .LFE3
+C:\Users\nesus\AppData\Local\Temp\ccWtAE7L.s:449    .debug_info:00000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+GPIO_WriteData
+mask_irq
+wbuart_init
+GPIO_Init
+GPIO_SetDir
+printf
+irq_enable_one_bit
+enable_timer_interrupt
+enable_external_interrupt
+enable_interrupt_global
+set_timer
+wbuart_getc

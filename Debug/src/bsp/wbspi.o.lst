@@ -1,0 +1,654 @@
+   1              		.file	"wbspi.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p1_m2p0_c2p0_zicsr2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.file 0 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\Debug" "../src/bsp/wbspi.c"
+  10              		.section	.text.wbspi_master_select_slave,"ax",@progbits
+  11              		.align	1
+  12              		.globl	wbspi_master_select_slave
+  14              	wbspi_master_select_slave:
+  15              	.LFB3:
+  16              		.file 1 "../src/bsp/wbspi.c"
+   1:../src/bsp/wbspi.c **** /*
+   2:../src/bsp/wbspi.c ****  ******************************************************************************************
+   3:../src/bsp/wbspi.c ****  * @file		wbspi.c
+   4:../src/bsp/wbspi.c ****  * @author		GowinSemicoductor
+   5:../src/bsp/wbspi.c ****  * @device		Gowin_PicoRV32
+   6:../src/bsp/wbspi.c ****  * @brief		Wishbone SPI Peripheral.
+   7:../src/bsp/wbspi.c ****  ******************************************************************************************
+   8:../src/bsp/wbspi.c ****  */
+   9:../src/bsp/wbspi.c **** 
+  10:../src/bsp/wbspi.c **** /* Includes ----------------------------------------------------------------------- */
+  11:../src/bsp/wbspi.c **** #include "wbspi.h"
+  12:../src/bsp/wbspi.c **** 
+  13:../src/bsp/wbspi.c **** 
+  14:../src/bsp/wbspi.c **** /* Definitions -------------------------------------------------------------------- */
+  15:../src/bsp/wbspi.c **** 
+  16:../src/bsp/wbspi.c **** uint32_t wbspi_master_select_slave(WBSPI_RegDef *WBSPI, uint32_t slave_num)
+  17:../src/bsp/wbspi.c **** {
+  17              		.loc 1 17 1
+  18              		.cfi_startproc
+  19 0000 0111     		addi	sp,sp,-32
+  20              		.cfi_def_cfa_offset 32
+  21 0002 06CE     		sw	ra,28(sp)
+  22 0004 22CC     		sw	s0,24(sp)
+  23              		.cfi_offset 1, -4
+  24              		.cfi_offset 8, -8
+  25 0006 0010     		addi	s0,sp,32
+  26              		.cfi_def_cfa 8, 0
+  27 0008 2326A4FE 		sw	a0,-20(s0)
+  28 000c 2324B4FE 		sw	a1,-24(s0)
+  18:../src/bsp/wbspi.c **** 	if(slave_num > SLAVE_NUM_MAX)
+  29              		.loc 1 18 4
+  30 0010 032784FE 		lw	a4,-24(s0)
+  31 0014 A147     		li	a5,8
+  32 0016 63F4E700 		bleu	a4,a5,.L2
+  19:../src/bsp/wbspi.c **** 	{
+  20:../src/bsp/wbspi.c **** 		return -1;
+  33              		.loc 1 20 10
+  34 001a FD57     		li	a5,-1
+  35 001c 11A8     		j	.L3
+  36              	.L2:
+  21:../src/bsp/wbspi.c **** 	}
+  22:../src/bsp/wbspi.c **** 
+  23:../src/bsp/wbspi.c **** 	WBSPI->SSMASK = (1UL << slave_num);
+  37              		.loc 1 23 23
+  38 001e 832784FE 		lw	a5,-24(s0)
+  39 0022 0547     		li	a4,1
+  40 0024 3317F700 		sll	a4,a4,a5
+  41              		.loc 1 23 16
+  42 0028 8327C4FE 		lw	a5,-20(s0)
+  43 002c 98CB     		sw	a4,16(a5)
+  24:../src/bsp/wbspi.c **** 
+  25:../src/bsp/wbspi.c **** 	return 0;
+  44              		.loc 1 25 9
+  45 002e 8147     		li	a5,0
+  46              	.L3:
+  26:../src/bsp/wbspi.c **** }
+  47              		.loc 1 26 1
+  48 0030 3E85     		mv	a0,a5
+  49 0032 F240     		lw	ra,28(sp)
+  50              		.cfi_restore 1
+  51 0034 6244     		lw	s0,24(sp)
+  52              		.cfi_restore 8
+  53              		.cfi_def_cfa 2, 32
+  54 0036 0561     		addi	sp,sp,32
+  55              		.cfi_def_cfa_offset 0
+  56 0038 8280     		jr	ra
+  57              		.cfi_endproc
+  58              	.LFE3:
+  60              		.section	.text.wbspi_enable_interrupt,"ax",@progbits
+  61              		.align	1
+  62              		.globl	wbspi_enable_interrupt
+  64              	wbspi_enable_interrupt:
+  65              	.LFB4:
+  27:../src/bsp/wbspi.c **** 
+  28:../src/bsp/wbspi.c **** uint32_t wbspi_enable_interrupt(WBSPI_RegDef *WBSPI, uint32_t interrupt_id)
+  29:../src/bsp/wbspi.c **** {
+  66              		.loc 1 29 1
+  67              		.cfi_startproc
+  68 0000 0111     		addi	sp,sp,-32
+  69              		.cfi_def_cfa_offset 32
+  70 0002 06CE     		sw	ra,28(sp)
+  71 0004 22CC     		sw	s0,24(sp)
+  72              		.cfi_offset 1, -4
+  73              		.cfi_offset 8, -8
+  74 0006 0010     		addi	s0,sp,32
+  75              		.cfi_def_cfa 8, 0
+  76 0008 2326A4FE 		sw	a0,-20(s0)
+  77 000c 2324B4FE 		sw	a1,-24(s0)
+  30:../src/bsp/wbspi.c **** 	WBSPI->CONTROL |= interrupt_id;
+  78              		.loc 1 30 7
+  79 0010 8327C4FE 		lw	a5,-20(s0)
+  80 0014 D847     		lw	a4,12(a5)
+  81              		.loc 1 30 17
+  82 0016 832784FE 		lw	a5,-24(s0)
+  83 001a 5D8F     		or	a4,a4,a5
+  84 001c 8327C4FE 		lw	a5,-20(s0)
+  85 0020 D8C7     		sw	a4,12(a5)
+  31:../src/bsp/wbspi.c **** 
+  32:../src/bsp/wbspi.c **** 	return WBSPI->CONTROL;
+  86              		.loc 1 32 14
+  87 0022 8327C4FE 		lw	a5,-20(s0)
+  88 0026 DC47     		lw	a5,12(a5)
+  33:../src/bsp/wbspi.c **** }
+  89              		.loc 1 33 1
+  90 0028 3E85     		mv	a0,a5
+  91 002a F240     		lw	ra,28(sp)
+  92              		.cfi_restore 1
+  93 002c 6244     		lw	s0,24(sp)
+  94              		.cfi_restore 8
+  95              		.cfi_def_cfa 2, 32
+  96 002e 0561     		addi	sp,sp,32
+  97              		.cfi_def_cfa_offset 0
+  98 0030 8280     		jr	ra
+  99              		.cfi_endproc
+ 100              	.LFE4:
+ 102              		.section	.text.wbspi_disable_interrupt,"ax",@progbits
+ 103              		.align	1
+ 104              		.globl	wbspi_disable_interrupt
+ 106              	wbspi_disable_interrupt:
+ 107              	.LFB5:
+  34:../src/bsp/wbspi.c **** 
+  35:../src/bsp/wbspi.c **** uint32_t wbspi_disable_interrupt(WBSPI_RegDef *WBSPI, uint32_t interrupt_id)
+  36:../src/bsp/wbspi.c **** {
+ 108              		.loc 1 36 1
+ 109              		.cfi_startproc
+ 110 0000 0111     		addi	sp,sp,-32
+ 111              		.cfi_def_cfa_offset 32
+ 112 0002 06CE     		sw	ra,28(sp)
+ 113 0004 22CC     		sw	s0,24(sp)
+ 114              		.cfi_offset 1, -4
+ 115              		.cfi_offset 8, -8
+ 116 0006 0010     		addi	s0,sp,32
+ 117              		.cfi_def_cfa 8, 0
+ 118 0008 2326A4FE 		sw	a0,-20(s0)
+ 119 000c 2324B4FE 		sw	a1,-24(s0)
+  37:../src/bsp/wbspi.c **** 	WBSPI->CONTROL &= (~interrupt_id);
+ 120              		.loc 1 37 7
+ 121 0010 8327C4FE 		lw	a5,-20(s0)
+ 122 0014 D847     		lw	a4,12(a5)
+ 123              		.loc 1 37 21
+ 124 0016 832784FE 		lw	a5,-24(s0)
+ 125 001a 93C7F7FF 		not	a5,a5
+ 126              		.loc 1 37 17
+ 127 001e 7D8F     		and	a4,a4,a5
+ 128 0020 8327C4FE 		lw	a5,-20(s0)
+ 129 0024 D8C7     		sw	a4,12(a5)
+  38:../src/bsp/wbspi.c **** 
+  39:../src/bsp/wbspi.c **** 	return WBSPI->CONTROL;
+ 130              		.loc 1 39 14
+ 131 0026 8327C4FE 		lw	a5,-20(s0)
+ 132 002a DC47     		lw	a5,12(a5)
+  40:../src/bsp/wbspi.c **** }
+ 133              		.loc 1 40 1
+ 134 002c 3E85     		mv	a0,a5
+ 135 002e F240     		lw	ra,28(sp)
+ 136              		.cfi_restore 1
+ 137 0030 6244     		lw	s0,24(sp)
+ 138              		.cfi_restore 8
+ 139              		.cfi_def_cfa 2, 32
+ 140 0032 0561     		addi	sp,sp,32
+ 141              		.cfi_def_cfa_offset 0
+ 142 0034 8280     		jr	ra
+ 143              		.cfi_endproc
+ 144              	.LFE5:
+ 146              		.section	.text.wbspi_master_txdata,"ax",@progbits
+ 147              		.align	1
+ 148              		.globl	wbspi_master_txdata
+ 150              	wbspi_master_txdata:
+ 151              	.LFB6:
+  41:../src/bsp/wbspi.c **** 
+  42:../src/bsp/wbspi.c **** uint32_t wbspi_master_txdata(WBSPI_RegDef *WBSPI, uint32_t txdata)
+  43:../src/bsp/wbspi.c **** {
+ 152              		.loc 1 43 1
+ 153              		.cfi_startproc
+ 154 0000 7971     		addi	sp,sp,-48
+ 155              		.cfi_def_cfa_offset 48
+ 156 0002 06D6     		sw	ra,44(sp)
+ 157 0004 22D4     		sw	s0,40(sp)
+ 158              		.cfi_offset 1, -4
+ 159              		.cfi_offset 8, -8
+ 160 0006 0018     		addi	s0,sp,48
+ 161              		.cfi_def_cfa 8, 0
+ 162 0008 232EA4FC 		sw	a0,-36(s0)
+ 163 000c 232CB4FC 		sw	a1,-40(s0)
+  44:../src/bsp/wbspi.c **** 	while (!(WBSPI->STATUS & (1UL << 5))) ;
+ 164              		.loc 1 44 8
+ 165 0010 0100     		nop
+ 166              	.L9:
+ 167              		.loc 1 44 16 discriminator 1
+ 168 0012 8327C4FD 		lw	a5,-36(s0)
+ 169 0016 9C47     		lw	a5,8(a5)
+ 170              		.loc 1 44 25 discriminator 1
+ 171 0018 93F70702 		andi	a5,a5,32
+ 172              		.loc 1 44 9 discriminator 1
+ 173 001c FDDB     		beq	a5,zero,.L9
+  45:../src/bsp/wbspi.c **** 	WBSPI->TXDATA = txdata;
+ 174              		.loc 1 45 16
+ 175 001e 8327C4FD 		lw	a5,-36(s0)
+ 176 0022 032784FD 		lw	a4,-40(s0)
+ 177 0026 D8C3     		sw	a4,4(a5)
+  46:../src/bsp/wbspi.c **** 	while (!(WBSPI->STATUS & (1UL << 6))) ;
+ 178              		.loc 1 46 8
+ 179 0028 0100     		nop
+ 180              	.L10:
+ 181              		.loc 1 46 16 discriminator 1
+ 182 002a 8327C4FD 		lw	a5,-36(s0)
+ 183 002e 9C47     		lw	a5,8(a5)
+ 184              		.loc 1 46 25 discriminator 1
+ 185 0030 93F70704 		andi	a5,a5,64
+ 186              		.loc 1 46 9 discriminator 1
+ 187 0034 FDDB     		beq	a5,zero,.L10
+  47:../src/bsp/wbspi.c **** 
+  48:../src/bsp/wbspi.c **** 	uint32_t master_rx_data = WBSPI->RXDATA;
+ 188              		.loc 1 48 11
+ 189 0036 8327C4FD 		lw	a5,-36(s0)
+ 190 003a 9C43     		lw	a5,0(a5)
+ 191 003c 2326F4FE 		sw	a5,-20(s0)
+  49:../src/bsp/wbspi.c **** 
+  50:../src/bsp/wbspi.c **** 	return master_rx_data;
+ 192              		.loc 1 50 9
+ 193 0040 8327C4FE 		lw	a5,-20(s0)
+  51:../src/bsp/wbspi.c **** }
+ 194              		.loc 1 51 1
+ 195 0044 3E85     		mv	a0,a5
+ 196 0046 B250     		lw	ra,44(sp)
+ 197              		.cfi_restore 1
+ 198 0048 2254     		lw	s0,40(sp)
+ 199              		.cfi_restore 8
+ 200              		.cfi_def_cfa 2, 48
+ 201 004a 4561     		addi	sp,sp,48
+ 202              		.cfi_def_cfa_offset 0
+ 203 004c 8280     		jr	ra
+ 204              		.cfi_endproc
+ 205              	.LFE6:
+ 207              		.section	.text.wbspi_master_rxdata,"ax",@progbits
+ 208              		.align	1
+ 209              		.globl	wbspi_master_rxdata
+ 211              	wbspi_master_rxdata:
+ 212              	.LFB7:
+  52:../src/bsp/wbspi.c **** 
+  53:../src/bsp/wbspi.c **** uint32_t wbspi_master_rxdata(WBSPI_RegDef *WBSPI)
+  54:../src/bsp/wbspi.c **** {
+ 213              		.loc 1 54 1
+ 214              		.cfi_startproc
+ 215 0000 7971     		addi	sp,sp,-48
+ 216              		.cfi_def_cfa_offset 48
+ 217 0002 06D6     		sw	ra,44(sp)
+ 218 0004 22D4     		sw	s0,40(sp)
+ 219              		.cfi_offset 1, -4
+ 220              		.cfi_offset 8, -8
+ 221 0006 0018     		addi	s0,sp,48
+ 222              		.cfi_def_cfa 8, 0
+ 223 0008 232EA4FC 		sw	a0,-36(s0)
+  55:../src/bsp/wbspi.c **** 	uint32_t master_rx_data = 0;
+ 224              		.loc 1 55 11
+ 225 000c 232604FE 		sw	zero,-20(s0)
+  56:../src/bsp/wbspi.c **** 
+  57:../src/bsp/wbspi.c **** 	while (!(WBSPI->STATUS & (1UL << 5))) ;
+ 226              		.loc 1 57 8
+ 227 0010 0100     		nop
+ 228              	.L13:
+ 229              		.loc 1 57 16 discriminator 1
+ 230 0012 8327C4FD 		lw	a5,-36(s0)
+ 231 0016 9C47     		lw	a5,8(a5)
+ 232              		.loc 1 57 25 discriminator 1
+ 233 0018 93F70702 		andi	a5,a5,32
+ 234              		.loc 1 57 9 discriminator 1
+ 235 001c FDDB     		beq	a5,zero,.L13
+  58:../src/bsp/wbspi.c **** 	WBSPI->TXDATA = 0x00;
+ 236              		.loc 1 58 16
+ 237 001e 8327C4FD 		lw	a5,-36(s0)
+ 238 0022 23A20700 		sw	zero,4(a5)
+  59:../src/bsp/wbspi.c **** 	while (!(WBSPI->STATUS & (1UL << 6))) ;
+ 239              		.loc 1 59 8
+ 240 0026 0100     		nop
+ 241              	.L14:
+ 242              		.loc 1 59 16 discriminator 1
+ 243 0028 8327C4FD 		lw	a5,-36(s0)
+ 244 002c 9C47     		lw	a5,8(a5)
+ 245              		.loc 1 59 25 discriminator 1
+ 246 002e 93F70704 		andi	a5,a5,64
+ 247              		.loc 1 59 9 discriminator 1
+ 248 0032 FDDB     		beq	a5,zero,.L14
+  60:../src/bsp/wbspi.c **** 	master_rx_data = WBSPI->RXDATA;
+ 249              		.loc 1 60 17
+ 250 0034 8327C4FD 		lw	a5,-36(s0)
+ 251 0038 9C43     		lw	a5,0(a5)
+ 252 003a 2326F4FE 		sw	a5,-20(s0)
+  61:../src/bsp/wbspi.c **** 
+  62:../src/bsp/wbspi.c **** 	return master_rx_data;
+ 253              		.loc 1 62 9
+ 254 003e 8327C4FE 		lw	a5,-20(s0)
+  63:../src/bsp/wbspi.c **** }
+ 255              		.loc 1 63 1
+ 256 0042 3E85     		mv	a0,a5
+ 257 0044 B250     		lw	ra,44(sp)
+ 258              		.cfi_restore 1
+ 259 0046 2254     		lw	s0,40(sp)
+ 260              		.cfi_restore 8
+ 261              		.cfi_def_cfa 2, 48
+ 262 0048 4561     		addi	sp,sp,48
+ 263              		.cfi_def_cfa_offset 0
+ 264 004a 8280     		jr	ra
+ 265              		.cfi_endproc
+ 266              	.LFE7:
+ 268              		.section	.text.wbspi_slave_prepare_txdata,"ax",@progbits
+ 269              		.align	1
+ 270              		.globl	wbspi_slave_prepare_txdata
+ 272              	wbspi_slave_prepare_txdata:
+ 273              	.LFB8:
+  64:../src/bsp/wbspi.c **** 
+  65:../src/bsp/wbspi.c **** void wbspi_slave_prepare_txdata(WBSPI_RegDef *WBSPI, uint32_t txdata)
+  66:../src/bsp/wbspi.c **** {
+ 274              		.loc 1 66 1
+ 275              		.cfi_startproc
+ 276 0000 0111     		addi	sp,sp,-32
+ 277              		.cfi_def_cfa_offset 32
+ 278 0002 06CE     		sw	ra,28(sp)
+ 279 0004 22CC     		sw	s0,24(sp)
+ 280              		.cfi_offset 1, -4
+ 281              		.cfi_offset 8, -8
+ 282 0006 0010     		addi	s0,sp,32
+ 283              		.cfi_def_cfa 8, 0
+ 284 0008 2326A4FE 		sw	a0,-20(s0)
+ 285 000c 2324B4FE 		sw	a1,-24(s0)
+  67:../src/bsp/wbspi.c **** 	while (!(WBSPI->STATUS & (1UL << 5))) ;
+ 286              		.loc 1 67 8
+ 287 0010 0100     		nop
+ 288              	.L17:
+ 289              		.loc 1 67 16 discriminator 1
+ 290 0012 8327C4FE 		lw	a5,-20(s0)
+ 291 0016 9C47     		lw	a5,8(a5)
+ 292              		.loc 1 67 25 discriminator 1
+ 293 0018 93F70702 		andi	a5,a5,32
+ 294              		.loc 1 67 9 discriminator 1
+ 295 001c FDDB     		beq	a5,zero,.L17
+  68:../src/bsp/wbspi.c **** 	WBSPI->TXDATA = txdata;
+ 296              		.loc 1 68 16
+ 297 001e 8327C4FE 		lw	a5,-20(s0)
+ 298 0022 032784FE 		lw	a4,-24(s0)
+ 299 0026 D8C3     		sw	a4,4(a5)
+  69:../src/bsp/wbspi.c **** }
+ 300              		.loc 1 69 1
+ 301 0028 0100     		nop
+ 302 002a F240     		lw	ra,28(sp)
+ 303              		.cfi_restore 1
+ 304 002c 6244     		lw	s0,24(sp)
+ 305              		.cfi_restore 8
+ 306              		.cfi_def_cfa 2, 32
+ 307 002e 0561     		addi	sp,sp,32
+ 308              		.cfi_def_cfa_offset 0
+ 309 0030 8280     		jr	ra
+ 310              		.cfi_endproc
+ 311              	.LFE8:
+ 313              		.section	.text.wbspi_slave_read_data,"ax",@progbits
+ 314              		.align	1
+ 315              		.globl	wbspi_slave_read_data
+ 317              	wbspi_slave_read_data:
+ 318              	.LFB9:
+  70:../src/bsp/wbspi.c **** 
+  71:../src/bsp/wbspi.c **** uint32_t wbspi_slave_read_data(WBSPI_RegDef *WBSPI)
+  72:../src/bsp/wbspi.c **** {
+ 319              		.loc 1 72 1
+ 320              		.cfi_startproc
+ 321 0000 7971     		addi	sp,sp,-48
+ 322              		.cfi_def_cfa_offset 48
+ 323 0002 06D6     		sw	ra,44(sp)
+ 324 0004 22D4     		sw	s0,40(sp)
+ 325              		.cfi_offset 1, -4
+ 326              		.cfi_offset 8, -8
+ 327 0006 0018     		addi	s0,sp,48
+ 328              		.cfi_def_cfa 8, 0
+ 329 0008 232EA4FC 		sw	a0,-36(s0)
+  73:../src/bsp/wbspi.c **** 	while (!(WBSPI->STATUS & (1UL << 6))) ;
+ 330              		.loc 1 73 8
+ 331 000c 0100     		nop
+ 332              	.L19:
+ 333              		.loc 1 73 16 discriminator 1
+ 334 000e 8327C4FD 		lw	a5,-36(s0)
+ 335 0012 9C47     		lw	a5,8(a5)
+ 336              		.loc 1 73 25 discriminator 1
+ 337 0014 93F70704 		andi	a5,a5,64
+ 338              		.loc 1 73 9 discriminator 1
+ 339 0018 FDDB     		beq	a5,zero,.L19
+  74:../src/bsp/wbspi.c **** 
+  75:../src/bsp/wbspi.c **** 	uint32_t slave_rx_data = WBSPI->RXDATA;
+ 340              		.loc 1 75 11
+ 341 001a 8327C4FD 		lw	a5,-36(s0)
+ 342 001e 9C43     		lw	a5,0(a5)
+ 343 0020 2326F4FE 		sw	a5,-20(s0)
+  76:../src/bsp/wbspi.c **** 
+  77:../src/bsp/wbspi.c **** 	return slave_rx_data;
+ 344              		.loc 1 77 9
+ 345 0024 8327C4FE 		lw	a5,-20(s0)
+  78:../src/bsp/wbspi.c **** }
+ 346              		.loc 1 78 1
+ 347 0028 3E85     		mv	a0,a5
+ 348 002a B250     		lw	ra,44(sp)
+ 349              		.cfi_restore 1
+ 350 002c 2254     		lw	s0,40(sp)
+ 351              		.cfi_restore 8
+ 352              		.cfi_def_cfa 2, 48
+ 353 002e 4561     		addi	sp,sp,48
+ 354              		.cfi_def_cfa_offset 0
+ 355 0030 8280     		jr	ra
+ 356              		.cfi_endproc
+ 357              	.LFE9:
+ 359              		.text
+ 360              	.Letext0:
+ 361              		.file 2 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/machine/_default_types.h"
+ 362              		.file 3 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/sys/_stdint.h"
+ 363              		.file 4 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\src/picorv32.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 wbspi.c
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:14     .text.wbspi_master_select_slave:00000000 wbspi_master_select_slave
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:18     .text.wbspi_master_select_slave:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:19     .text.wbspi_master_select_slave:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:19     .text.wbspi_master_select_slave:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:20     .text.wbspi_master_select_slave:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:23     .text.wbspi_master_select_slave:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:24     .text.wbspi_master_select_slave:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:26     .text.wbspi_master_select_slave:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:30     .text.wbspi_master_select_slave:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:34     .text.wbspi_master_select_slave:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:38     .text.wbspi_master_select_slave:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:42     .text.wbspi_master_select_slave:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:45     .text.wbspi_master_select_slave:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:48     .text.wbspi_master_select_slave:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:50     .text.wbspi_master_select_slave:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:52     .text.wbspi_master_select_slave:00000036 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:53     .text.wbspi_master_select_slave:00000036 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:55     .text.wbspi_master_select_slave:00000038 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:57     .text.wbspi_master_select_slave:0000003a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:64     .text.wbspi_enable_interrupt:00000000 wbspi_enable_interrupt
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:67     .text.wbspi_enable_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:68     .text.wbspi_enable_interrupt:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:68     .text.wbspi_enable_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:69     .text.wbspi_enable_interrupt:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:72     .text.wbspi_enable_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:73     .text.wbspi_enable_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:75     .text.wbspi_enable_interrupt:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:79     .text.wbspi_enable_interrupt:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:82     .text.wbspi_enable_interrupt:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:87     .text.wbspi_enable_interrupt:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:90     .text.wbspi_enable_interrupt:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:92     .text.wbspi_enable_interrupt:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:94     .text.wbspi_enable_interrupt:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:95     .text.wbspi_enable_interrupt:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:97     .text.wbspi_enable_interrupt:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:99     .text.wbspi_enable_interrupt:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:106    .text.wbspi_disable_interrupt:00000000 wbspi_disable_interrupt
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:109    .text.wbspi_disable_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:110    .text.wbspi_disable_interrupt:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:110    .text.wbspi_disable_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:111    .text.wbspi_disable_interrupt:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:114    .text.wbspi_disable_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:115    .text.wbspi_disable_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:117    .text.wbspi_disable_interrupt:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:121    .text.wbspi_disable_interrupt:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:124    .text.wbspi_disable_interrupt:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:127    .text.wbspi_disable_interrupt:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:131    .text.wbspi_disable_interrupt:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:134    .text.wbspi_disable_interrupt:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:136    .text.wbspi_disable_interrupt:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:138    .text.wbspi_disable_interrupt:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:139    .text.wbspi_disable_interrupt:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:141    .text.wbspi_disable_interrupt:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:143    .text.wbspi_disable_interrupt:00000036 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:150    .text.wbspi_master_txdata:00000000 wbspi_master_txdata
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:153    .text.wbspi_master_txdata:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:154    .text.wbspi_master_txdata:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:154    .text.wbspi_master_txdata:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:155    .text.wbspi_master_txdata:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:158    .text.wbspi_master_txdata:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:159    .text.wbspi_master_txdata:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:161    .text.wbspi_master_txdata:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:165    .text.wbspi_master_txdata:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:168    .text.wbspi_master_txdata:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:171    .text.wbspi_master_txdata:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:173    .text.wbspi_master_txdata:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:175    .text.wbspi_master_txdata:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:179    .text.wbspi_master_txdata:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:182    .text.wbspi_master_txdata:0000002a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:185    .text.wbspi_master_txdata:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:187    .text.wbspi_master_txdata:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:189    .text.wbspi_master_txdata:00000036 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:193    .text.wbspi_master_txdata:00000040 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:195    .text.wbspi_master_txdata:00000044 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:197    .text.wbspi_master_txdata:00000048 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:199    .text.wbspi_master_txdata:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:200    .text.wbspi_master_txdata:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:202    .text.wbspi_master_txdata:0000004c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:204    .text.wbspi_master_txdata:0000004e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:211    .text.wbspi_master_rxdata:00000000 wbspi_master_rxdata
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:214    .text.wbspi_master_rxdata:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:215    .text.wbspi_master_rxdata:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:215    .text.wbspi_master_rxdata:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:216    .text.wbspi_master_rxdata:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:219    .text.wbspi_master_rxdata:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:220    .text.wbspi_master_rxdata:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:222    .text.wbspi_master_rxdata:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:225    .text.wbspi_master_rxdata:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:227    .text.wbspi_master_rxdata:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:230    .text.wbspi_master_rxdata:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:233    .text.wbspi_master_rxdata:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:235    .text.wbspi_master_rxdata:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:237    .text.wbspi_master_rxdata:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:240    .text.wbspi_master_rxdata:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:243    .text.wbspi_master_rxdata:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:246    .text.wbspi_master_rxdata:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:248    .text.wbspi_master_rxdata:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:250    .text.wbspi_master_rxdata:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:254    .text.wbspi_master_rxdata:0000003e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:256    .text.wbspi_master_rxdata:00000042 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:258    .text.wbspi_master_rxdata:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:260    .text.wbspi_master_rxdata:00000048 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:261    .text.wbspi_master_rxdata:00000048 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:263    .text.wbspi_master_rxdata:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:265    .text.wbspi_master_rxdata:0000004c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:272    .text.wbspi_slave_prepare_txdata:00000000 wbspi_slave_prepare_txdata
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:275    .text.wbspi_slave_prepare_txdata:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:276    .text.wbspi_slave_prepare_txdata:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:276    .text.wbspi_slave_prepare_txdata:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:277    .text.wbspi_slave_prepare_txdata:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:280    .text.wbspi_slave_prepare_txdata:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:281    .text.wbspi_slave_prepare_txdata:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:283    .text.wbspi_slave_prepare_txdata:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:287    .text.wbspi_slave_prepare_txdata:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:290    .text.wbspi_slave_prepare_txdata:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:293    .text.wbspi_slave_prepare_txdata:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:295    .text.wbspi_slave_prepare_txdata:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:297    .text.wbspi_slave_prepare_txdata:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:301    .text.wbspi_slave_prepare_txdata:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:303    .text.wbspi_slave_prepare_txdata:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:305    .text.wbspi_slave_prepare_txdata:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:306    .text.wbspi_slave_prepare_txdata:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:308    .text.wbspi_slave_prepare_txdata:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:310    .text.wbspi_slave_prepare_txdata:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:317    .text.wbspi_slave_read_data:00000000 wbspi_slave_read_data
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:320    .text.wbspi_slave_read_data:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:321    .text.wbspi_slave_read_data:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:321    .text.wbspi_slave_read_data:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:322    .text.wbspi_slave_read_data:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:325    .text.wbspi_slave_read_data:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:326    .text.wbspi_slave_read_data:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:328    .text.wbspi_slave_read_data:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:331    .text.wbspi_slave_read_data:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:334    .text.wbspi_slave_read_data:0000000e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:337    .text.wbspi_slave_read_data:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:339    .text.wbspi_slave_read_data:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:341    .text.wbspi_slave_read_data:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:345    .text.wbspi_slave_read_data:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:347    .text.wbspi_slave_read_data:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:349    .text.wbspi_slave_read_data:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:351    .text.wbspi_slave_read_data:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:352    .text.wbspi_slave_read_data:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:354    .text.wbspi_slave_read_data:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:356    .text.wbspi_slave_read_data:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:00000041 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:0000006f .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:0000007a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:000000c0 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:00000102 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:0000012e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:00000136 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:0000013e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:0000014f .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1043   .debug_line_str:00000159 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:60     .text.wbspi_master_select_slave:0000003a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:102    .text.wbspi_enable_interrupt:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:146    .text.wbspi_disable_interrupt:00000036 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:207    .text.wbspi_master_txdata:0000004e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:268    .text.wbspi_master_rxdata:0000004c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:313    .text.wbspi_slave_prepare_txdata:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:359    .text.wbspi_slave_read_data:00000032 .L0 
+                     .debug_frame:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:36     .text.wbspi_master_select_slave:0000001e .L2
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:46     .text.wbspi_master_select_slave:00000030 .L3
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:166    .text.wbspi_master_txdata:00000012 .L9
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:180    .text.wbspi_master_txdata:0000002a .L10
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:228    .text.wbspi_master_rxdata:00000012 .L13
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:241    .text.wbspi_master_rxdata:00000028 .L14
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:288    .text.wbspi_slave_prepare_txdata:00000012 .L17
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:332    .text.wbspi_slave_read_data:0000000e .L19
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:675    .debug_abbrev:00000000 .Ldebug_abbrev0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:977    .debug_str:00000036 .LASF34
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1038   .debug_line_str:00000000 .LASF0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1040   .debug_line_str:00000013 .LASF1
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:944    .debug_rnglists:0000000c .LLRL0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:969    .debug_line:00000000 .Ldebug_line0
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1031   .debug_str:0000027c .LASF2
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1001   .debug_str:000001bb .LASF3
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1023   .debug_str:00000259 .LASF4
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:989    .debug_str:00000157 .LASF5
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1027   .debug_str:0000026c .LASF6
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:995    .debug_str:0000018d .LASF11
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:987    .debug_str:00000145 .LASF7
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1017   .debug_str:0000022c .LASF8
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1007   .debug_str:000001ee .LASF9
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1003   .debug_str:000001c9 .LASF10
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1025   .debug_str:00000263 .LASF12
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1013   .debug_str:00000218 .LASF13
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1019   .debug_str:0000023a .LASF14
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:983    .debug_str:00000134 .LASF15
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:971    .debug_str:00000000 .LASF16
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:981    .debug_str:0000012d .LASF17
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1015   .debug_str:00000224 .LASF18
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1029   .debug_str:00000275 .LASF19
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1011   .debug_str:0000020b .LASF20
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:993    .debug_str:00000177 .LASF23
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:318    .text.wbspi_slave_read_data:00000000 .LFB9
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:357    .text.wbspi_slave_read_data:00000032 .LFE9
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1009   .debug_str:00000205 .LASF21
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:979    .debug_str:0000011f .LASF25
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:975    .debug_str:0000001b .LASF31
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:273    .text.wbspi_slave_prepare_txdata:00000000 .LFB8
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:311    .text.wbspi_slave_prepare_txdata:00000032 .LFE8
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1033   .debug_str:00000288 .LASF22
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:999    .debug_str:000001a7 .LASF24
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:212    .text.wbspi_master_rxdata:00000000 .LFB7
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:266    .text.wbspi_master_rxdata:0000004c .LFE7
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:997    .debug_str:00000198 .LASF26
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:973    .debug_str:00000007 .LASF27
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:151    .text.wbspi_master_txdata:00000000 .LFB6
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:205    .text.wbspi_master_txdata:0000004e .LFE6
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1005   .debug_str:000001d6 .LASF28
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:107    .text.wbspi_disable_interrupt:00000000 .LFB5
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:144    .text.wbspi_disable_interrupt:00000036 .LFE5
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:991    .debug_str:0000016a .LASF29
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1035   .debug_str:0000028f .LASF30
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:65     .text.wbspi_enable_interrupt:00000000 .LFB4
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:100    .text.wbspi_enable_interrupt:00000032 .LFE4
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:1021   .debug_str:0000023f .LASF32
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:15     .text.wbspi_master_select_slave:00000000 .LFB3
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:58     .text.wbspi_master_select_slave:0000003a .LFE3
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:985    .debug_str:0000013b .LASF33
+C:\Users\nesus\AppData\Local\Temp\ccvwG3Pe.s:365    .debug_info:00000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS

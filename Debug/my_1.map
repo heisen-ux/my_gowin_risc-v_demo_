@@ -1,0 +1,639 @@
+Archive member included to satisfy reference by file (symbol)
+
+F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+                              ./src/lib/printf.o (__riscv_save_11)
+F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a(libc_a-strlen.o)
+                              ./src/lib/printf.o (strlen)
+
+Discarded input sections
+
+ .text          0x00000000        0x0 ./src/lib/firmware.o
+ .data          0x00000000        0x0 ./src/lib/firmware.o
+ .bss           0x00000000        0x0 ./src/lib/firmware.o
+ .text.stats_print_dec
+                0x00000000       0xfc ./src/lib/firmware.o
+ .rodata        0x00000000       0xb8 ./src/lib/firmware.o
+ .text.stats    0x00000000       0xfe ./src/lib/firmware.o
+ .text.delay    0x00000000       0x4a ./src/lib/firmware.o
+ .text.memset_32
+                0x00000000       0x50 ./src/lib/firmware.o
+ .debug_info    0x00000000      0x21f ./src/lib/firmware.o
+ .debug_abbrev  0x00000000      0x137 ./src/lib/firmware.o
+ .debug_aranges
+                0x00000000       0x38 ./src/lib/firmware.o
+ .debug_rnglists
+                0x00000000       0x27 ./src/lib/firmware.o
+ .debug_line    0x00000000      0x26c ./src/lib/firmware.o
+ .debug_str     0x00000000      0x24a ./src/lib/firmware.o
+ .debug_line_str
+                0x00000000      0x1b5 ./src/lib/firmware.o
+ .comment       0x00000000       0x34 ./src/lib/firmware.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/lib/firmware.o
+ .debug_frame   0x00000000       0xb0 ./src/lib/firmware.o
+ .riscv.attributes
+                0x00000000       0x38 ./src/lib/firmware.o
+ .text          0x00000000        0x0 ./src/lib/printf.o
+ .data          0x00000000        0x0 ./src/lib/printf.o
+ .bss           0x00000000        0x0 ./src/lib/printf.o
+ .text.sprintf  0x00000000       0x26 ./src/lib/printf.o
+ .text.snprintf
+                0x00000000       0x26 ./src/lib/printf.o
+ .text.write    0x00000000        0x4 ./src/lib/printf.o
+ .text          0x00000000        0x0 ./src/bsp/simpleuart.o
+ .data          0x00000000        0x0 ./src/bsp/simpleuart.o
+ .bss           0x00000000        0x0 ./src/bsp/simpleuart.o
+ .text.uart_init
+                0x00000000       0x2c ./src/bsp/simpleuart.o
+ .text.outbyte  0x00000000       0x38 ./src/bsp/simpleuart.o
+ .text.uart_putchar
+                0x00000000       0x22 ./src/bsp/simpleuart.o
+ .text.getchar_prompt
+                0x00000000       0x72 ./src/bsp/simpleuart.o
+ .text.uart_getchar
+                0x00000000       0x1e ./src/bsp/simpleuart.o
+ .debug_info    0x00000000      0x1cb ./src/bsp/simpleuart.o
+ .debug_abbrev  0x00000000      0x13c ./src/bsp/simpleuart.o
+ .debug_aranges
+                0x00000000       0x40 ./src/bsp/simpleuart.o
+ .debug_rnglists
+                0x00000000       0x2b ./src/bsp/simpleuart.o
+ .debug_line    0x00000000      0x187 ./src/bsp/simpleuart.o
+ .debug_str     0x00000000      0x235 ./src/bsp/simpleuart.o
+ .debug_line_str
+                0x00000000      0x173 ./src/bsp/simpleuart.o
+ .comment       0x00000000       0x34 ./src/bsp/simpleuart.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/bsp/simpleuart.o
+ .debug_frame   0x00000000       0xd8 ./src/bsp/simpleuart.o
+ .riscv.attributes
+                0x00000000       0x38 ./src/bsp/simpleuart.o
+ .text          0x00000000        0x0 ./src/bsp/wbgpio.o
+ .data          0x00000000        0x0 ./src/bsp/wbgpio.o
+ .bss           0x00000000        0x0 ./src/bsp/wbgpio.o
+ .text.GPIO_GetDir
+                0x00000000       0x1c ./src/bsp/wbgpio.o
+ .text.GPIO_EnableWriteBit
+                0x00000000       0x42 ./src/bsp/wbgpio.o
+ .text.GPIO_EnableReadBit
+                0x00000000       0x46 ./src/bsp/wbgpio.o
+ .text.GPIO_ReadData
+                0x00000000       0x1c ./src/bsp/wbgpio.o
+ .text          0x00000000        0x0 ./src/bsp/wbi2c.o
+ .data          0x00000000        0x0 ./src/bsp/wbi2c.o
+ .bss           0x00000000        0x0 ./src/bsp/wbi2c.o
+ .text.Delay_ms_i2c
+                0x00000000       0x3c ./src/bsp/wbi2c.o
+ .text.I2C_Disable
+                0x00000000       0x20 ./src/bsp/wbi2c.o
+ .text.I2C_Enable
+                0x00000000       0x26 ./src/bsp/wbi2c.o
+ .text.I2C_Rate_Set
+                0x00000000       0x52 ./src/bsp/wbi2c.o
+ .text.I2C_Init
+                0x00000000       0x60 ./src/bsp/wbi2c.o
+ .text.I2C_SendByte
+                0x00000000       0xd4 ./src/bsp/wbi2c.o
+ .text.I2C_ReceiveByte
+                0x00000000       0xea ./src/bsp/wbi2c.o
+ .text.I2C_SendWord
+                0x00000000      0x14a ./src/bsp/wbi2c.o
+ .text.I2C_ReceiveWord
+                0x00000000      0x166 ./src/bsp/wbi2c.o
+ .text.I2C_SendArray
+                0x00000000      0x146 ./src/bsp/wbi2c.o
+ .text.I2C_ReceiveArray
+                0x00000000      0x152 ./src/bsp/wbi2c.o
+ .text.I2C_SendBytes
+                0x00000000       0x7c ./src/bsp/wbi2c.o
+ .text.I2C_ReadBytes
+                0x00000000       0x84 ./src/bsp/wbi2c.o
+ .text.I2C_InterruptOpen
+                0x00000000       0x20 ./src/bsp/wbi2c.o
+ .text.I2C_InterruptClose
+                0x00000000       0x26 ./src/bsp/wbi2c.o
+ .debug_info    0x00000000      0x613 ./src/bsp/wbi2c.o
+ .debug_abbrev  0x00000000      0x1f2 ./src/bsp/wbi2c.o
+ .debug_aranges
+                0x00000000       0x90 ./src/bsp/wbi2c.o
+ .debug_rnglists
+                0x00000000       0x6e ./src/bsp/wbi2c.o
+ .debug_line    0x00000000      0xf7e ./src/bsp/wbi2c.o
+ .debug_str     0x00000000      0x398 ./src/bsp/wbi2c.o
+ .debug_line_str
+                0x00000000      0x164 ./src/bsp/wbi2c.o
+ .comment       0x00000000       0x34 ./src/bsp/wbi2c.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/bsp/wbi2c.o
+ .debug_frame   0x00000000      0x26c ./src/bsp/wbi2c.o
+ .riscv.attributes
+                0x00000000       0x38 ./src/bsp/wbi2c.o
+ .text          0x00000000        0x0 ./src/bsp/wbspi.o
+ .data          0x00000000        0x0 ./src/bsp/wbspi.o
+ .bss           0x00000000        0x0 ./src/bsp/wbspi.o
+ .text.wbspi_master_select_slave
+                0x00000000       0x3a ./src/bsp/wbspi.o
+ .text.wbspi_enable_interrupt
+                0x00000000       0x32 ./src/bsp/wbspi.o
+ .text.wbspi_disable_interrupt
+                0x00000000       0x36 ./src/bsp/wbspi.o
+ .text.wbspi_master_txdata
+                0x00000000       0x4e ./src/bsp/wbspi.o
+ .text.wbspi_master_rxdata
+                0x00000000       0x4c ./src/bsp/wbspi.o
+ .text.wbspi_slave_prepare_txdata
+                0x00000000       0x32 ./src/bsp/wbspi.o
+ .text.wbspi_slave_read_data
+                0x00000000       0x32 ./src/bsp/wbspi.o
+ .debug_info    0x00000000      0x26a ./src/bsp/wbspi.o
+ .debug_abbrev  0x00000000       0xec ./src/bsp/wbspi.o
+ .debug_aranges
+                0x00000000       0x50 ./src/bsp/wbspi.o
+ .debug_rnglists
+                0x00000000       0x37 ./src/bsp/wbspi.o
+ .debug_line    0x00000000      0x2c5 ./src/bsp/wbspi.o
+ .debug_str     0x00000000      0x2a6 ./src/bsp/wbspi.o
+ .debug_line_str
+                0x00000000      0x164 ./src/bsp/wbspi.o
+ .comment       0x00000000       0x34 ./src/bsp/wbspi.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/bsp/wbspi.o
+ .debug_frame   0x00000000      0x128 ./src/bsp/wbspi.o
+ .riscv.attributes
+                0x00000000       0x38 ./src/bsp/wbspi.o
+ .text          0x00000000        0x0 ./src/bsp/wbspiflash.o
+ .data          0x00000000        0x0 ./src/bsp/wbspiflash.o
+ .bss           0x00000000        0x0 ./src/bsp/wbspiflash.o
+ .text.SPI_reset
+                0x00000000       0x2e ./src/bsp/wbspiflash.o
+ .text.SPI_set_mode
+                0x00000000       0x34 ./src/bsp/wbspiflash.o
+ .text.SPI_set_addr_format
+                0x00000000       0x76 ./src/bsp/wbspiflash.o
+ .text.SPI_set_cmd_format
+                0x00000000       0x44 ./src/bsp/wbspiflash.o
+ .text.SPI_set_data_format
+                0x00000000       0x82 ./src/bsp/wbspiflash.o
+ .text.SPI_set_transfer_format
+                0x00000000       0x60 ./src/bsp/wbspiflash.o
+ .text.SPI_set_trans_ctrl
+                0x00000000       0x7a ./src/bsp/wbspiflash.o
+ .text.SPI_set_token
+                0x00000000       0x60 ./src/bsp/wbspiflash.o
+ .text.SPI_tx_fifo_reset
+                0x00000000       0x30 ./src/bsp/wbspiflash.o
+ .text.SPI_rx_fifo_reset
+                0x00000000       0x30 ./src/bsp/wbspiflash.o
+ .text.spi_get_fifo_depth
+                0x00000000       0x16 ./src/bsp/wbspiflash.o
+ .rodata.SPI_set_tx_threshold.str1.4
+                0x00000000       0x44 ./src/bsp/wbspiflash.o
+ .text.SPI_set_tx_threshold
+                0x00000000       0x8e ./src/bsp/wbspiflash.o
+ .rodata.SPI_set_rx_threshold.str1.4
+                0x00000000       0x3c ./src/bsp/wbspiflash.o
+ .text.SPI_set_rx_threshold
+                0x00000000       0x8c ./src/bsp/wbspiflash.o
+ .text.spi_flash_init
+                0x00000000       0xb2 ./src/bsp/wbspiflash.o
+ .text.spi_flash_read
+                0x00000000       0x3a ./src/bsp/wbspiflash.o
+ .text.spi_flash_write
+                0x00000000       0x82 ./src/bsp/wbspiflash.o
+ .text.change_mode_spi_flash
+                0x00000000       0x12 ./src/bsp/wbspiflash.o
+ .text.spi_flash_write_cmd
+                0x00000000       0x56 ./src/bsp/wbspiflash.o
+ .text.spi_flash_page_program
+                0x00000000       0x82 ./src/bsp/wbspiflash.o
+ .text.spi_flash_sector_erase
+                0x00000000       0x90 ./src/bsp/wbspiflash.o
+ .text.spi_flash_read_status
+                0x00000000       0x20 ./src/bsp/wbspiflash.o
+ .debug_info    0x00000000      0x84e ./src/bsp/wbspiflash.o
+ .debug_abbrev  0x00000000      0x28c ./src/bsp/wbspiflash.o
+ .debug_loclists
+                0x00000000      0x24b ./src/bsp/wbspiflash.o
+ .debug_aranges
+                0x00000000       0xc0 ./src/bsp/wbspiflash.o
+ .debug_rnglists
+                0x00000000       0xad ./src/bsp/wbspiflash.o
+ .debug_line    0x00000000     0x10fe ./src/bsp/wbspiflash.o
+ .debug_str     0x00000000      0x533 ./src/bsp/wbspiflash.o
+ .debug_line_str
+                0x00000000      0x1b9 ./src/bsp/wbspiflash.o
+ .comment       0x00000000       0x34 ./src/bsp/wbspiflash.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/bsp/wbspiflash.o
+ .debug_frame   0x00000000      0x2e4 ./src/bsp/wbspiflash.o
+ .riscv.attributes
+                0x00000000       0x38 ./src/bsp/wbspiflash.o
+ .text          0x00000000        0x0 ./src/bsp/wbuart.o
+ .data          0x00000000        0x0 ./src/bsp/wbuart.o
+ .bss           0x00000000        0x0 ./src/bsp/wbuart.o
+ .text          0x00000000        0x0 ./src/custom_ops.o
+ .data          0x00000000        0x0 ./src/custom_ops.o
+ .bss           0x00000000        0x0 ./src/custom_ops.o
+ .riscv.attributes
+                0x00000000       0x36 ./src/custom_ops.o
+ .text          0x00000000        0x0 ./src/irq.o
+ .data          0x00000000        0x0 ./src/irq.o
+ .bss           0x00000000        0x0 ./src/irq.o
+ .sbss.tmp      0x00000000        0x4 ./src/irq.o
+ .sbss.val      0x00000000        0x4 ./src/irq.o
+ .text.return_from_irq
+                0x00000000        0xe ./src/irq.o
+ .text.irq_disable_one_bit
+                0x00000000       0x4a ./src/irq.o
+ .text.disable_external_interrupt
+                0x00000000       0x24 ./src/irq.o
+ .text.disable_timer_interrupt
+                0x00000000       0x22 ./src/irq.o
+ .text.disable_interrupt_global
+                0x00000000       0x16 ./src/irq.o
+ .text          0x00000000        0x0 ./src/loader.o
+ .data          0x00000000        0x0 ./src/loader.o
+ .bss           0x00000000        0x0 ./src/loader.o
+ .debug_info    0x00000000       0x73 ./src/loader.o
+ .debug_abbrev  0x00000000       0x26 ./src/loader.o
+ .debug_aranges
+                0x00000000       0x18 ./src/loader.o
+ .debug_line    0x00000000       0x35 ./src/loader.o
+ .debug_str     0x00000000      0x17e ./src/loader.o
+ .debug_line_str
+                0x00000000       0x7c ./src/loader.o
+ .comment       0x00000000       0x34 ./src/loader.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/loader.o
+ .riscv.attributes
+                0x00000000       0x38 ./src/loader.o
+ .text          0x00000000        0x0 ./src/main.o
+ .data          0x00000000        0x0 ./src/main.o
+ .bss           0x00000000        0x0 ./src/main.o
+ .data          0x00000000        0x0 ./src/start.o
+ .bss           0x00000000        0x0 ./src/start.o
+ .data          0x00000000        0x0 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+ .bss           0x00000000        0x0 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+ .eh_frame      0x00000000       0xf8 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+ .text          0x00000000        0x0 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a(libc_a-strlen.o)
+ .data          0x00000000        0x0 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a(libc_a-strlen.o)
+ .bss           0x00000000        0x0 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a(libc_a-strlen.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+RAM              0x01000000         0x00008000         axw!rl
+SMEM             0x02000000         0x00008000         axrl!w
+FLASH            0x10400000         0x00100000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD ./src/lib/firmware.o
+LOAD ./src/lib/printf.o
+LOAD ./src/bsp/simpleuart.o
+LOAD ./src/bsp/wbgpio.o
+LOAD ./src/bsp/wbi2c.o
+LOAD ./src/bsp/wbspi.o
+LOAD ./src/bsp/wbspiflash.o
+LOAD ./src/bsp/wbuart.o
+LOAD ./src/custom_ops.o
+LOAD ./src/irq.o
+LOAD ./src/loader.o
+LOAD ./src/main.o
+LOAD ./src/start.o
+LOAD F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a
+START GROUP
+LOAD F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a
+LOAD F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libgloss.a
+END GROUP
+LOAD F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a
+                0x00000000                        _lma_btsec_start = 0x0
+
+.btsec          0x10400000        0x0 load address 0x00000000
+                0x10400000                        _vsbtsec = .
+ *.o(.btsec)
+                0x10400000                        . = ALIGN (0x4)
+                0x00000000                        _lma_btsec_end = (_lma_btsec_start + SIZEOF (.btsec))
+                0x00000000                        _lma_text_start = _lma_btsec_end
+                0x10400000                        _cp_text_start = (_vsbtsec + _lma_text_start)
+
+.text           0x02000000      0xd84 load address 0x00000000
+                0x02000000                        _vstext = .
+                0x02000000                        . = ALIGN (0x4)
+ *(.text.unlikely .text.unlikely.*)
+ *(.text.startup .text.startup.*)
+ *(.text)
+ .text          0x02000000      0x1f0 ./src/start.o
+                0x0200014e                start
+ .text          0x020001f0       0x60 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+                0x020001f0                __riscv_save_12
+                0x020001f8                __riscv_save_9
+                0x020001f8                __riscv_save_11
+                0x020001f8                __riscv_save_10
+                0x020001f8                __riscv_save_8
+                0x02000206                __riscv_save_4
+                0x02000206                __riscv_save_6
+                0x02000206                __riscv_save_5
+                0x02000206                __riscv_save_7
+                0x02000220                __riscv_save_3
+                0x02000220                __riscv_save_2
+                0x02000220                __riscv_save_1
+                0x02000220                __riscv_save_0
+                0x0200022c                __riscv_restore_12
+                0x02000230                __riscv_restore_11
+                0x02000230                __riscv_restore_9
+                0x02000230                __riscv_restore_10
+                0x02000230                __riscv_restore_8
+                0x0200023a                __riscv_restore_5
+                0x0200023a                __riscv_restore_7
+                0x0200023a                __riscv_restore_6
+                0x0200023a                __riscv_restore_4
+                0x02000244                __riscv_restore_3
+                0x02000244                __riscv_restore_0
+                0x02000244                __riscv_restore_2
+                0x02000244                __riscv_restore_1
+ *(.text*)
+ .text.printchar
+                0x02000250       0x16 ./src/lib/printf.o
+ .text.prints   0x02000266       0x86 ./src/lib/printf.o
+ .text.printi   0x020002ec       0x9e ./src/lib/printf.o
+ .text.print    0x0200038a      0x13a ./src/lib/printf.o
+ .text.printf   0x020004c4       0x22 ./src/lib/printf.o
+                0x020004c4                printf
+ .text.GPIO_Init
+                0x020004e6       0x3e ./src/bsp/wbgpio.o
+                0x020004e6                GPIO_Init
+ .text.GPIO_SetDir
+                0x02000524       0x24 ./src/bsp/wbgpio.o
+                0x02000524                GPIO_SetDir
+ .text.GPIO_WriteData
+                0x02000548       0x24 ./src/bsp/wbgpio.o
+                0x02000548                GPIO_WriteData
+ .text.wbuart_init
+                0x0200056c       0x38 ./src/bsp/wbuart.o
+                0x0200056c                wbuart_init
+ .text.wbuart_putc
+                0x020005a4       0x4a ./src/bsp/wbuart.o
+                0x020005a4                wbuart_putc
+ .text.wbuart_getc
+                0x020005ee       0x32 ./src/bsp/wbuart.o
+                0x020005ee                wbuart_getc
+ .text.wbuart_outbyte
+                0x02000620       0x2e ./src/bsp/wbuart.o
+                0x02000620                wbuart_outbyte
+ .text.irq      0x0200064e      0x160 ./src/irq.o
+                0x0200064e                irq
+ .text.mask_irq
+                0x020007ae       0x26 ./src/irq.o
+                0x020007ae                mask_irq
+ .text.irq_enable_one_bit
+                0x020007d4       0x42 ./src/irq.o
+                0x020007d4                irq_enable_one_bit
+ .text.enable_external_interrupt
+                0x02000816       0x24 ./src/irq.o
+                0x02000816                enable_external_interrupt
+ .text.enable_timer_interrupt
+                0x0200083a       0x22 ./src/irq.o
+                0x0200083a                enable_timer_interrupt
+ .text.enable_interrupt_global
+                0x0200085c       0x16 ./src/irq.o
+                0x0200085c                enable_interrupt_global
+ .text.set_timer
+                0x02000872       0x2a ./src/irq.o
+                0x02000872                set_timer
+ .text.gpio_flush
+                0x0200089c       0x24 ./src/main.o
+ .text.led_flow_step
+                0x020008c0       0xa6 ./src/main.o
+ .text.square_wave_toggle
+                0x02000966       0x2c ./src/main.o
+ .text.main     0x02000992      0x1bc ./src/main.o
+                0x02000992                main
+ .text.strlen   0x02000b4e       0x64 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a(libc_a-strlen.o)
+                0x02000b4e                strlen
+ *(.rodata)
+ *fill*         0x02000bb2        0x2 
+ .rodata        0x02000bb4       0x34 ./src/irq.o
+ .rodata        0x02000be8      0x192 ./src/main.o
+ *(.rodata*)
+ *fill*         0x02000d7a        0x2 
+ .rodata.print.str1.4
+                0x02000d7c        0x7 ./src/lib/printf.o
+ *(.srodata)
+ *(.srodata*)
+                0x02000d84                        . = ALIGN (0x4)
+ *fill*         0x02000d83        0x1 
+                0x02000d84                        _etext = .
+                0x00000d84                        _lma_text_end = (_lma_text_start + SIZEOF (.text))
+                0x10400d84                        _cp_text_end = (_vsbtsec + _lma_text_end)
+                0x00000d84                        _lma_ldsec_start = _lma_text_end
+                0x10400d84                        _cp_ldsec_start = (_vsbtsec + _lma_ldsec_start)
+
+.rela.dyn       0x02000d84        0x0 load address 0x00000d84
+ .rela.text     0x02000d84        0x0 ./src/lib/printf.o
+
+.ldsec          0x02000d84        0x0 load address 0x00000d84
+                0x02000d84                        _vsloader = .
+ *.o(.ldsec)
+                0x02000d84                        . = ALIGN (0x4)
+                0x02000d84                        _eldsec = .
+                0x02000d84                        _sidata = _eldsec
+                0x00000d84                        _lma_ldsec_end = (_lma_ldsec_start + SIZEOF (.ldsec))
+                0x10400d84                        _cp_ldsec_end = (_vsbtsec + _lma_ldsec_end)
+                0x00000d84                        _lma_data_start = _lma_ldsec_end
+                0x10400d84                        _cp_data_start = (_vsbtsec + _lma_data_start)
+
+.data           0x01000000        0x4 load address 0x00000d84
+                0x01000000                        . = ALIGN (0x4)
+                0x01000000                        _sdata = .
+                0x01000000                        _ram_start = .
+                0x01000000                        . = ALIGN (0x4)
+ *(.data)
+ *(.data*)
+ *(.sdata)
+ *(.sdata*)
+ .sdata.g_flow_dir
+                0x01000000        0x1 ./src/main.o
+                0x01000004                        . = ALIGN (0x4)
+ *fill*         0x01000001        0x3 
+                0x01000004                        _edata = .
+                0x00000d88                        _lma_data_end = (_lma_data_start + SIZEOF (.data))
+                0x10400d88                        _cp_data_end = (_vsbtsec + _lma_data_end)
+
+.bss            0x01000004       0x10 load address 0x00000d88
+                0x01000004                        . = ALIGN (0x4)
+                0x01000004                        _sbss = .
+ *(.bss)
+ *(.bss*)
+ *(.sbss)
+ *(.sbss*)
+ .sbss.irq00_flag
+                0x01000004        0x1 ./src/main.o
+                0x01000004                irq00_flag
+ .sbss.irq13_flag
+                0x01000005        0x1 ./src/main.o
+                0x01000005                irq13_flag
+ .sbss.irq20_flag
+                0x01000006        0x1 ./src/main.o
+                0x01000006                irq20_flag
+ .sbss.irq21_flag
+                0x01000007        0x1 ./src/main.o
+                0x01000007                irq21_flag
+ .sbss.g_flow_pos
+                0x01000008        0x1 ./src/main.o
+ *fill*         0x01000009        0x3 
+ .sbss.g_gpio_out
+                0x0100000c        0x4 ./src/main.o
+ .sbss.g_tick   0x01000010        0x4 ./src/main.o
+ *(COMMON)
+                0x01000014                        . = ALIGN (0x4)
+                0x01000014                        _ebss = .
+
+.heap           0x01000014        0x0
+                0x01000014                        . = ALIGN (0x4)
+                0x01000014                        _heap_start = .
+                0x00000d88                        _lma_eh_frame_start = _lma_data_end
+
+.eh_frame       0x01000014        0x0 load address 0x00000d88
+                0x01000014                        . = ALIGN (0x4)
+OUTPUT(my_1.elf elf32-littleriscv)
+
+.debug_info     0x00000000     0x1101
+ .debug_info    0x00000000      0x5b9 ./src/lib/printf.o
+ .debug_info    0x000005b9      0x256 ./src/bsp/wbgpio.o
+ .debug_info    0x0000080f      0x1ad ./src/bsp/wbuart.o
+ .debug_info    0x000009bc      0x2eb ./src/irq.o
+ .debug_info    0x00000ca7      0x2d7 ./src/main.o
+ .debug_info    0x00000f7e       0x25 ./src/start.o
+ .debug_info    0x00000fa3      0x15e F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+
+.debug_abbrev   0x00000000      0x6ed
+ .debug_abbrev  0x00000000      0x1e6 ./src/lib/printf.o
+ .debug_abbrev  0x000001e6      0x109 ./src/bsp/wbgpio.o
+ .debug_abbrev  0x000002ef      0x106 ./src/bsp/wbuart.o
+ .debug_abbrev  0x000003f5      0x155 ./src/irq.o
+ .debug_abbrev  0x0000054a      0x167 ./src/main.o
+ .debug_abbrev  0x000006b1       0x14 ./src/start.o
+ .debug_abbrev  0x000006c5       0x28 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+
+.debug_loclists
+                0x00000000      0x5a3
+ .debug_loclists
+                0x00000000      0x5a3 ./src/lib/printf.o
+
+.debug_aranges  0x00000000      0x1d0
+ .debug_aranges
+                0x00000000       0x58 ./src/lib/printf.o
+ .debug_aranges
+                0x00000058       0x50 ./src/bsp/wbgpio.o
+ .debug_aranges
+                0x000000a8       0x38 ./src/bsp/wbuart.o
+ .debug_aranges
+                0x000000e0       0x78 ./src/irq.o
+ .debug_aranges
+                0x00000158       0x38 ./src/main.o
+ .debug_aranges
+                0x00000190       0x20 ./src/start.o
+ .debug_aranges
+                0x000001b0       0x20 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+
+.debug_rnglists
+                0x00000000      0x125
+ .debug_rnglists
+                0x00000000       0x4c ./src/lib/printf.o
+ .debug_rnglists
+                0x0000004c       0x37 ./src/bsp/wbgpio.o
+ .debug_rnglists
+                0x00000083       0x25 ./src/bsp/wbuart.o
+ .debug_rnglists
+                0x000000a8       0x56 ./src/irq.o
+ .debug_rnglists
+                0x000000fe       0x27 ./src/main.o
+
+.debug_line     0x00000000     0x1807
+ .debug_line    0x00000000      0x8f3 ./src/lib/printf.o
+ .debug_line    0x000008f3      0x19b ./src/bsp/wbgpio.o
+ .debug_line    0x00000a8e      0x1ad ./src/bsp/wbuart.o
+ .debug_line    0x00000c3b      0x458 ./src/irq.o
+ .debug_line    0x00001093      0x2f5 ./src/main.o
+ .debug_line    0x00001388      0x320 ./src/start.o
+ .debug_line    0x000016a8      0x15f F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+
+.debug_str      0x00000000      0x7bd
+ .debug_str     0x00000000      0x7bd ./src/lib/printf.o
+                                0x243 (size before relaxing)
+ .debug_str     0x000007bd      0x211 ./src/bsp/wbgpio.o
+ .debug_str     0x000007bd      0x20c ./src/bsp/wbuart.o
+ .debug_str     0x000007bd      0x302 ./src/irq.o
+ .debug_str     0x000007bd      0x2ea ./src/main.o
+ .debug_str     0x000007bd       0x4b ./src/start.o
+ .debug_str     0x000007bd      0x2fd F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+
+.debug_line_str
+                0x00000000      0x3af
+ .debug_line_str
+                0x00000000      0x3af ./src/lib/printf.o
+                                0x134 (size before relaxing)
+ .debug_line_str
+                0x000003af      0x167 ./src/bsp/wbgpio.o
+ .debug_line_str
+                0x000003af      0x167 ./src/bsp/wbuart.o
+ .debug_line_str
+                0x000003af      0x165 ./src/irq.o
+ .debug_line_str
+                0x000003af      0x1bb ./src/main.o
+ .debug_line_str
+                0x000003af       0x3d ./src/start.o
+ .debug_line_str
+                0x000003af      0x13c F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+
+.comment        0x00000000       0x33
+ .comment       0x00000000       0x33 ./src/lib/printf.o
+                                 0x34 (size before relaxing)
+ .comment       0x00000033       0x34 ./src/bsp/wbgpio.o
+ .comment       0x00000033       0x34 ./src/bsp/wbuart.o
+ .comment       0x00000033       0x34 ./src/irq.o
+ .comment       0x00000033       0x34 ./src/main.o
+ .comment       0x00000033       0x34 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a(libc_a-strlen.o)
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 ./src/lib/printf.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/bsp/wbgpio.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/bsp/wbuart.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/irq.o
+ .note.GNU-stack
+                0x00000000        0x0 ./src/main.o
+ .note.GNU-stack
+                0x00000000        0x0 F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a(libc_a-strlen.o)
+
+.riscv.attributes
+                0x00000000       0x3c
+ .riscv.attributes
+                0x00000000       0x38 ./src/lib/printf.o
+ .riscv.attributes
+                0x00000038       0x38 ./src/bsp/wbgpio.o
+ .riscv.attributes
+                0x00000070       0x38 ./src/bsp/wbuart.o
+ .riscv.attributes
+                0x000000a8       0x3c ./src/irq.o
+ .riscv.attributes
+                0x000000e4       0x38 ./src/main.o
+ .riscv.attributes
+                0x0000011c       0x3a ./src/start.o
+ .riscv.attributes
+                0x00000156       0x2d F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/rv32imc/ilp32\libgcc.a(save-restore.o)
+ .riscv.attributes
+                0x00000183       0x2f F:/gowin/GMD/toolchain/gowin/gcc_riscv/bin/../lib/gcc/riscv-none-elf/14.2.0/../../../../riscv-none-elf/lib/rv32imc/ilp32\libc.a(libc_a-strlen.o)
+
+.debug_frame    0x00000000      0x578
+ .debug_frame   0x00000000      0x124 ./src/lib/printf.o
+ .debug_frame   0x00000124      0x128 ./src/bsp/wbgpio.o
+ .debug_frame   0x0000024c       0xb0 ./src/bsp/wbuart.o
+ .debug_frame   0x000002fc      0x1d8 ./src/irq.o
+ .debug_frame   0x000004d4       0xa4 ./src/main.o

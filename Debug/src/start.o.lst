@@ -1,0 +1,416 @@
+   1              	# 0 "../src/start.S"
+   2              	# 1 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\Debug//"
+   0              	
+   0              	
+   0              	
+   1              	/*
+   2              	 *****************************************************************************************
+   3              	 * @file		start.S
+   4              	 * @author		GowinSemicoductor
+   5              	 * @device		Gowin_PicoRV32
+   6              	 * @brief		Startup
+   7              	 ******************************************************************************************
+   8              	 */
+   9              	 
+  10              	#include "custom_ops.S"
+   1              	/*
+  11              	#include "config.h"
+   1              	/*
+  12              	
+  13              	/*
+  14              	 * For booting and running in spi-flash
+  15              	 */
+  16              	#if BUILD_MODE == BUILD_XIP
+  17              	#define irq_regs  0x01000000
+  18              	#define irq_stack 0x01000280
+  19              	#endif
+  20              	
+  21              		.section .text
+  22              		.global irq
+  23              	
+  24              	reset_vec:
+  25              	#No more than 16 bytes here !
+  26 0000 B9A2     		j start
+  27              	
+  28              	/********************************** Interrupt handler **********************************/
+  29 0002 01001300 	.balign 16
+  29      00001300 
+  29      00001300 
+  29      0000
+  30              	irq_vec:
+  31              	# Save registers
+  32 0010 0BA10002 		picorv32_setq_insn(q2, x1)
+  33 0014 8B210102 		picorv32_setq_insn(q3, x2)
+  34              	
+  35 0018 930001F8 		addi x1, x2, -128
+  36              	
+  37 001c 0BC10100 		picorv32_getq_insn(x2, q3)   //Store x2
+  38 0020 23A42000 		sw x2,   2*4(x1)
+  39 0024 0B410000 		picorv32_getq_insn(x2, q0)   //Store q0
+  40 0028 23A02000 		sw x2,   0*4(x1)
+  41 002c 0B410100 		picorv32_getq_insn(x2, q2)   //Store x1
+  42 0030 23A22000 		sw x2,   1*4(x1)
+  43              	
+  44 0034 0681     		mv x2, x1                    //Update sp
+  45              	
+  46 0036 23A63000 		sw x3,   3*4(x1)
+  47 003a 23A84000 		sw x4,   4*4(x1)
+  48 003e 23AA5000 		sw x5,   5*4(x1)
+  49 0042 23AC6000 		sw x6,   6*4(x1)
+  50 0046 23AE7000 		sw x7,   7*4(x1)
+  51 004a 23A08002 		sw x8,   8*4(x1)
+  52 004e 23A29002 		sw x9,   9*4(x1)
+  53 0052 23A4A002 		sw x10, 10*4(x1)
+  54 0056 23A6B002 		sw x11, 11*4(x1)
+  55 005a 23A8C002 		sw x12, 12*4(x1)
+  56 005e 23AAD002 		sw x13, 13*4(x1)
+  57 0062 23ACE002 		sw x14, 14*4(x1)
+  58 0066 23AEF002 		sw x15, 15*4(x1)
+  59 006a 23A00005 		sw x16, 16*4(x1)
+  60 006e 23A21005 		sw x17, 17*4(x1)
+  61 0072 23A42005 		sw x18, 18*4(x1)
+  62 0076 23A63005 		sw x19, 19*4(x1)
+  63 007a 23A84005 		sw x20, 20*4(x1)
+  64 007e 23AA5005 		sw x21, 21*4(x1)
+  65 0082 23AC6005 		sw x22, 22*4(x1)
+  66 0086 23AE7005 		sw x23, 23*4(x1)
+  67 008a 23A08007 		sw x24, 24*4(x1)
+  68 008e 23A29007 		sw x25, 25*4(x1)
+  69 0092 23A4A007 		sw x26, 26*4(x1)
+  70 0096 23A6B007 		sw x27, 27*4(x1)
+  71 009a 23A8C007 		sw x28, 28*4(x1)
+  72 009e 23AAD007 		sw x29, 29*4(x1)
+  73 00a2 23ACE007 		sw x30, 30*4(x1)
+  74 00a6 23AEF007 		sw x31, 31*4(x1)
+  75              	
+  76              	
+  77              	# Call interrupt handler C function
+  78 00aa 0685     		mv a0, x1
+  79              	
+  80              	# arg1 = interrupt type
+  81 00ac 8BC50000 		picorv32_getq_insn(a1, q1)
+  82              	
+  83              	# Call to C function
+  84 00b0 EFF01FF5 		jal ra, irq
+  85              	
+  86              	# Restore registers
+  87              	# New irq_regs address returned from C code in a0
+  88 00b4 8A80     		addi x1, x2, 0
+  89              	
+  90 00b6 03A10000 		lw x2,   0*4(x1)
+  91 00ba 0B200102 		picorv32_setq_insn(q0, x2)
+  92              	
+  93 00be 03A14000 		lw x2,   1*4(x1)
+  94 00c2 8B200102 		picorv32_setq_insn(q1, x2)
+  95              	
+  96 00c6 03A18000 		lw x2,   2*4(x1)
+  97 00ca 0B210102 		picorv32_setq_insn(q2, x2)
+  98              	
+  99 00ce 83A1C000 		lw x3,   3*4(x1)
+ 100 00d2 03A20001 		lw x4,   4*4(x1)
+ 101 00d6 83A24001 		lw x5,   5*4(x1)
+ 102 00da 03A38001 		lw x6,   6*4(x1)
+ 103 00de 83A3C001 		lw x7,   7*4(x1)
+ 104 00e2 03A40002 		lw x8,   8*4(x1)
+ 105 00e6 83A44002 		lw x9,   9*4(x1)
+ 106 00ea 03A58002 		lw x10, 10*4(x1)
+ 107 00ee 83A5C002 		lw x11, 11*4(x1)
+ 108 00f2 03A60003 		lw x12, 12*4(x1)
+ 109 00f6 83A64003 		lw x13, 13*4(x1)
+ 110 00fa 03A78003 		lw x14, 14*4(x1)
+ 111 00fe 83A7C003 		lw x15, 15*4(x1)
+ 112 0102 03A80004 		lw x16, 16*4(x1)
+ 113 0106 83A84004 		lw x17, 17*4(x1)
+ 114 010a 03A98004 		lw x18, 18*4(x1)
+ 115 010e 83A9C004 		lw x19, 19*4(x1)
+ 116 0112 03AA0005 		lw x20, 20*4(x1)
+ 117 0116 83AA4005 		lw x21, 21*4(x1)
+ 118 011a 03AB8005 		lw x22, 22*4(x1)
+ 119 011e 83ABC005 		lw x23, 23*4(x1)
+ 120 0122 03AC0006 		lw x24, 24*4(x1)
+ 121 0126 83AC4006 		lw x25, 25*4(x1)
+ 122 012a 03AD8006 		lw x26, 26*4(x1)
+ 123 012e 83ADC006 		lw x27, 27*4(x1)
+ 124 0132 03AE0007 		lw x28, 28*4(x1)
+ 125 0136 83AE4007 		lw x29, 29*4(x1)
+ 126 013a 03AF8007 		lw x30, 30*4(x1)
+ 127 013e 83AFC007 		lw x31, 31*4(x1)
+ 128              	
+ 129 0142 8BC00000 		picorv32_getq_insn(x1, q1)
+ 130 0146 0B410100 		picorv32_getq_insn(x2, q2)
+ 131 014a 0B000004 		picorv32_retirq_insn()			// special interrupt return
+ 132              	
+ 133              		.globl start
+ 135              	
+ 136              	start:
+ 137              	# For debug test
+ 138              	# zero-initialize register file
+ 139 014e 8140     		addi x1, zero, 0
+ 140              	# x2 (sp) is initialized by reset
+ 141 0150 8141     		addi x3, zero, 0
+ 142 0152 0142     		addi x4, zero, 0
+ 143 0154 8142     		addi x5, zero, 0
+ 144 0156 0143     		addi x6, zero, 0
+ 145 0158 8143     		addi x7, zero, 0
+ 146 015a 0144     		addi x8, zero, 0
+ 147 015c 8144     		addi x9, zero, 0
+ 148 015e 0145     		addi x10, zero, 0
+ 149 0160 8145     		addi x11, zero, 0
+ 150 0162 0146     		addi x12, zero, 0
+ 151 0164 8146     		addi x13, zero, 0
+ 152 0166 0147     		addi x14, zero, 0
+ 153 0168 8147     		addi x15, zero, 0
+ 154 016a 0148     		addi x16, zero, 0
+ 155 016c 8148     		addi x17, zero, 0
+ 156 016e 0149     		addi x18, zero, 0
+ 157 0170 8149     		addi x19, zero, 0
+ 158 0172 014A     		addi x20, zero, 0
+ 159 0174 814A     		addi x21, zero, 0
+ 160 0176 014B     		addi x22, zero, 0
+ 161 0178 814B     		addi x23, zero, 0
+ 162 017a 014C     		addi x24, zero, 0
+ 163 017c 814C     		addi x25, zero, 0
+ 164 017e 014D     		addi x26, zero, 0
+ 165 0180 814D     		addi x27, zero, 0
+ 166 0182 014E     		addi x28, zero, 0
+ 167 0184 814E     		addi x29, zero, 0
+ 168 0186 014F     		addi x30, zero, 0
+ 169 0188 814F     		addi x31, zero, 0
+ 170              	
+ 171              	# Initialize control and status registers
+ 172 018a 73101034 		csrw mepc,        zero
+ 173 018e 73102034 		csrw mcause,      zero
+ 174 0192 73100034 		csrw mscratch,    zero
+ 175 0196 73103034 		csrw mtval,       zero
+ 176              	
+ 177              	#if BUILD_MODE != BUILD_BURN
+ 178              	# While using build_burn mode, the data section in dtcm will be set by boot loader function.
+ 179              	# Copy data section
+ 180 019a 17050000 		la a0, _sidata
+ 180      13050500 
+ 181 01a2 97050000 		la a1, _sdata
+ 181      93850500 
+ 182 01aa 17060000 		la a2, _edata
+ 182      13060600 
+ 183 01b2 63D8C500 		bge a1, a2, end_init_data
+ 184              	loop_init_data:
+ 185 01b6 1441     		lw a3, 0(a0)
+ 186 01b8 94C1     		sw a3, 0(a1)
+ 187 01ba 1105     		addi a0, a0, 4
+ 188 01bc 9105     		addi a1, a1, 4
+ 189 01be E3CCC5FE 		blt a1, a2, loop_init_data
+ 190              	end_init_data:
+ 191              	#endif
+ 192              	
+ 193              	
+ 194              	# zero-init bss section
+ 195 01c2 17050000 		la a0, _sbss
+ 195      13050500 
+ 196 01ca 97050000 		la a1, _ebss
+ 196      93850500 
+ 197 01d2 6357B500 		bge a0, a1, end_init_bss
+ 198              	loop_init_bss:
+ 199 01d6 23200500 		sw zero, 0(a0)
+ 200 01da 1105     		addi a0, a0, 4
+ 201 01dc E34DB5FE 		blt a0, a1, loop_init_bss
+ 202              	end_init_bss:
+ 203              	
+ 204              	
+ 205              	#if BUILD_MODE == BUILD_XIP
+ 206              	# While using build xip mode, some spi flash driver function will be moved to itcm and run there, t
+ 207              	# The delay function will also be moved to itcm, for more pricise delay.
+ 208              	# Copy irqsec section
+ 209              		la a0, _cps_irqsec
+ 210              		la a1, _vsirqsec
+ 211              		la a2, _veirqsec
+ 212              	init_irqsec:
+ 213              		lw a3, 0(a0)
+ 214              		sw a3, 0(a1)
+ 215              		addi a0, a0, 4
+ 216              		addi a1, a1, 4
+ 217              		blt a1, a2, init_irqsec
+ 218              	#endif
+ 219              	
+ 220              	
+ 221              	# Jump to main C code
+ 222 01e0 EFF01FE2 		jal ra,main
+ 223              	1:
+ 224 01e4 01A0     		j 1b
+ 225              	
+ 226              		/* Trap */
+ 227 01e6 02900000 		ebreak
+ 227      00000000 
+ 227      0000
+DEFINED SYMBOLS
+      ../src/start.S:24     .text:00000000 reset_vec
+      ../src/start.S:26     .text:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+      ../src/start.S:136    .text:0000014e start
+      ../src/start.S:26     .text:00000000 .L0 
+      ../src/start.S:30     .text:00000010 irq_vec
+      ../src/start.S:32     .text:00000010 $d
+      ../src/start.S:35     .text:00000018 $x
+      ../src/start.S:35     .text:00000018 .L0 
+      ../src/start.S:37     .text:0000001c $d
+      ../src/start.S:38     .text:00000020 $x
+      ../src/start.S:38     .text:00000020 .L0 
+      ../src/start.S:39     .text:00000024 $d
+      ../src/start.S:40     .text:00000028 $x
+      ../src/start.S:40     .text:00000028 .L0 
+      ../src/start.S:41     .text:0000002c $d
+      ../src/start.S:42     .text:00000030 $x
+      ../src/start.S:42     .text:00000030 .L0 
+      ../src/start.S:44     .text:00000034 .L0 
+      ../src/start.S:46     .text:00000036 .L0 
+      ../src/start.S:47     .text:0000003a .L0 
+      ../src/start.S:48     .text:0000003e .L0 
+      ../src/start.S:49     .text:00000042 .L0 
+      ../src/start.S:50     .text:00000046 .L0 
+      ../src/start.S:51     .text:0000004a .L0 
+      ../src/start.S:52     .text:0000004e .L0 
+      ../src/start.S:53     .text:00000052 .L0 
+      ../src/start.S:54     .text:00000056 .L0 
+      ../src/start.S:55     .text:0000005a .L0 
+      ../src/start.S:56     .text:0000005e .L0 
+      ../src/start.S:57     .text:00000062 .L0 
+      ../src/start.S:58     .text:00000066 .L0 
+      ../src/start.S:59     .text:0000006a .L0 
+      ../src/start.S:60     .text:0000006e .L0 
+      ../src/start.S:61     .text:00000072 .L0 
+      ../src/start.S:62     .text:00000076 .L0 
+      ../src/start.S:63     .text:0000007a .L0 
+      ../src/start.S:64     .text:0000007e .L0 
+      ../src/start.S:65     .text:00000082 .L0 
+      ../src/start.S:66     .text:00000086 .L0 
+      ../src/start.S:67     .text:0000008a .L0 
+      ../src/start.S:68     .text:0000008e .L0 
+      ../src/start.S:69     .text:00000092 .L0 
+      ../src/start.S:70     .text:00000096 .L0 
+      ../src/start.S:71     .text:0000009a .L0 
+      ../src/start.S:72     .text:0000009e .L0 
+      ../src/start.S:73     .text:000000a2 .L0 
+      ../src/start.S:74     .text:000000a6 .L0 
+      ../src/start.S:78     .text:000000aa .L0 
+      ../src/start.S:81     .text:000000ac $d
+      ../src/start.S:84     .text:000000b0 $x
+      ../src/start.S:84     .text:000000b0 .L0 
+      ../src/start.S:88     .text:000000b4 .L0 
+      ../src/start.S:90     .text:000000b6 .L0 
+      ../src/start.S:91     .text:000000ba $d
+      ../src/start.S:93     .text:000000be $x
+      ../src/start.S:93     .text:000000be .L0 
+      ../src/start.S:94     .text:000000c2 $d
+      ../src/start.S:96     .text:000000c6 $x
+      ../src/start.S:96     .text:000000c6 .L0 
+      ../src/start.S:97     .text:000000ca $d
+      ../src/start.S:99     .text:000000ce $x
+      ../src/start.S:99     .text:000000ce .L0 
+      ../src/start.S:100    .text:000000d2 .L0 
+      ../src/start.S:101    .text:000000d6 .L0 
+      ../src/start.S:102    .text:000000da .L0 
+      ../src/start.S:103    .text:000000de .L0 
+      ../src/start.S:104    .text:000000e2 .L0 
+      ../src/start.S:105    .text:000000e6 .L0 
+      ../src/start.S:106    .text:000000ea .L0 
+      ../src/start.S:107    .text:000000ee .L0 
+      ../src/start.S:108    .text:000000f2 .L0 
+      ../src/start.S:109    .text:000000f6 .L0 
+      ../src/start.S:110    .text:000000fa .L0 
+      ../src/start.S:111    .text:000000fe .L0 
+      ../src/start.S:112    .text:00000102 .L0 
+      ../src/start.S:113    .text:00000106 .L0 
+      ../src/start.S:114    .text:0000010a .L0 
+      ../src/start.S:115    .text:0000010e .L0 
+      ../src/start.S:116    .text:00000112 .L0 
+      ../src/start.S:117    .text:00000116 .L0 
+      ../src/start.S:118    .text:0000011a .L0 
+      ../src/start.S:119    .text:0000011e .L0 
+      ../src/start.S:120    .text:00000122 .L0 
+      ../src/start.S:121    .text:00000126 .L0 
+      ../src/start.S:122    .text:0000012a .L0 
+      ../src/start.S:123    .text:0000012e .L0 
+      ../src/start.S:124    .text:00000132 .L0 
+      ../src/start.S:125    .text:00000136 .L0 
+      ../src/start.S:126    .text:0000013a .L0 
+      ../src/start.S:127    .text:0000013e .L0 
+      ../src/start.S:129    .text:00000142 $d
+      ../src/start.S:139    .text:0000014e $x
+      ../src/start.S:139    .text:0000014e .L0 
+      ../src/start.S:141    .text:00000150 .L0 
+      ../src/start.S:142    .text:00000152 .L0 
+      ../src/start.S:143    .text:00000154 .L0 
+      ../src/start.S:144    .text:00000156 .L0 
+      ../src/start.S:145    .text:00000158 .L0 
+      ../src/start.S:146    .text:0000015a .L0 
+      ../src/start.S:147    .text:0000015c .L0 
+      ../src/start.S:148    .text:0000015e .L0 
+      ../src/start.S:149    .text:00000160 .L0 
+      ../src/start.S:150    .text:00000162 .L0 
+      ../src/start.S:151    .text:00000164 .L0 
+      ../src/start.S:152    .text:00000166 .L0 
+      ../src/start.S:153    .text:00000168 .L0 
+      ../src/start.S:154    .text:0000016a .L0 
+      ../src/start.S:155    .text:0000016c .L0 
+      ../src/start.S:156    .text:0000016e .L0 
+      ../src/start.S:157    .text:00000170 .L0 
+      ../src/start.S:158    .text:00000172 .L0 
+      ../src/start.S:159    .text:00000174 .L0 
+      ../src/start.S:160    .text:00000176 .L0 
+      ../src/start.S:161    .text:00000178 .L0 
+      ../src/start.S:162    .text:0000017a .L0 
+      ../src/start.S:163    .text:0000017c .L0 
+      ../src/start.S:164    .text:0000017e .L0 
+      ../src/start.S:165    .text:00000180 .L0 
+      ../src/start.S:166    .text:00000182 .L0 
+      ../src/start.S:167    .text:00000184 .L0 
+      ../src/start.S:168    .text:00000186 .L0 
+      ../src/start.S:169    .text:00000188 .L0 
+      ../src/start.S:172    .text:0000018a .L0 
+      ../src/start.S:173    .text:0000018e .L0 
+      ../src/start.S:174    .text:00000192 .L0 
+      ../src/start.S:175    .text:00000196 .L0 
+      ../src/start.S:180    .text:0000019a .L0 
+      ../src/start.S:181    .text:000001a2 .L0 
+      ../src/start.S:182    .text:000001aa .L0 
+      ../src/start.S:190    .text:000001c2 end_init_data
+      ../src/start.S:183    .text:000001b2 .L0 
+      ../src/start.S:184    .text:000001b6 loop_init_data
+      ../src/start.S:185    .text:000001b6 .L0 
+      ../src/start.S:186    .text:000001b8 .L0 
+      ../src/start.S:187    .text:000001ba .L0 
+      ../src/start.S:188    .text:000001bc .L0 
+      ../src/start.S:189    .text:000001be .L0 
+      ../src/start.S:195    .text:000001c2 .L0 
+      ../src/start.S:196    .text:000001ca .L0 
+      ../src/start.S:202    .text:000001e0 end_init_bss
+      ../src/start.S:197    .text:000001d2 .L0 
+      ../src/start.S:198    .text:000001d6 loop_init_bss
+      ../src/start.S:199    .text:000001d6 .L0 
+      ../src/start.S:200    .text:000001da .L0 
+      ../src/start.S:201    .text:000001dc .L0 
+      ../src/start.S:222    .text:000001e0 .L0 
+      ../src/start.S:224    .text:000001e4 .L0 
+      ../src/start.S:227    .text:000001e6 .L0 
+                  .debug_line_str:00000000 .L0 
+                  .debug_line_str:0000002e .L0 
+                  .debug_line_str:00000035 .L0 
+      ../src/start.S:227    .text:000001e8 .L0 
+                            .text:00000000 .L0 
+      ../src/start.S:227    .text:000001e8 .L0 
+                       .debug_str:00000000 .L0 
+                       .debug_str:0000000f .L0 
+                       .debug_str:0000003d .L0 
+      ../src/start.S:180    .text:0000019a .L0 
+      ../src/start.S:181    .text:000001a2 .L0 
+      ../src/start.S:182    .text:000001aa .L0 
+      ../src/start.S:195    .text:000001c2 .L0 
+      ../src/start.S:196    .text:000001ca .L0 
+      ../src/start.S:223    .text:000001e4 .L11
+
+UNDEFINED SYMBOLS
+irq
+_sidata
+_sdata
+_edata
+_sbss
+_ebss
+main

@@ -1,0 +1,34 @@
+   1              		.file	"loader.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p1_m2p0_c2p0_zicsr2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.file 0 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\Debug" "../src/loader.c"
+  10              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 loader.c
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:156    .debug_line_str:0000003e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:156    .debug_line_str:0000006c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:156    .debug_line_str:00000073 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:74     .debug_abbrev:00000000 .Ldebug_abbrev0
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:136    .debug_str:00000048 .LASF13
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:151    .debug_line_str:00000000 .LASF0
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:153    .debug_line_str:00000010 .LASF1
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:124    .debug_line:00000000 .Ldebug_line0
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:130    .debug_str:0000001f .LASF2
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:140    .debug_str:00000148 .LASF3
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:134    .debug_str:0000003e .LASF4
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:132    .debug_str:0000002b .LASF5
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:142    .debug_str:00000156 .LASF6
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:128    .debug_str:0000000d .LASF7
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:148    .debug_str:00000170 .LASF8
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:138    .debug_str:00000131 .LASF9
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:126    .debug_str:00000000 .LASF10
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:144    .debug_str:0000015f .LASF11
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:146    .debug_str:0000016b .LASF12
+C:\Users\nesus\AppData\Local\Temp\ccSXw1FI.s:12     .debug_info:00000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS

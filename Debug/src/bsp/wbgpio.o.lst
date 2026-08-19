@@ -1,0 +1,519 @@
+   1              		.file	"wbgpio.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p1_m2p0_c2p0_zicsr2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.file 0 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\Debug" "../src/bsp/wbgpio.c"
+  10              		.section	.text.GPIO_Init,"ax",@progbits
+  11              		.align	1
+  12              		.globl	GPIO_Init
+  14              	GPIO_Init:
+  15              	.LFB3:
+  16              		.file 1 "../src/bsp/wbgpio.c"
+   1:../src/bsp/wbgpio.c **** /*
+   2:../src/bsp/wbgpio.c ****  ******************************************************************************************
+   3:../src/bsp/wbgpio.c ****  * @file		wbgpio.c
+   4:../src/bsp/wbgpio.c ****  * @author		GowinSemicoductor
+   5:../src/bsp/wbgpio.c ****  * @device		Gowin_PicoRV32
+   6:../src/bsp/wbgpio.c ****  * @brief		Wishbone GPIO Peripheral.
+   7:../src/bsp/wbgpio.c ****  ******************************************************************************************
+   8:../src/bsp/wbgpio.c ****  */
+   9:../src/bsp/wbgpio.c **** 
+  10:../src/bsp/wbgpio.c **** /* Includes ------------------------------------------------------------------------ */
+  11:../src/bsp/wbgpio.c **** #include "wbgpio.h"
+  12:../src/bsp/wbgpio.c **** 
+  13:../src/bsp/wbgpio.c **** 
+  14:../src/bsp/wbgpio.c **** /* Definitions --------------------------------------------------------------------- */
+  15:../src/bsp/wbgpio.c **** 
+  16:../src/bsp/wbgpio.c **** void GPIO_Init(WBGPIO_RegDef* GPIOx)
+  17:../src/bsp/wbgpio.c **** {
+  17              		.loc 1 17 1
+  18              		.cfi_startproc
+  19 0000 0111     		addi	sp,sp,-32
+  20              		.cfi_def_cfa_offset 32
+  21 0002 06CE     		sw	ra,28(sp)
+  22 0004 22CC     		sw	s0,24(sp)
+  23              		.cfi_offset 1, -4
+  24              		.cfi_offset 8, -8
+  25 0006 0010     		addi	s0,sp,32
+  26              		.cfi_def_cfa 8, 0
+  27 0008 2326A4FE 		sw	a0,-20(s0)
+  18:../src/bsp/wbgpio.c **** 	GPIOx->CFG = 0;
+  28              		.loc 1 18 13
+  29 000c 8327C4FE 		lw	a5,-20(s0)
+  30 0010 23A00700 		sw	zero,0(a5)
+  19:../src/bsp/wbgpio.c **** 	GPIOx->IE = 0;
+  31              		.loc 1 19 12
+  32 0014 8327C4FE 		lw	a5,-20(s0)
+  33 0018 23A20700 		sw	zero,4(a5)
+  20:../src/bsp/wbgpio.c **** 	GPIOx->DIR = 0;
+  34              		.loc 1 20 13
+  35 001c 8327C4FE 		lw	a5,-20(s0)
+  36 0020 23A80700 		sw	zero,16(a5)
+  21:../src/bsp/wbgpio.c **** 	GPIOx->IN = 0;
+  37              		.loc 1 21 12
+  38 0024 8327C4FE 		lw	a5,-20(s0)
+  39 0028 23AA0700 		sw	zero,20(a5)
+  22:../src/bsp/wbgpio.c **** 	GPIOx->OUT = 0;
+  40              		.loc 1 22 13
+  41 002c 8327C4FE 		lw	a5,-20(s0)
+  42 0030 23AC0700 		sw	zero,24(a5)
+  23:../src/bsp/wbgpio.c **** }
+  43              		.loc 1 23 1
+  44 0034 0100     		nop
+  45 0036 F240     		lw	ra,28(sp)
+  46              		.cfi_restore 1
+  47 0038 6244     		lw	s0,24(sp)
+  48              		.cfi_restore 8
+  49              		.cfi_def_cfa 2, 32
+  50 003a 0561     		addi	sp,sp,32
+  51              		.cfi_def_cfa_offset 0
+  52 003c 8280     		jr	ra
+  53              		.cfi_endproc
+  54              	.LFE3:
+  56              		.section	.text.GPIO_GetDir,"ax",@progbits
+  57              		.align	1
+  58              		.globl	GPIO_GetDir
+  60              	GPIO_GetDir:
+  61              	.LFB4:
+  24:../src/bsp/wbgpio.c **** 
+  25:../src/bsp/wbgpio.c **** uint32_t GPIO_GetDir(WBGPIO_RegDef* GPIOx)
+  26:../src/bsp/wbgpio.c **** {
+  62              		.loc 1 26 1
+  63              		.cfi_startproc
+  64 0000 0111     		addi	sp,sp,-32
+  65              		.cfi_def_cfa_offset 32
+  66 0002 06CE     		sw	ra,28(sp)
+  67 0004 22CC     		sw	s0,24(sp)
+  68              		.cfi_offset 1, -4
+  69              		.cfi_offset 8, -8
+  70 0006 0010     		addi	s0,sp,32
+  71              		.cfi_def_cfa 8, 0
+  72 0008 2326A4FE 		sw	a0,-20(s0)
+  27:../src/bsp/wbgpio.c **** 	return GPIOx->DIR;
+  73              		.loc 1 27 14
+  74 000c 8327C4FE 		lw	a5,-20(s0)
+  75 0010 9C4B     		lw	a5,16(a5)
+  28:../src/bsp/wbgpio.c **** }
+  76              		.loc 1 28 1
+  77 0012 3E85     		mv	a0,a5
+  78 0014 F240     		lw	ra,28(sp)
+  79              		.cfi_restore 1
+  80 0016 6244     		lw	s0,24(sp)
+  81              		.cfi_restore 8
+  82              		.cfi_def_cfa 2, 32
+  83 0018 0561     		addi	sp,sp,32
+  84              		.cfi_def_cfa_offset 0
+  85 001a 8280     		jr	ra
+  86              		.cfi_endproc
+  87              	.LFE4:
+  89              		.section	.text.GPIO_SetDir,"ax",@progbits
+  90              		.align	1
+  91              		.globl	GPIO_SetDir
+  93              	GPIO_SetDir:
+  94              	.LFB5:
+  29:../src/bsp/wbgpio.c **** 
+  30:../src/bsp/wbgpio.c **** void GPIO_SetDir(WBGPIO_RegDef* GPIOx, uint32_t dir)
+  31:../src/bsp/wbgpio.c **** {
+  95              		.loc 1 31 1
+  96              		.cfi_startproc
+  97 0000 0111     		addi	sp,sp,-32
+  98              		.cfi_def_cfa_offset 32
+  99 0002 06CE     		sw	ra,28(sp)
+ 100 0004 22CC     		sw	s0,24(sp)
+ 101              		.cfi_offset 1, -4
+ 102              		.cfi_offset 8, -8
+ 103 0006 0010     		addi	s0,sp,32
+ 104              		.cfi_def_cfa 8, 0
+ 105 0008 2326A4FE 		sw	a0,-20(s0)
+ 106 000c 2324B4FE 		sw	a1,-24(s0)
+  32:../src/bsp/wbgpio.c **** 	GPIOx->DIR = dir;
+ 107              		.loc 1 32 13
+ 108 0010 8327C4FE 		lw	a5,-20(s0)
+ 109 0014 032784FE 		lw	a4,-24(s0)
+ 110 0018 98CB     		sw	a4,16(a5)
+  33:../src/bsp/wbgpio.c **** }
+ 111              		.loc 1 33 1
+ 112 001a 0100     		nop
+ 113 001c F240     		lw	ra,28(sp)
+ 114              		.cfi_restore 1
+ 115 001e 6244     		lw	s0,24(sp)
+ 116              		.cfi_restore 8
+ 117              		.cfi_def_cfa 2, 32
+ 118 0020 0561     		addi	sp,sp,32
+ 119              		.cfi_def_cfa_offset 0
+ 120 0022 8280     		jr	ra
+ 121              		.cfi_endproc
+ 122              	.LFE5:
+ 124              		.section	.text.GPIO_EnableWriteBit,"ax",@progbits
+ 125              		.align	1
+ 126              		.globl	GPIO_EnableWriteBit
+ 128              	GPIO_EnableWriteBit:
+ 129              	.LFB6:
+  34:../src/bsp/wbgpio.c **** 
+  35:../src/bsp/wbgpio.c **** void GPIO_EnableWriteBit(WBGPIO_RegDef* GPIOx, uint32_t bit)
+  36:../src/bsp/wbgpio.c **** {
+ 130              		.loc 1 36 1
+ 131              		.cfi_startproc
+ 132 0000 7971     		addi	sp,sp,-48
+ 133              		.cfi_def_cfa_offset 48
+ 134 0002 06D6     		sw	ra,44(sp)
+ 135 0004 22D4     		sw	s0,40(sp)
+ 136              		.cfi_offset 1, -4
+ 137              		.cfi_offset 8, -8
+ 138 0006 0018     		addi	s0,sp,48
+ 139              		.cfi_def_cfa 8, 0
+ 140 0008 232EA4FC 		sw	a0,-36(s0)
+ 141 000c 232CB4FC 		sw	a1,-40(s0)
+  37:../src/bsp/wbgpio.c **** 	uint32_t tmp = GPIOx->DIR;
+ 142              		.loc 1 37 11
+ 143 0010 8327C4FD 		lw	a5,-36(s0)
+ 144 0014 9C4B     		lw	a5,16(a5)
+ 145 0016 2326F4FE 		sw	a5,-20(s0)
+  38:../src/bsp/wbgpio.c **** 
+  39:../src/bsp/wbgpio.c **** 	tmp = tmp | (1UL << bit);
+ 146              		.loc 1 39 19
+ 147 001a 832784FD 		lw	a5,-40(s0)
+ 148 001e 0547     		li	a4,1
+ 149 0020 B317F700 		sll	a5,a4,a5
+ 150              		.loc 1 39 6
+ 151 0024 0327C4FE 		lw	a4,-20(s0)
+ 152 0028 D98F     		or	a5,a4,a5
+ 153 002a 2326F4FE 		sw	a5,-20(s0)
+  40:../src/bsp/wbgpio.c **** 	GPIOx->DIR = tmp;
+ 154              		.loc 1 40 13
+ 155 002e 8327C4FD 		lw	a5,-36(s0)
+ 156 0032 0327C4FE 		lw	a4,-20(s0)
+ 157 0036 98CB     		sw	a4,16(a5)
+  41:../src/bsp/wbgpio.c **** }
+ 158              		.loc 1 41 1
+ 159 0038 0100     		nop
+ 160 003a B250     		lw	ra,44(sp)
+ 161              		.cfi_restore 1
+ 162 003c 2254     		lw	s0,40(sp)
+ 163              		.cfi_restore 8
+ 164              		.cfi_def_cfa 2, 48
+ 165 003e 4561     		addi	sp,sp,48
+ 166              		.cfi_def_cfa_offset 0
+ 167 0040 8280     		jr	ra
+ 168              		.cfi_endproc
+ 169              	.LFE6:
+ 171              		.section	.text.GPIO_EnableReadBit,"ax",@progbits
+ 172              		.align	1
+ 173              		.globl	GPIO_EnableReadBit
+ 175              	GPIO_EnableReadBit:
+ 176              	.LFB7:
+  42:../src/bsp/wbgpio.c **** 
+  43:../src/bsp/wbgpio.c **** void GPIO_EnableReadBit(WBGPIO_RegDef* GPIOx, uint32_t bit)
+  44:../src/bsp/wbgpio.c **** {
+ 177              		.loc 1 44 1
+ 178              		.cfi_startproc
+ 179 0000 7971     		addi	sp,sp,-48
+ 180              		.cfi_def_cfa_offset 48
+ 181 0002 06D6     		sw	ra,44(sp)
+ 182 0004 22D4     		sw	s0,40(sp)
+ 183              		.cfi_offset 1, -4
+ 184              		.cfi_offset 8, -8
+ 185 0006 0018     		addi	s0,sp,48
+ 186              		.cfi_def_cfa 8, 0
+ 187 0008 232EA4FC 		sw	a0,-36(s0)
+ 188 000c 232CB4FC 		sw	a1,-40(s0)
+  45:../src/bsp/wbgpio.c **** 	uint32_t tmp = GPIOx->DIR;
+ 189              		.loc 1 45 11
+ 190 0010 8327C4FD 		lw	a5,-36(s0)
+ 191 0014 9C4B     		lw	a5,16(a5)
+ 192 0016 2326F4FE 		sw	a5,-20(s0)
+  46:../src/bsp/wbgpio.c **** 
+  47:../src/bsp/wbgpio.c **** 	tmp = tmp & (~(1UL << bit));
+ 193              		.loc 1 47 21
+ 194 001a 832784FD 		lw	a5,-40(s0)
+ 195 001e 0547     		li	a4,1
+ 196 0020 B317F700 		sll	a5,a4,a5
+ 197              		.loc 1 47 15
+ 198 0024 93C7F7FF 		not	a5,a5
+ 199              		.loc 1 47 6
+ 200 0028 0327C4FE 		lw	a4,-20(s0)
+ 201 002c F98F     		and	a5,a4,a5
+ 202 002e 2326F4FE 		sw	a5,-20(s0)
+  48:../src/bsp/wbgpio.c **** 	GPIOx->DIR = tmp;
+ 203              		.loc 1 48 13
+ 204 0032 8327C4FD 		lw	a5,-36(s0)
+ 205 0036 0327C4FE 		lw	a4,-20(s0)
+ 206 003a 98CB     		sw	a4,16(a5)
+  49:../src/bsp/wbgpio.c **** }
+ 207              		.loc 1 49 1
+ 208 003c 0100     		nop
+ 209 003e B250     		lw	ra,44(sp)
+ 210              		.cfi_restore 1
+ 211 0040 2254     		lw	s0,40(sp)
+ 212              		.cfi_restore 8
+ 213              		.cfi_def_cfa 2, 48
+ 214 0042 4561     		addi	sp,sp,48
+ 215              		.cfi_def_cfa_offset 0
+ 216 0044 8280     		jr	ra
+ 217              		.cfi_endproc
+ 218              	.LFE7:
+ 220              		.section	.text.GPIO_WriteData,"ax",@progbits
+ 221              		.align	1
+ 222              		.globl	GPIO_WriteData
+ 224              	GPIO_WriteData:
+ 225              	.LFB8:
+  50:../src/bsp/wbgpio.c **** 
+  51:../src/bsp/wbgpio.c **** void GPIO_WriteData(WBGPIO_RegDef* GPIOx, uint32_t data)
+  52:../src/bsp/wbgpio.c **** {
+ 226              		.loc 1 52 1
+ 227              		.cfi_startproc
+ 228 0000 0111     		addi	sp,sp,-32
+ 229              		.cfi_def_cfa_offset 32
+ 230 0002 06CE     		sw	ra,28(sp)
+ 231 0004 22CC     		sw	s0,24(sp)
+ 232              		.cfi_offset 1, -4
+ 233              		.cfi_offset 8, -8
+ 234 0006 0010     		addi	s0,sp,32
+ 235              		.cfi_def_cfa 8, 0
+ 236 0008 2326A4FE 		sw	a0,-20(s0)
+ 237 000c 2324B4FE 		sw	a1,-24(s0)
+  53:../src/bsp/wbgpio.c **** 	GPIOx->OUT = data;
+ 238              		.loc 1 53 13
+ 239 0010 8327C4FE 		lw	a5,-20(s0)
+ 240 0014 032784FE 		lw	a4,-24(s0)
+ 241 0018 98CF     		sw	a4,24(a5)
+  54:../src/bsp/wbgpio.c **** }
+ 242              		.loc 1 54 1
+ 243 001a 0100     		nop
+ 244 001c F240     		lw	ra,28(sp)
+ 245              		.cfi_restore 1
+ 246 001e 6244     		lw	s0,24(sp)
+ 247              		.cfi_restore 8
+ 248              		.cfi_def_cfa 2, 32
+ 249 0020 0561     		addi	sp,sp,32
+ 250              		.cfi_def_cfa_offset 0
+ 251 0022 8280     		jr	ra
+ 252              		.cfi_endproc
+ 253              	.LFE8:
+ 255              		.section	.text.GPIO_ReadData,"ax",@progbits
+ 256              		.align	1
+ 257              		.globl	GPIO_ReadData
+ 259              	GPIO_ReadData:
+ 260              	.LFB9:
+  55:../src/bsp/wbgpio.c **** 
+  56:../src/bsp/wbgpio.c **** uint32_t GPIO_ReadData(WBGPIO_RegDef* GPIOx)
+  57:../src/bsp/wbgpio.c **** {
+ 261              		.loc 1 57 1
+ 262              		.cfi_startproc
+ 263 0000 0111     		addi	sp,sp,-32
+ 264              		.cfi_def_cfa_offset 32
+ 265 0002 06CE     		sw	ra,28(sp)
+ 266 0004 22CC     		sw	s0,24(sp)
+ 267              		.cfi_offset 1, -4
+ 268              		.cfi_offset 8, -8
+ 269 0006 0010     		addi	s0,sp,32
+ 270              		.cfi_def_cfa 8, 0
+ 271 0008 2326A4FE 		sw	a0,-20(s0)
+  58:../src/bsp/wbgpio.c **** 	return GPIOx->IN;
+ 272              		.loc 1 58 14
+ 273 000c 8327C4FE 		lw	a5,-20(s0)
+ 274 0010 DC4B     		lw	a5,20(a5)
+  59:../src/bsp/wbgpio.c **** }
+ 275              		.loc 1 59 1
+ 276 0012 3E85     		mv	a0,a5
+ 277 0014 F240     		lw	ra,28(sp)
+ 278              		.cfi_restore 1
+ 279 0016 6244     		lw	s0,24(sp)
+ 280              		.cfi_restore 8
+ 281              		.cfi_def_cfa 2, 32
+ 282 0018 0561     		addi	sp,sp,32
+ 283              		.cfi_def_cfa_offset 0
+ 284 001a 8280     		jr	ra
+ 285              		.cfi_endproc
+ 286              	.LFE9:
+ 288              		.text
+ 289              	.Letext0:
+ 290              		.file 2 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/machine/_default_types.h"
+ 291              		.file 3 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/sys/_stdint.h"
+ 292              		.file 4 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\src/picorv32.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 wbgpio.c
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:14     .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:18     .text.GPIO_Init:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:19     .text.GPIO_Init:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:19     .text.GPIO_Init:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:20     .text.GPIO_Init:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:23     .text.GPIO_Init:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:24     .text.GPIO_Init:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:26     .text.GPIO_Init:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:29     .text.GPIO_Init:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:32     .text.GPIO_Init:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:35     .text.GPIO_Init:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:38     .text.GPIO_Init:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:41     .text.GPIO_Init:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:44     .text.GPIO_Init:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:46     .text.GPIO_Init:00000038 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:48     .text.GPIO_Init:0000003a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:49     .text.GPIO_Init:0000003a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:51     .text.GPIO_Init:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:53     .text.GPIO_Init:0000003e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:60     .text.GPIO_GetDir:00000000 GPIO_GetDir
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:63     .text.GPIO_GetDir:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:64     .text.GPIO_GetDir:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:64     .text.GPIO_GetDir:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:65     .text.GPIO_GetDir:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:68     .text.GPIO_GetDir:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:69     .text.GPIO_GetDir:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:71     .text.GPIO_GetDir:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:74     .text.GPIO_GetDir:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:77     .text.GPIO_GetDir:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:79     .text.GPIO_GetDir:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:81     .text.GPIO_GetDir:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:82     .text.GPIO_GetDir:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:84     .text.GPIO_GetDir:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:86     .text.GPIO_GetDir:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:93     .text.GPIO_SetDir:00000000 GPIO_SetDir
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:96     .text.GPIO_SetDir:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:97     .text.GPIO_SetDir:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:97     .text.GPIO_SetDir:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:98     .text.GPIO_SetDir:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:101    .text.GPIO_SetDir:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:102    .text.GPIO_SetDir:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:104    .text.GPIO_SetDir:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:108    .text.GPIO_SetDir:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:112    .text.GPIO_SetDir:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:114    .text.GPIO_SetDir:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:116    .text.GPIO_SetDir:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:117    .text.GPIO_SetDir:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:119    .text.GPIO_SetDir:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:121    .text.GPIO_SetDir:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:128    .text.GPIO_EnableWriteBit:00000000 GPIO_EnableWriteBit
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:131    .text.GPIO_EnableWriteBit:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:132    .text.GPIO_EnableWriteBit:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:132    .text.GPIO_EnableWriteBit:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:133    .text.GPIO_EnableWriteBit:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:136    .text.GPIO_EnableWriteBit:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:137    .text.GPIO_EnableWriteBit:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:139    .text.GPIO_EnableWriteBit:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:143    .text.GPIO_EnableWriteBit:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:147    .text.GPIO_EnableWriteBit:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:151    .text.GPIO_EnableWriteBit:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:155    .text.GPIO_EnableWriteBit:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:159    .text.GPIO_EnableWriteBit:00000038 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:161    .text.GPIO_EnableWriteBit:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:163    .text.GPIO_EnableWriteBit:0000003e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:164    .text.GPIO_EnableWriteBit:0000003e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:166    .text.GPIO_EnableWriteBit:00000040 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:168    .text.GPIO_EnableWriteBit:00000042 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:175    .text.GPIO_EnableReadBit:00000000 GPIO_EnableReadBit
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:178    .text.GPIO_EnableReadBit:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:179    .text.GPIO_EnableReadBit:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:179    .text.GPIO_EnableReadBit:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:180    .text.GPIO_EnableReadBit:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:183    .text.GPIO_EnableReadBit:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:184    .text.GPIO_EnableReadBit:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:186    .text.GPIO_EnableReadBit:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:190    .text.GPIO_EnableReadBit:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:194    .text.GPIO_EnableReadBit:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:198    .text.GPIO_EnableReadBit:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:200    .text.GPIO_EnableReadBit:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:204    .text.GPIO_EnableReadBit:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:208    .text.GPIO_EnableReadBit:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:210    .text.GPIO_EnableReadBit:00000040 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:212    .text.GPIO_EnableReadBit:00000042 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:213    .text.GPIO_EnableReadBit:00000042 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:215    .text.GPIO_EnableReadBit:00000044 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:217    .text.GPIO_EnableReadBit:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:224    .text.GPIO_WriteData:00000000 GPIO_WriteData
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:227    .text.GPIO_WriteData:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:228    .text.GPIO_WriteData:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:228    .text.GPIO_WriteData:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:229    .text.GPIO_WriteData:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:232    .text.GPIO_WriteData:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:233    .text.GPIO_WriteData:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:235    .text.GPIO_WriteData:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:239    .text.GPIO_WriteData:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:243    .text.GPIO_WriteData:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:245    .text.GPIO_WriteData:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:247    .text.GPIO_WriteData:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:248    .text.GPIO_WriteData:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:250    .text.GPIO_WriteData:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:252    .text.GPIO_WriteData:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:259    .text.GPIO_ReadData:00000000 GPIO_ReadData
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:262    .text.GPIO_ReadData:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:263    .text.GPIO_ReadData:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:263    .text.GPIO_ReadData:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:264    .text.GPIO_ReadData:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:267    .text.GPIO_ReadData:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:268    .text.GPIO_ReadData:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:270    .text.GPIO_ReadData:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:273    .text.GPIO_ReadData:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:276    .text.GPIO_ReadData:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:278    .text.GPIO_ReadData:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:280    .text.GPIO_ReadData:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:281    .text.GPIO_ReadData:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:283    .text.GPIO_ReadData:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:285    .text.GPIO_ReadData:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:00000042 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:00000070 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:0000007b .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:000000c1 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:00000103 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:0000012f .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:00000138 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:00000141 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:00000152 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:974    .debug_line_str:0000015c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:56     .text.GPIO_Init:0000003e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:89     .text.GPIO_GetDir:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:124    .text.GPIO_SetDir:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:171    .text.GPIO_EnableWriteBit:00000042 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:220    .text.GPIO_EnableReadBit:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:255    .text.GPIO_WriteData:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:288    .text.GPIO_ReadData:0000001c .L0 
+                     .debug_frame:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:595    .debug_abbrev:00000000 .Ldebug_abbrev0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:924    .debug_str:0000001a .LASF24
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:969    .debug_line_str:00000000 .LASF0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:971    .debug_line_str:00000014 .LASF1
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:893    .debug_rnglists:0000000c .LLRL0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:918    .debug_line:00000000 .Ldebug_line0
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:964    .debug_str:000001f7 .LASF2
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:928    .debug_str:00000108 .LASF3
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:954    .debug_str:000001c5 .LASF4
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:934    .debug_str:00000134 .LASF5
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:960    .debug_str:000001e2 .LASF6
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:938    .debug_str:0000015a .LASF11
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:930    .debug_str:00000116 .LASF7
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:948    .debug_str:000001a3 .LASF8
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:944    .debug_str:00000180 .LASF9
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:940    .debug_str:00000165 .LASF10
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:958    .debug_str:000001d9 .LASF12
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:962    .debug_str:000001eb .LASF13
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:952    .debug_str:000001c0 .LASF14
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:942    .debug_str:00000172 .LASF15
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:966    .debug_str:00000203 .LASF22
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:260    .text.GPIO_ReadData:00000000 .LFB9
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:286    .text.GPIO_ReadData:0000001c .LFE9
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:922    .debug_str:00000014 .LASF16
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:950    .debug_str:000001b1 .LASF18
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:225    .text.GPIO_WriteData:00000000 .LFB8
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:253    .text.GPIO_WriteData:00000024 .LFE8
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:926    .debug_str:00000103 .LASF17
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:936    .debug_str:00000147 .LASF19
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:176    .text.GPIO_EnableReadBit:00000000 .LFB7
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:218    .text.GPIO_EnableReadBit:00000046 .LFE7
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:920    .debug_str:00000000 .LASF20
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:129    .text.GPIO_EnableWriteBit:00000000 .LFB6
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:169    .text.GPIO_EnableWriteBit:00000042 .LFE6
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:932    .debug_str:00000128 .LASF21
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:94     .text.GPIO_SetDir:00000000 .LFB5
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:122    .text.GPIO_SetDir:00000024 .LFE5
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:946    .debug_str:00000197 .LASF23
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:61     .text.GPIO_GetDir:00000000 .LFB4
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:87     .text.GPIO_GetDir:0000001c .LFE4
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:956    .debug_str:000001cf .LASF25
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:15     .text.GPIO_Init:00000000 .LFB3
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:54     .text.GPIO_Init:0000003e .LFE3
+C:\Users\nesus\AppData\Local\Temp\ccxJRtUX.s:294    .debug_info:00000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS

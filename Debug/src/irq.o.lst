@@ -1,0 +1,1305 @@
+   1              		.file	"irq.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p1_m2p0_c2p0_zicsr2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.file 0 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\Debug" "../src/irq.c"
+  10              		.globl	tmp
+  11              		.section	.sbss.tmp,"aw",@nobits
+  12              		.align	2
+  15              	tmp:
+  16 0000 00000000 		.zero	4
+  17              		.globl	val
+  18              		.section	.sbss.val,"aw",@nobits
+  19              		.align	2
+  22              	val:
+  23 0000 00000000 		.zero	4
+  24              		.section	.rodata
+  25              		.align	2
+  26              	.LC0:
+  27 0000 496C6C65 		.string	"Illegal Ins at 0x"
+  27      67616C20 
+  27      496E7320 
+  27      61742030 
+  27      7800
+  28 0012 0000     		.align	2
+  29              	.LC1:
+  30 0014 25780D0A 		.string	"%x\r\n"
+  30      00
+  31 0019 000000   		.align	2
+  32              	.LC2:
+  33 001c 3A203078 		.string	": 0x"
+  33      00
+  34 0021 000000   		.align	2
+  35              	.LC3:
+  36 0024 42757320 		.string	"Bus error at 0x"
+  36      6572726F 
+  36      72206174 
+  36      20307800 
+  37              		.section	.text.irq,"ax",@progbits
+  38              		.align	1
+  39              		.globl	irq
+  41              	irq:
+  42              	.LFB3:
+  43              		.file 1 "../src/irq.c"
+   1:../src/irq.c  **** /*
+   2:../src/irq.c  ****  ******************************************************************************************
+   3:../src/irq.c  ****  * @file		irq.c
+   4:../src/irq.c  ****  * @author		GowinSemicoductor
+   5:../src/irq.c  ****  * @device		Gowin_PicoRV32
+   6:../src/irq.c  ****  * @brief		Interrupt request.
+   7:../src/irq.c  ****  ******************************************************************************************
+   8:../src/irq.c  ****  */
+   9:../src/irq.c  **** 
+  10:../src/irq.c  **** /* Includes ------------------------------------------------------------------------ */
+  11:../src/irq.c  **** #include <stdio.h>
+  12:../src/irq.c  **** #include "firmware.h"
+  13:../src/irq.c  **** #include "simpleuart.h"
+  14:../src/irq.c  **** #include "picorv32.h"
+  15:../src/irq.c  **** #include "wbuart.h"
+  16:../src/irq.c  **** #include "irq.h"
+  17:../src/irq.c  **** #include "config.h"
+  18:../src/irq.c  **** 
+  19:../src/irq.c  **** 
+  20:../src/irq.c  **** /* Definitions --------------------------------------------------------------------- */
+  21:../src/irq.c  **** 
+  22:../src/irq.c  **** uint32_t tmp = 0;
+  23:../src/irq.c  **** uint32_t val = 0;
+  24:../src/irq.c  **** 
+  25:../src/irq.c  **** extern uint8_t irq00_flag;
+  26:../src/irq.c  **** extern uint8_t irq13_flag;
+  27:../src/irq.c  **** extern uint8_t irq20_flag;
+  28:../src/irq.c  **** extern uint8_t irq21_flag;
+  29:../src/irq.c  **** //Can add other interrupts by user's need
+  30:../src/irq.c  **** 
+  31:../src/irq.c  **** #ifdef USE_WBUART
+  32:../src/irq.c  **** #define get_char()  wbuart_getc()
+  33:../src/irq.c  **** #define put_char(c)  wbuart_putc(c)
+  34:../src/irq.c  **** #else
+  35:../src/irq.c  **** #define get_char()  uart_getchar()
+  36:../src/irq.c  **** #define put_char(c)  uart_putchar(c)
+  37:../src/irq.c  **** #endif
+  38:../src/irq.c  **** 
+  39:../src/irq.c  **** 
+  40:../src/irq.c  **** uint32_t *irq(uint32_t *regs, uint32_t irqs)
+  41:../src/irq.c  **** {
+  44              		.loc 1 41 1
+  45              		.cfi_startproc
+  46 0000 7971     		addi	sp,sp,-48
+  47              		.cfi_def_cfa_offset 48
+  48 0002 06D6     		sw	ra,44(sp)
+  49 0004 22D4     		sw	s0,40(sp)
+  50              		.cfi_offset 1, -4
+  51              		.cfi_offset 8, -8
+  52 0006 0018     		addi	s0,sp,48
+  53              		.cfi_def_cfa 8, 0
+  54 0008 232EA4FC 		sw	a0,-36(s0)
+  55 000c 232CB4FC 		sw	a1,-40(s0)
+  42:../src/irq.c  **** 	volatile uint32_t mask = mask_irq(0xffffffff) | irqs;
+  56              		.loc 1 42 27
+  57 0010 7D55     		li	a0,-1
+  58 0012 97000000 		call	mask_irq
+  58      E7800000 
+  59 001a 2A87     		mv	a4,a0
+  60              		.loc 1 42 48 discriminator 1
+  61 001c 832784FD 		lw	a5,-40(s0)
+  62 0020 D98F     		or	a5,a4,a5
+  63              		.loc 1 42 20 discriminator 1
+  64 0022 2322F4FE 		sw	a5,-28(s0)
+  43:../src/irq.c  **** 
+  44:../src/irq.c  **** 	mask_irq(mask);
+  65              		.loc 1 44 2
+  66 0026 832744FE 		lw	a5,-28(s0)
+  67 002a 3E85     		mv	a0,a5
+  68 002c 97000000 		call	mask_irq
+  68      E7800000 
+  45:../src/irq.c  **** 
+  46:../src/irq.c  **** 	if ((irqs & 1) != 0)
+  69              		.loc 1 46 12
+  70 0034 832784FD 		lw	a5,-40(s0)
+  71 0038 858B     		andi	a5,a5,1
+  72              		.loc 1 46 5
+  73 003a 81CB     		beq	a5,zero,.L2
+  47:../src/irq.c  **** 	{
+  48:../src/irq.c  **** 		irq00_flag = 1;
+  74              		.loc 1 48 14
+  75 003c 97070000 		lla	a5,irq00_flag
+  75      93870700 
+  76 0044 0547     		li	a4,1
+  77 0046 2380E700 		sb	a4,0(a5)
+  78              	.L2:
+  49:../src/irq.c  **** 	}
+  50:../src/irq.c  **** 
+  51:../src/irq.c  **** 	if ((irqs & (1<<13)) != 0)
+  79              		.loc 1 51 12
+  80 004a 032784FD 		lw	a4,-40(s0)
+  81 004e 8967     		li	a5,8192
+  82 0050 F98F     		and	a5,a4,a5
+  83              		.loc 1 51 5
+  84 0052 81CB     		beq	a5,zero,.L3
+  52:../src/irq.c  **** 	{
+  53:../src/irq.c  **** 		irq13_flag = 1;
+  85              		.loc 1 53 14
+  86 0054 97070000 		lla	a5,irq13_flag
+  86      93870700 
+  87 005c 0547     		li	a4,1
+  88 005e 2380E700 		sb	a4,0(a5)
+  89              	.L3:
+  54:../src/irq.c  **** 	}
+  55:../src/irq.c  **** 
+  56:../src/irq.c  **** 	if ((irqs & (1<<20)) != 0)
+  90              		.loc 1 56 12
+  91 0062 032784FD 		lw	a4,-40(s0)
+  92 0066 B7071000 		li	a5,1048576
+  93 006a F98F     		and	a5,a4,a5
+  94              		.loc 1 56 5
+  95 006c 81CB     		beq	a5,zero,.L4
+  57:../src/irq.c  **** 	{
+  58:../src/irq.c  **** 		irq20_flag = 1;
+  96              		.loc 1 58 14
+  97 006e 97070000 		lla	a5,irq20_flag
+  97      93870700 
+  98 0076 0547     		li	a4,1
+  99 0078 2380E700 		sb	a4,0(a5)
+ 100              	.L4:
+  59:../src/irq.c  **** 	}
+  60:../src/irq.c  **** 
+  61:../src/irq.c  **** 	if ((irqs & (1<<21)) != 0)
+ 101              		.loc 1 61 12
+ 102 007c 032784FD 		lw	a4,-40(s0)
+ 103 0080 B7072000 		li	a5,2097152
+ 104 0084 F98F     		and	a5,a4,a5
+ 105              		.loc 1 61 5
+ 106 0086 81CB     		beq	a5,zero,.L5
+  62:../src/irq.c  **** 	{
+  63:../src/irq.c  **** 		irq21_flag = 1;
+ 107              		.loc 1 63 14
+ 108 0088 97070000 		lla	a5,irq21_flag
+ 108      93870700 
+ 109 0090 0547     		li	a4,1
+ 110 0092 2380E700 		sb	a4,0(a5)
+ 111              	.L5:
+  64:../src/irq.c  **** 	}
+  65:../src/irq.c  **** 
+  66:../src/irq.c  **** 
+  67:../src/irq.c  **** 	if ((irqs & 14) != 0)
+ 112              		.loc 1 67 12
+ 113 0096 832784FD 		lw	a5,-40(s0)
+ 114 009a B98B     		andi	a5,a5,14
+ 115              		.loc 1 67 5
+ 116 009c EDCB     		beq	a5,zero,.L6
+ 117              	.LBB2:
+  68:../src/irq.c  **** 	{
+  69:../src/irq.c  **** 		uint32_t pc = (regs[0] & 1) ? regs[0] - 3 : regs[0] - 4;
+ 118              		.loc 1 69 22
+ 119 009e 8327C4FD 		lw	a5,-36(s0)
+ 120 00a2 9C43     		lw	a5,0(a5)
+ 121              		.loc 1 69 26
+ 122 00a4 858B     		andi	a5,a5,1
+ 123              		.loc 1 69 45
+ 124 00a6 91C7     		beq	a5,zero,.L7
+ 125              		.loc 1 69 37 discriminator 1
+ 126 00a8 8327C4FD 		lw	a5,-36(s0)
+ 127 00ac 9C43     		lw	a5,0(a5)
+ 128              		.loc 1 69 45 discriminator 1
+ 129 00ae F517     		addi	a5,a5,-3
+ 130 00b0 29A0     		j	.L8
+ 131              	.L7:
+ 132              		.loc 1 69 51 discriminator 2
+ 133 00b2 8327C4FD 		lw	a5,-36(s0)
+ 134 00b6 9C43     		lw	a5,0(a5)
+ 135              		.loc 1 69 45 discriminator 2
+ 136 00b8 F117     		addi	a5,a5,-4
+ 137              	.L8:
+ 138              		.loc 1 69 12 discriminator 4
+ 139 00ba 2324F4FE 		sw	a5,-24(s0)
+  70:../src/irq.c  **** 		uint32_t instr = *(uint16_t*)pc;
+ 140              		.loc 1 70 21
+ 141 00be 832784FE 		lw	a5,-24(s0)
+ 142              		.loc 1 70 20
+ 143 00c2 83D70700 		lhu	a5,0(a5)
+ 144              		.loc 1 70 12
+ 145 00c6 2326F4FE 		sw	a5,-20(s0)
+  71:../src/irq.c  **** 
+  72:../src/irq.c  **** 		if ((instr & 3) == 3)
+ 146              		.loc 1 72 14
+ 147 00ca 8327C4FE 		lw	a5,-20(s0)
+ 148 00ce 13F73700 		andi	a4,a5,3
+ 149              		.loc 1 72 6
+ 150 00d2 8D47     		li	a5,3
+ 151 00d4 631DF700 		bne	a4,a5,.L9
+  73:../src/irq.c  **** 		{
+  74:../src/irq.c  **** 			instr = instr | (*(uint16_t*)(pc + 2)) << 16;
+ 152              		.loc 1 74 37
+ 153 00d8 832784FE 		lw	a5,-24(s0)
+ 154 00dc 8907     		addi	a5,a5,2
+ 155              		.loc 1 74 21
+ 156 00de 83D70700 		lhu	a5,0(a5)
+ 157              		.loc 1 74 43
+ 158 00e2 C207     		slli	a5,a5,16
+ 159              		.loc 1 74 10
+ 160 00e4 0327C4FE 		lw	a4,-20(s0)
+ 161 00e8 D98F     		or	a5,a4,a5
+ 162 00ea 2326F4FE 		sw	a5,-20(s0)
+ 163              	.L9:
+  75:../src/irq.c  **** 		}
+  76:../src/irq.c  **** 
+  77:../src/irq.c  **** 		if ((irqs & 8) != 0)
+ 164              		.loc 1 77 13
+ 165 00ee 832784FD 		lw	a5,-40(s0)
+ 166 00f2 A18B     		andi	a5,a5,8
+ 167              		.loc 1 77 6
+ 168 00f4 A9C7     		beq	a5,zero,.L10
+  78:../src/irq.c  **** 		{
+  79:../src/irq.c  **** 			printf("Illegal Ins at 0x");
+ 169              		.loc 1 79 4
+ 170 00f6 17050000 		lla	a0,.LC0
+ 170      13050500 
+ 171 00fe 97000000 		call	printf
+ 171      E7800000 
+  80:../src/irq.c  **** 			printf("%x\r\n", pc);
+ 172              		.loc 1 80 4
+ 173 0106 832584FE 		lw	a1,-24(s0)
+ 174 010a 17050000 		lla	a0,.LC1
+ 174      13050500 
+ 175 0112 97000000 		call	printf
+ 175      E7800000 
+  81:../src/irq.c  **** 			printf(": 0x");
+ 176              		.loc 1 81 4
+ 177 011a 17050000 		lla	a0,.LC2
+ 177      13050500 
+ 178 0122 97000000 		call	printf
+ 178      E7800000 
+  82:../src/irq.c  **** 			printf("%x\r\n", instr);
+ 179              		.loc 1 82 4
+ 180 012a 8325C4FE 		lw	a1,-20(s0)
+ 181 012e 17050000 		lla	a0,.LC1
+ 181      13050500 
+ 182 0136 97000000 		call	printf
+ 182      E7800000 
+ 183              	.L10:
+  83:../src/irq.c  **** 		}
+  84:../src/irq.c  **** 
+  85:../src/irq.c  **** 		if ((irqs & 4) != 0)
+ 184              		.loc 1 85 13
+ 185 013e 832784FD 		lw	a5,-40(s0)
+ 186 0142 918B     		andi	a5,a5,4
+ 187              		.loc 1 85 6
+ 188 0144 A9C7     		beq	a5,zero,.L6
+  86:../src/irq.c  **** 		{
+  87:../src/irq.c  **** 			printf("Bus error at 0x");
+ 189              		.loc 1 87 4
+ 190 0146 17050000 		lla	a0,.LC3
+ 190      13050500 
+ 191 014e 97000000 		call	printf
+ 191      E7800000 
+  88:../src/irq.c  **** 			printf("%x\r\n", pc);
+ 192              		.loc 1 88 4
+ 193 0156 832584FE 		lw	a1,-24(s0)
+ 194 015a 17050000 		lla	a0,.LC1
+ 194      13050500 
+ 195 0162 97000000 		call	printf
+ 195      E7800000 
+  89:../src/irq.c  **** 			printf(": 0x");
+ 196              		.loc 1 89 4
+ 197 016a 17050000 		lla	a0,.LC2
+ 197      13050500 
+ 198 0172 97000000 		call	printf
+ 198      E7800000 
+  90:../src/irq.c  **** 			printf("%x\r\n", instr);
+ 199              		.loc 1 90 4
+ 200 017a 8325C4FE 		lw	a1,-20(s0)
+ 201 017e 17050000 		lla	a0,.LC1
+ 201      13050500 
+ 202 0186 97000000 		call	printf
+ 202      E7800000 
+ 203              	.L6:
+ 204              	.LBE2:
+  91:../src/irq.c  **** 		}
+  92:../src/irq.c  **** 	}
+  93:../src/irq.c  **** 
+  94:../src/irq.c  **** 	return regs;
+ 205              		.loc 1 94 9
+ 206 018e 8327C4FD 		lw	a5,-36(s0)
+  95:../src/irq.c  **** }
+ 207              		.loc 1 95 1
+ 208 0192 3E85     		mv	a0,a5
+ 209 0194 B250     		lw	ra,44(sp)
+ 210              		.cfi_restore 1
+ 211 0196 2254     		lw	s0,40(sp)
+ 212              		.cfi_restore 8
+ 213              		.cfi_def_cfa 2, 48
+ 214 0198 4561     		addi	sp,sp,48
+ 215              		.cfi_def_cfa_offset 0
+ 216 019a 8280     		jr	ra
+ 217              		.cfi_endproc
+ 218              	.LFE3:
+ 220              		.section	.text.return_from_irq,"ax",@progbits
+ 221              		.align	1
+ 222              		.globl	return_from_irq
+ 224              	return_from_irq:
+ 225              	.LFB4:
+  96:../src/irq.c  **** 
+  97:../src/irq.c  **** void __attribute__((naked, optimize("O0"))) return_from_irq (void)
+  98:../src/irq.c  **** {
+ 226              		.loc 1 98 1
+ 227              		.cfi_startproc
+  99:../src/irq.c  **** 	__asm__ __volatile__(".word(0x0000c08b)");
+ 228              		.loc 1 99 2
+ 229              	 #APP
+ 230              	# 99 "../src/irq.c" 1
+ 100              		__asm__ __volatile__(".word(0x0001410b)");
+ 231              		.word(0x0000c08b)
+ 232              	# 0 "" 2
+ 233              		.loc 1 100 2
+ 234              	# 100 "../src/irq.c" 1
+ 101              		__asm__ __volatile__(".word(0x0400000b)");
+ 235              		.word(0x0001410b)
+ 236              	# 0 "" 2
+ 237              		.loc 1 101 2
+ 238              	# 101 "../src/irq.c" 1
+ 102              	}
+ 239              		.word(0x0400000b)
+ 240              	# 0 "" 2
+ 241              		.loc 1 102 1
+ 242              	 #NO_APP
+ 243 000c 0100     		nop
+ 244              		.cfi_endproc
+ 245              	.LFE4:
+ 247              		.section	.text.mask_irq,"ax",@progbits
+ 248              		.align	1
+ 249              		.globl	mask_irq
+ 251              	mask_irq:
+ 252              	.LFB5:
+ 103:../src/irq.c  **** 
+ 104:../src/irq.c  **** //Mask IRQ
+ 105:../src/irq.c  **** inline uint32_t mask_irq(uint32_t mask)
+ 106:../src/irq.c  **** {
+ 253              		.loc 1 106 1
+ 254              		.cfi_startproc
+ 255 0000 7971     		addi	sp,sp,-48
+ 256              		.cfi_def_cfa_offset 48
+ 257 0002 06D6     		sw	ra,44(sp)
+ 258 0004 22D4     		sw	s0,40(sp)
+ 259              		.cfi_offset 1, -4
+ 260              		.cfi_offset 8, -8
+ 261 0006 0018     		addi	s0,sp,48
+ 262              		.cfi_def_cfa 8, 0
+ 263 0008 232EA4FC 		sw	a0,-36(s0)
+ 107:../src/irq.c  **** 	uint32_t old_mask;
+ 108:../src/irq.c  **** 
+ 109:../src/irq.c  **** 	__asm__ __volatile__("mv a4, a0");
+ 264              		.loc 1 109 2
+ 265              	 #APP
+ 266              	# 109 "../src/irq.c" 1
+ 110              		__asm__ __volatile__(".word(0x0607678b)");
+ 267              		mv a4, a0
+ 268              	# 0 "" 2
+ 269              		.loc 1 110 2
+ 270              	# 110 "../src/irq.c" 1
+ 111              		__asm__ __volatile__("add %[dest], x0, a5" :[dest]"=r"(old_mask));
+ 271              		.word(0x0607678b)
+ 272              	# 0 "" 2
+ 273              		.loc 1 111 2
+ 274              	# 111 "../src/irq.c" 1
+ 112              	
+ 275              		add a5, x0, a5
+ 276              	# 0 "" 2
+ 277              	 #NO_APP
+ 278 0014 2326F4FE 		sw	a5,-20(s0)
+ 113:../src/irq.c  **** 	return old_mask;
+ 279              		.loc 1 113 9
+ 280 0018 8327C4FE 		lw	a5,-20(s0)
+ 114:../src/irq.c  **** }
+ 281              		.loc 1 114 1
+ 282 001c 3E85     		mv	a0,a5
+ 283 001e B250     		lw	ra,44(sp)
+ 284              		.cfi_restore 1
+ 285 0020 2254     		lw	s0,40(sp)
+ 286              		.cfi_restore 8
+ 287              		.cfi_def_cfa 2, 48
+ 288 0022 4561     		addi	sp,sp,48
+ 289              		.cfi_def_cfa_offset 0
+ 290 0024 8280     		jr	ra
+ 291              		.cfi_endproc
+ 292              	.LFE5:
+ 294              		.section	.text.irq_enable_one_bit,"ax",@progbits
+ 295              		.align	1
+ 296              		.globl	irq_enable_one_bit
+ 298              	irq_enable_one_bit:
+ 299              	.LFB6:
+ 115:../src/irq.c  **** 
+ 116:../src/irq.c  **** //Enable a local interrupt
+ 117:../src/irq.c  **** inline void irq_enable_one_bit(uint32_t irq_num)
+ 118:../src/irq.c  **** {
+ 300              		.loc 1 118 1
+ 301              		.cfi_startproc
+ 302 0000 7971     		addi	sp,sp,-48
+ 303              		.cfi_def_cfa_offset 48
+ 304 0002 06D6     		sw	ra,44(sp)
+ 305 0004 22D4     		sw	s0,40(sp)
+ 306              		.cfi_offset 1, -4
+ 307              		.cfi_offset 8, -8
+ 308 0006 0018     		addi	s0,sp,48
+ 309              		.cfi_def_cfa 8, 0
+ 310 0008 232EA4FC 		sw	a0,-36(s0)
+ 119:../src/irq.c  **** 	uint32_t mask = 0;
+ 311              		.loc 1 119 11
+ 312 000c 232604FE 		sw	zero,-20(s0)
+ 120:../src/irq.c  **** 
+ 121:../src/irq.c  **** 	mask = mask_irq(0xffffffff);
+ 313              		.loc 1 121 9
+ 314 0010 7D55     		li	a0,-1
+ 315 0012 97000000 		call	mask_irq
+ 315      E7800000 
+ 316 001a 2326A4FE 		sw	a0,-20(s0)
+ 122:../src/irq.c  **** 	mask = mask & (~(1 << irq_num));
+ 317              		.loc 1 122 21
+ 318 001e 8327C4FD 		lw	a5,-36(s0)
+ 319 0022 0547     		li	a4,1
+ 320 0024 B317F700 		sll	a5,a4,a5
+ 321              		.loc 1 122 17
+ 322 0028 93C7F7FF 		not	a5,a5
+ 323 002c 3E87     		mv	a4,a5
+ 324              		.loc 1 122 7
+ 325 002e 8327C4FE 		lw	a5,-20(s0)
+ 326 0032 F98F     		and	a5,a5,a4
+ 327 0034 2326F4FE 		sw	a5,-20(s0)
+ 123:../src/irq.c  **** 	mask_irq(mask);
+ 328              		.loc 1 123 2
+ 329 0038 0325C4FE 		lw	a0,-20(s0)
+ 330 003c 97000000 		call	mask_irq
+ 330      E7800000 
+ 124:../src/irq.c  **** 
+ 125:../src/irq.c  **** 	return;
+ 331              		.loc 1 125 2
+ 332 0044 0100     		nop
+ 126:../src/irq.c  **** }
+ 333              		.loc 1 126 1
+ 334 0046 B250     		lw	ra,44(sp)
+ 335              		.cfi_restore 1
+ 336 0048 2254     		lw	s0,40(sp)
+ 337              		.cfi_restore 8
+ 338              		.cfi_def_cfa 2, 48
+ 339 004a 4561     		addi	sp,sp,48
+ 340              		.cfi_def_cfa_offset 0
+ 341 004c 8280     		jr	ra
+ 342              		.cfi_endproc
+ 343              	.LFE6:
+ 345              		.section	.text.irq_disable_one_bit,"ax",@progbits
+ 346              		.align	1
+ 347              		.globl	irq_disable_one_bit
+ 349              	irq_disable_one_bit:
+ 350              	.LFB7:
+ 127:../src/irq.c  **** 
+ 128:../src/irq.c  **** //Disable a local interrupt
+ 129:../src/irq.c  **** inline void irq_disable_one_bit(uint32_t irq_num)
+ 130:../src/irq.c  **** {
+ 351              		.loc 1 130 1
+ 352              		.cfi_startproc
+ 353 0000 7971     		addi	sp,sp,-48
+ 354              		.cfi_def_cfa_offset 48
+ 355 0002 06D6     		sw	ra,44(sp)
+ 356 0004 22D4     		sw	s0,40(sp)
+ 357              		.cfi_offset 1, -4
+ 358              		.cfi_offset 8, -8
+ 359 0006 0018     		addi	s0,sp,48
+ 360              		.cfi_def_cfa 8, 0
+ 361 0008 232EA4FC 		sw	a0,-36(s0)
+ 131:../src/irq.c  **** 	uint32_t mask = 0;
+ 362              		.loc 1 131 11
+ 363 000c 232604FE 		sw	zero,-20(s0)
+ 132:../src/irq.c  **** 
+ 133:../src/irq.c  **** 	mask = mask_irq(0xffffffff);
+ 364              		.loc 1 133 9
+ 365 0010 7D55     		li	a0,-1
+ 366 0012 97000000 		call	mask_irq
+ 366      E7800000 
+ 367 001a 2326A4FE 		sw	a0,-20(s0)
+ 134:../src/irq.c  **** 	mask = mask | (1 << irq_num);
+ 368              		.loc 1 134 19
+ 369 001e 8327C4FD 		lw	a5,-36(s0)
+ 370 0022 0547     		li	a4,1
+ 371 0024 B317F700 		sll	a5,a4,a5
+ 372 0028 3E87     		mv	a4,a5
+ 373              		.loc 1 134 7
+ 374 002a 8327C4FE 		lw	a5,-20(s0)
+ 375 002e D98F     		or	a5,a5,a4
+ 376 0030 2326F4FE 		sw	a5,-20(s0)
+ 135:../src/irq.c  **** 	mask_irq(mask);
+ 377              		.loc 1 135 2
+ 378 0034 0325C4FE 		lw	a0,-20(s0)
+ 379 0038 97000000 		call	mask_irq
+ 379      E7800000 
+ 136:../src/irq.c  **** 
+ 137:../src/irq.c  **** 	return;
+ 380              		.loc 1 137 2
+ 381 0040 0100     		nop
+ 138:../src/irq.c  **** }
+ 382              		.loc 1 138 1
+ 383 0042 B250     		lw	ra,44(sp)
+ 384              		.cfi_restore 1
+ 385 0044 2254     		lw	s0,40(sp)
+ 386              		.cfi_restore 8
+ 387              		.cfi_def_cfa 2, 48
+ 388 0046 4561     		addi	sp,sp,48
+ 389              		.cfi_def_cfa_offset 0
+ 390 0048 8280     		jr	ra
+ 391              		.cfi_endproc
+ 392              	.LFE7:
+ 394              		.section	.text.enable_external_interrupt,"ax",@progbits
+ 395              		.align	1
+ 396              		.globl	enable_external_interrupt
+ 398              	enable_external_interrupt:
+ 399              	.LFB8:
+ 139:../src/irq.c  **** 
+ 140:../src/irq.c  **** //Enable external interrupts
+ 141:../src/irq.c  **** //Register 'mie' 's external interrupt bit
+ 142:../src/irq.c  **** inline void enable_external_interrupt(void)
+ 143:../src/irq.c  **** {
+ 400              		.loc 1 143 1
+ 401              		.cfi_startproc
+ 402 0000 4111     		addi	sp,sp,-16
+ 403              		.cfi_def_cfa_offset 16
+ 404 0002 06C6     		sw	ra,12(sp)
+ 405 0004 22C4     		sw	s0,8(sp)
+ 406              		.cfi_offset 1, -4
+ 407              		.cfi_offset 8, -8
+ 408 0006 0008     		addi	s0,sp,16
+ 409              		.cfi_def_cfa 8, 0
+ 144:../src/irq.c  **** 	__asm__ __volatile__("csrr   t4, mie");
+ 410              		.loc 1 144 2
+ 411              	 #APP
+ 412              	# 144 "../src/irq.c" 1
+ 145              		__asm__ __volatile__("li     t5, 0x800");
+ 413              		csrr   t4, mie
+ 414              	# 0 "" 2
+ 415              		.loc 1 145 2
+ 416              	# 145 "../src/irq.c" 1
+ 146              		__asm__ __volatile__("or    t4, t4, t5");
+ 417              		li     t5, 0x800
+ 418              	# 0 "" 2
+ 419              		.loc 1 146 2
+ 420              	# 146 "../src/irq.c" 1
+ 147              		__asm__ __volatile__("csrrw  t5, mie, t4");
+ 421              		or    t4, t4, t5
+ 422              	# 0 "" 2
+ 423              		.loc 1 147 2
+ 424              	# 147 "../src/irq.c" 1
+ 148              	}
+ 425              		csrrw  t5, mie, t4
+ 426              	# 0 "" 2
+ 427              		.loc 1 148 1
+ 428              	 #NO_APP
+ 429 001a 0100     		nop
+ 430 001c B240     		lw	ra,12(sp)
+ 431              		.cfi_restore 1
+ 432 001e 2244     		lw	s0,8(sp)
+ 433              		.cfi_restore 8
+ 434              		.cfi_def_cfa 2, 16
+ 435 0020 4101     		addi	sp,sp,16
+ 436              		.cfi_def_cfa_offset 0
+ 437 0022 8280     		jr	ra
+ 438              		.cfi_endproc
+ 439              	.LFE8:
+ 441              		.section	.text.disable_external_interrupt,"ax",@progbits
+ 442              		.align	1
+ 443              		.globl	disable_external_interrupt
+ 445              	disable_external_interrupt:
+ 446              	.LFB9:
+ 149:../src/irq.c  **** 
+ 150:../src/irq.c  **** //Disable external interrupts
+ 151:../src/irq.c  **** //Register 'mie' 's external interrupt bit
+ 152:../src/irq.c  **** inline void disable_external_interrupt(void)
+ 153:../src/irq.c  **** {
+ 447              		.loc 1 153 1
+ 448              		.cfi_startproc
+ 449 0000 4111     		addi	sp,sp,-16
+ 450              		.cfi_def_cfa_offset 16
+ 451 0002 06C6     		sw	ra,12(sp)
+ 452 0004 22C4     		sw	s0,8(sp)
+ 453              		.cfi_offset 1, -4
+ 454              		.cfi_offset 8, -8
+ 455 0006 0008     		addi	s0,sp,16
+ 456              		.cfi_def_cfa 8, 0
+ 154:../src/irq.c  **** 	__asm__ __volatile__("csrr   t4, mie");
+ 457              		.loc 1 154 2
+ 458              	 #APP
+ 459              	# 154 "../src/irq.c" 1
+ 155              		__asm__ __volatile__("li     t5, 0xfffff7ff");
+ 460              		csrr   t4, mie
+ 461              	# 0 "" 2
+ 462              		.loc 1 155 2
+ 463              	# 155 "../src/irq.c" 1
+ 156              		__asm__ __volatile__("and    t4, t4, t5");
+ 464              		li     t5, 0xfffff7ff
+ 465              	# 0 "" 2
+ 466              		.loc 1 156 2
+ 467              	# 156 "../src/irq.c" 1
+ 157              		__asm__ __volatile__("csrrw  t5, mie, t4");
+ 468              		and    t4, t4, t5
+ 469              	# 0 "" 2
+ 470              		.loc 1 157 2
+ 471              	# 157 "../src/irq.c" 1
+ 158              	}
+ 472              		csrrw  t5, mie, t4
+ 473              	# 0 "" 2
+ 474              		.loc 1 158 1
+ 475              	 #NO_APP
+ 476 001a 0100     		nop
+ 477 001c B240     		lw	ra,12(sp)
+ 478              		.cfi_restore 1
+ 479 001e 2244     		lw	s0,8(sp)
+ 480              		.cfi_restore 8
+ 481              		.cfi_def_cfa 2, 16
+ 482 0020 4101     		addi	sp,sp,16
+ 483              		.cfi_def_cfa_offset 0
+ 484 0022 8280     		jr	ra
+ 485              		.cfi_endproc
+ 486              	.LFE9:
+ 488              		.section	.text.enable_timer_interrupt,"ax",@progbits
+ 489              		.align	1
+ 490              		.globl	enable_timer_interrupt
+ 492              	enable_timer_interrupt:
+ 493              	.LFB10:
+ 159:../src/irq.c  **** 
+ 160:../src/irq.c  **** //Enable timer interrupt
+ 161:../src/irq.c  **** //Register 'mie' 's timer interrupt bit
+ 162:../src/irq.c  **** inline void enable_timer_interrupt(void)
+ 163:../src/irq.c  **** {
+ 494              		.loc 1 163 1
+ 495              		.cfi_startproc
+ 496 0000 4111     		addi	sp,sp,-16
+ 497              		.cfi_def_cfa_offset 16
+ 498 0002 06C6     		sw	ra,12(sp)
+ 499 0004 22C4     		sw	s0,8(sp)
+ 500              		.cfi_offset 1, -4
+ 501              		.cfi_offset 8, -8
+ 502 0006 0008     		addi	s0,sp,16
+ 503              		.cfi_def_cfa 8, 0
+ 164:../src/irq.c  **** 	__asm__ __volatile__("csrr   t4, mie");
+ 504              		.loc 1 164 2
+ 505              	 #APP
+ 506              	# 164 "../src/irq.c" 1
+ 165              		__asm__ __volatile__("li     t5, 0x80");
+ 507              		csrr   t4, mie
+ 508              	# 0 "" 2
+ 509              		.loc 1 165 2
+ 510              	# 165 "../src/irq.c" 1
+ 166              		__asm__ __volatile__("or     t4, t4, t5");
+ 511              		li     t5, 0x80
+ 512              	# 0 "" 2
+ 513              		.loc 1 166 2
+ 514              	# 166 "../src/irq.c" 1
+ 167              		__asm__ __volatile__("csrrw  t5, mie, t4");
+ 515              		or     t4, t4, t5
+ 516              	# 0 "" 2
+ 517              		.loc 1 167 2
+ 518              	# 167 "../src/irq.c" 1
+ 168              	}
+ 519              		csrrw  t5, mie, t4
+ 520              	# 0 "" 2
+ 521              		.loc 1 168 1
+ 522              	 #NO_APP
+ 523 0018 0100     		nop
+ 524 001a B240     		lw	ra,12(sp)
+ 525              		.cfi_restore 1
+ 526 001c 2244     		lw	s0,8(sp)
+ 527              		.cfi_restore 8
+ 528              		.cfi_def_cfa 2, 16
+ 529 001e 4101     		addi	sp,sp,16
+ 530              		.cfi_def_cfa_offset 0
+ 531 0020 8280     		jr	ra
+ 532              		.cfi_endproc
+ 533              	.LFE10:
+ 535              		.section	.text.disable_timer_interrupt,"ax",@progbits
+ 536              		.align	1
+ 537              		.globl	disable_timer_interrupt
+ 539              	disable_timer_interrupt:
+ 540              	.LFB11:
+ 169:../src/irq.c  **** 
+ 170:../src/irq.c  **** //Disable timer interrupt
+ 171:../src/irq.c  **** //Register 'mie' 's mie interrupt bit
+ 172:../src/irq.c  **** inline void disable_timer_interrupt(void)
+ 173:../src/irq.c  **** {
+ 541              		.loc 1 173 1
+ 542              		.cfi_startproc
+ 543 0000 4111     		addi	sp,sp,-16
+ 544              		.cfi_def_cfa_offset 16
+ 545 0002 06C6     		sw	ra,12(sp)
+ 546 0004 22C4     		sw	s0,8(sp)
+ 547              		.cfi_offset 1, -4
+ 548              		.cfi_offset 8, -8
+ 549 0006 0008     		addi	s0,sp,16
+ 550              		.cfi_def_cfa 8, 0
+ 174:../src/irq.c  **** 	__asm__ __volatile__("csrr   t4, mie");
+ 551              		.loc 1 174 2
+ 552              	 #APP
+ 553              	# 174 "../src/irq.c" 1
+ 175              		__asm__ __volatile__("li     t5, 0xffffff7f");
+ 554              		csrr   t4, mie
+ 555              	# 0 "" 2
+ 556              		.loc 1 175 2
+ 557              	# 175 "../src/irq.c" 1
+ 176              		__asm__ __volatile__("and    t4, t4, t5");
+ 558              		li     t5, 0xffffff7f
+ 559              	# 0 "" 2
+ 560              		.loc 1 176 2
+ 561              	# 176 "../src/irq.c" 1
+ 177              		__asm__ __volatile__("csrrw  t5, mie, t4");
+ 562              		and    t4, t4, t5
+ 563              	# 0 "" 2
+ 564              		.loc 1 177 2
+ 565              	# 177 "../src/irq.c" 1
+ 178              	}
+ 566              		csrrw  t5, mie, t4
+ 567              	# 0 "" 2
+ 568              		.loc 1 178 1
+ 569              	 #NO_APP
+ 570 0018 0100     		nop
+ 571 001a B240     		lw	ra,12(sp)
+ 572              		.cfi_restore 1
+ 573 001c 2244     		lw	s0,8(sp)
+ 574              		.cfi_restore 8
+ 575              		.cfi_def_cfa 2, 16
+ 576 001e 4101     		addi	sp,sp,16
+ 577              		.cfi_def_cfa_offset 0
+ 578 0020 8280     		jr	ra
+ 579              		.cfi_endproc
+ 580              	.LFE11:
+ 582              		.section	.text.enable_interrupt_global,"ax",@progbits
+ 583              		.align	1
+ 584              		.globl	enable_interrupt_global
+ 586              	enable_interrupt_global:
+ 587              	.LFB12:
+ 179:../src/irq.c  **** 
+ 180:../src/irq.c  **** //Enable global interrupt
+ 181:../src/irq.c  **** //Register 'mstatus' 's 'MIE' bit (global interrupt)
+ 182:../src/irq.c  **** inline void enable_interrupt_global(void)
+ 183:../src/irq.c  **** {
+ 588              		.loc 1 183 1
+ 589              		.cfi_startproc
+ 590 0000 4111     		addi	sp,sp,-16
+ 591              		.cfi_def_cfa_offset 16
+ 592 0002 06C6     		sw	ra,12(sp)
+ 593 0004 22C4     		sw	s0,8(sp)
+ 594              		.cfi_offset 1, -4
+ 595              		.cfi_offset 8, -8
+ 596 0006 0008     		addi	s0,sp,16
+ 597              		.cfi_def_cfa 8, 0
+ 184:../src/irq.c  **** 	__asm__ __volatile__("csrrwi t5, mstatus, 8");
+ 598              		.loc 1 184 2
+ 599              	 #APP
+ 600              	# 184 "../src/irq.c" 1
+ 185              	}
+ 601              		csrrwi t5, mstatus, 8
+ 602              	# 0 "" 2
+ 603              		.loc 1 185 1
+ 604              	 #NO_APP
+ 605 000c 0100     		nop
+ 606 000e B240     		lw	ra,12(sp)
+ 607              		.cfi_restore 1
+ 608 0010 2244     		lw	s0,8(sp)
+ 609              		.cfi_restore 8
+ 610              		.cfi_def_cfa 2, 16
+ 611 0012 4101     		addi	sp,sp,16
+ 612              		.cfi_def_cfa_offset 0
+ 613 0014 8280     		jr	ra
+ 614              		.cfi_endproc
+ 615              	.LFE12:
+ 617              		.section	.text.disable_interrupt_global,"ax",@progbits
+ 618              		.align	1
+ 619              		.globl	disable_interrupt_global
+ 621              	disable_interrupt_global:
+ 622              	.LFB13:
+ 186:../src/irq.c  **** 
+ 187:../src/irq.c  **** //Disable global interrupt
+ 188:../src/irq.c  **** //Register 'mstatus' 's 'MIE' bit (global interrupt)
+ 189:../src/irq.c  **** inline void disable_interrupt_global(void)
+ 190:../src/irq.c  **** {
+ 623              		.loc 1 190 1
+ 624              		.cfi_startproc
+ 625 0000 4111     		addi	sp,sp,-16
+ 626              		.cfi_def_cfa_offset 16
+ 627 0002 06C6     		sw	ra,12(sp)
+ 628 0004 22C4     		sw	s0,8(sp)
+ 629              		.cfi_offset 1, -4
+ 630              		.cfi_offset 8, -8
+ 631 0006 0008     		addi	s0,sp,16
+ 632              		.cfi_def_cfa 8, 0
+ 191:../src/irq.c  **** 	__asm__ __volatile__("csrrwi t5, mstatus, 0");
+ 633              		.loc 1 191 2
+ 634              	 #APP
+ 635              	# 191 "../src/irq.c" 1
+ 192              	}
+ 636              		csrrwi t5, mstatus, 0
+ 637              	# 0 "" 2
+ 638              		.loc 1 192 1
+ 639              	 #NO_APP
+ 640 000c 0100     		nop
+ 641 000e B240     		lw	ra,12(sp)
+ 642              		.cfi_restore 1
+ 643 0010 2244     		lw	s0,8(sp)
+ 644              		.cfi_restore 8
+ 645              		.cfi_def_cfa 2, 16
+ 646 0012 4101     		addi	sp,sp,16
+ 647              		.cfi_def_cfa_offset 0
+ 648 0014 8280     		jr	ra
+ 649              		.cfi_endproc
+ 650              	.LFE13:
+ 652              		.section	.text.set_timer,"ax",@progbits
+ 653              		.align	1
+ 654              		.globl	set_timer
+ 656              	set_timer:
+ 657              	.LFB14:
+ 193:../src/irq.c  **** 
+ 194:../src/irq.c  **** //Set timer
+ 195:../src/irq.c  **** uint32_t set_timer(uint32_t timer_val)
+ 196:../src/irq.c  **** {
+ 658              		.loc 1 196 1
+ 659              		.cfi_startproc
+ 660 0000 7971     		addi	sp,sp,-48
+ 661              		.cfi_def_cfa_offset 48
+ 662 0002 06D6     		sw	ra,44(sp)
+ 663 0004 22D4     		sw	s0,40(sp)
+ 664              		.cfi_offset 1, -4
+ 665              		.cfi_offset 8, -8
+ 666 0006 0018     		addi	s0,sp,48
+ 667              		.cfi_def_cfa 8, 0
+ 668 0008 232EA4FC 		sw	a0,-36(s0)
+ 197:../src/irq.c  **** 	uint32_t old_val = 0;
+ 669              		.loc 1 197 11
+ 670 000c 232604FE 		sw	zero,-20(s0)
+ 198:../src/irq.c  **** 
+ 199:../src/irq.c  **** 	__asm__ __volatile__("mv a4, a0");
+ 671              		.loc 1 199 2
+ 672              	 #APP
+ 673              	# 199 "../src/irq.c" 1
+ 200              		__asm__ __volatile__(".word(0x0a07078b)");
+ 674              		mv a4, a0
+ 675              	# 0 "" 2
+ 676              		.loc 1 200 2
+ 677              	# 200 "../src/irq.c" 1
+ 201              		__asm__ __volatile__("mv %[dest], a5"  :[dest]"=r"(old_val));
+ 678              		.word(0x0a07078b)
+ 679              	# 0 "" 2
+ 680              		.loc 1 201 2
+ 681              	# 201 "../src/irq.c" 1
+ 202              	
+ 682              		mv a5, a5
+ 683              	# 0 "" 2
+ 684              	 #NO_APP
+ 685 0018 2326F4FE 		sw	a5,-20(s0)
+ 203:../src/irq.c  **** 	return old_val;
+ 686              		.loc 1 203 9
+ 687 001c 8327C4FE 		lw	a5,-20(s0)
+ 204:../src/irq.c  **** }
+ 688              		.loc 1 204 1
+ 689 0020 3E85     		mv	a0,a5
+ 690 0022 B250     		lw	ra,44(sp)
+ 691              		.cfi_restore 1
+ 692 0024 2254     		lw	s0,40(sp)
+ 693              		.cfi_restore 8
+ 694              		.cfi_def_cfa 2, 48
+ 695 0026 4561     		addi	sp,sp,48
+ 696              		.cfi_def_cfa_offset 0
+ 697 0028 8280     		jr	ra
+ 698              		.cfi_endproc
+ 699              	.LFE14:
+ 701              		.text
+ 702              	.Letext0:
+ 703              		.file 2 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/machine/_default_types.h"
+ 704              		.file 3 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/sys/_stdint.h"
+ 705              		.file 4 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/stdio.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 irq.c
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:15     .sbss.tmp:00000000 tmp
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:22     .sbss.val:00000000 val
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:41     .text.irq:00000000 irq
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:45     .text.irq:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:46     .text.irq:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:46     .text.irq:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:47     .text.irq:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:50     .text.irq:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:51     .text.irq:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:53     .text.irq:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:57     .text.irq:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:251    .text.mask_irq:00000000 mask_irq
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:61     .text.irq:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:64     .text.irq:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:66     .text.irq:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:70     .text.irq:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:73     .text.irq:0000003a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:75     .text.irq:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:80     .text.irq:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:84     .text.irq:00000052 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:86     .text.irq:00000054 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:91     .text.irq:00000062 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:95     .text.irq:0000006c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:97     .text.irq:0000006e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:102    .text.irq:0000007c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:106    .text.irq:00000086 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:108    .text.irq:00000088 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:113    .text.irq:00000096 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:116    .text.irq:0000009c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:119    .text.irq:0000009e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:122    .text.irq:000000a4 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:124    .text.irq:000000a6 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:126    .text.irq:000000a8 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:129    .text.irq:000000ae .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:133    .text.irq:000000b2 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:136    .text.irq:000000b8 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:139    .text.irq:000000ba .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:141    .text.irq:000000be .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:143    .text.irq:000000c2 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:145    .text.irq:000000c6 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:147    .text.irq:000000ca .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:150    .text.irq:000000d2 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:153    .text.irq:000000d8 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:156    .text.irq:000000de .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:158    .text.irq:000000e2 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:160    .text.irq:000000e4 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:165    .text.irq:000000ee .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:168    .text.irq:000000f4 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:170    .text.irq:000000f6 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:173    .text.irq:00000106 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:177    .text.irq:0000011a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:180    .text.irq:0000012a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:185    .text.irq:0000013e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:188    .text.irq:00000144 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:190    .text.irq:00000146 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:193    .text.irq:00000156 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:197    .text.irq:0000016a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:200    .text.irq:0000017a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:206    .text.irq:0000018e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:208    .text.irq:00000192 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:210    .text.irq:00000196 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:212    .text.irq:00000198 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:213    .text.irq:00000198 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:215    .text.irq:0000019a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:217    .text.irq:0000019c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:224    .text.return_from_irq:00000000 return_from_irq
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:227    .text.return_from_irq:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:228    .text.return_from_irq:00000000 .L0 
+        ../src/irq.c:99     .text.return_from_irq:00000000 $d
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:233    .text.return_from_irq:00000004 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:237    .text.return_from_irq:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:241    .text.return_from_irq:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:243    .text.return_from_irq:0000000c $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:243    .text.return_from_irq:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:244    .text.return_from_irq:0000000e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:254    .text.mask_irq:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:255    .text.mask_irq:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:255    .text.mask_irq:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:256    .text.mask_irq:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:259    .text.mask_irq:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:260    .text.mask_irq:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:262    .text.mask_irq:00000008 .L0 
+        ../src/irq.c:109    .text.mask_irq:0000000c .L0 
+        ../src/irq.c:110    .text.mask_irq:0000000e $d
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:273    .text.mask_irq:00000012 .L0 
+        ../src/irq.c:111    .text.mask_irq:00000012 $x
+        ../src/irq.c:111    .text.mask_irq:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:280    .text.mask_irq:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:282    .text.mask_irq:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:284    .text.mask_irq:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:286    .text.mask_irq:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:287    .text.mask_irq:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:289    .text.mask_irq:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:291    .text.mask_irq:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:298    .text.irq_enable_one_bit:00000000 irq_enable_one_bit
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:301    .text.irq_enable_one_bit:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:302    .text.irq_enable_one_bit:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:302    .text.irq_enable_one_bit:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:303    .text.irq_enable_one_bit:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:306    .text.irq_enable_one_bit:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:307    .text.irq_enable_one_bit:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:309    .text.irq_enable_one_bit:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:312    .text.irq_enable_one_bit:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:314    .text.irq_enable_one_bit:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:318    .text.irq_enable_one_bit:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:322    .text.irq_enable_one_bit:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:325    .text.irq_enable_one_bit:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:329    .text.irq_enable_one_bit:00000038 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:332    .text.irq_enable_one_bit:00000044 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:334    .text.irq_enable_one_bit:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:335    .text.irq_enable_one_bit:00000048 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:337    .text.irq_enable_one_bit:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:338    .text.irq_enable_one_bit:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:340    .text.irq_enable_one_bit:0000004c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:342    .text.irq_enable_one_bit:0000004e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:349    .text.irq_disable_one_bit:00000000 irq_disable_one_bit
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:352    .text.irq_disable_one_bit:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:353    .text.irq_disable_one_bit:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:353    .text.irq_disable_one_bit:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:354    .text.irq_disable_one_bit:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:357    .text.irq_disable_one_bit:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:358    .text.irq_disable_one_bit:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:360    .text.irq_disable_one_bit:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:363    .text.irq_disable_one_bit:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:365    .text.irq_disable_one_bit:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:369    .text.irq_disable_one_bit:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:374    .text.irq_disable_one_bit:0000002a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:378    .text.irq_disable_one_bit:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:381    .text.irq_disable_one_bit:00000040 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:383    .text.irq_disable_one_bit:00000042 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:384    .text.irq_disable_one_bit:00000044 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:386    .text.irq_disable_one_bit:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:387    .text.irq_disable_one_bit:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:389    .text.irq_disable_one_bit:00000048 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:391    .text.irq_disable_one_bit:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:398    .text.enable_external_interrupt:00000000 enable_external_interrupt
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:401    .text.enable_external_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:402    .text.enable_external_interrupt:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:402    .text.enable_external_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:403    .text.enable_external_interrupt:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:406    .text.enable_external_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:407    .text.enable_external_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:409    .text.enable_external_interrupt:00000008 .L0 
+        ../src/irq.c:144    .text.enable_external_interrupt:00000008 .L0 
+        ../src/irq.c:145    .text.enable_external_interrupt:0000000c .L0 
+        ../src/irq.c:146    .text.enable_external_interrupt:00000012 .L0 
+        ../src/irq.c:147    .text.enable_external_interrupt:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:429    .text.enable_external_interrupt:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:431    .text.enable_external_interrupt:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:433    .text.enable_external_interrupt:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:434    .text.enable_external_interrupt:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:436    .text.enable_external_interrupt:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:438    .text.enable_external_interrupt:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:445    .text.disable_external_interrupt:00000000 disable_external_interrupt
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:448    .text.disable_external_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:449    .text.disable_external_interrupt:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:449    .text.disable_external_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:450    .text.disable_external_interrupt:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:453    .text.disable_external_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:454    .text.disable_external_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:456    .text.disable_external_interrupt:00000008 .L0 
+        ../src/irq.c:154    .text.disable_external_interrupt:00000008 .L0 
+        ../src/irq.c:155    .text.disable_external_interrupt:0000000c .L0 
+        ../src/irq.c:156    .text.disable_external_interrupt:00000012 .L0 
+        ../src/irq.c:157    .text.disable_external_interrupt:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:476    .text.disable_external_interrupt:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:478    .text.disable_external_interrupt:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:480    .text.disable_external_interrupt:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:481    .text.disable_external_interrupt:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:483    .text.disable_external_interrupt:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:485    .text.disable_external_interrupt:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:492    .text.enable_timer_interrupt:00000000 enable_timer_interrupt
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:495    .text.enable_timer_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:496    .text.enable_timer_interrupt:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:496    .text.enable_timer_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:497    .text.enable_timer_interrupt:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:500    .text.enable_timer_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:501    .text.enable_timer_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:503    .text.enable_timer_interrupt:00000008 .L0 
+        ../src/irq.c:164    .text.enable_timer_interrupt:00000008 .L0 
+        ../src/irq.c:165    .text.enable_timer_interrupt:0000000c .L0 
+        ../src/irq.c:166    .text.enable_timer_interrupt:00000010 .L0 
+        ../src/irq.c:167    .text.enable_timer_interrupt:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:523    .text.enable_timer_interrupt:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:525    .text.enable_timer_interrupt:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:527    .text.enable_timer_interrupt:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:528    .text.enable_timer_interrupt:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:530    .text.enable_timer_interrupt:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:532    .text.enable_timer_interrupt:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:539    .text.disable_timer_interrupt:00000000 disable_timer_interrupt
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:542    .text.disable_timer_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:543    .text.disable_timer_interrupt:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:543    .text.disable_timer_interrupt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:544    .text.disable_timer_interrupt:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:547    .text.disable_timer_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:548    .text.disable_timer_interrupt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:550    .text.disable_timer_interrupt:00000008 .L0 
+        ../src/irq.c:174    .text.disable_timer_interrupt:00000008 .L0 
+        ../src/irq.c:175    .text.disable_timer_interrupt:0000000c .L0 
+        ../src/irq.c:176    .text.disable_timer_interrupt:00000010 .L0 
+        ../src/irq.c:177    .text.disable_timer_interrupt:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:570    .text.disable_timer_interrupt:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:572    .text.disable_timer_interrupt:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:574    .text.disable_timer_interrupt:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:575    .text.disable_timer_interrupt:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:577    .text.disable_timer_interrupt:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:579    .text.disable_timer_interrupt:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:586    .text.enable_interrupt_global:00000000 enable_interrupt_global
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:589    .text.enable_interrupt_global:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:590    .text.enable_interrupt_global:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:590    .text.enable_interrupt_global:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:591    .text.enable_interrupt_global:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:594    .text.enable_interrupt_global:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:595    .text.enable_interrupt_global:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:597    .text.enable_interrupt_global:00000008 .L0 
+        ../src/irq.c:184    .text.enable_interrupt_global:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:605    .text.enable_interrupt_global:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:607    .text.enable_interrupt_global:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:609    .text.enable_interrupt_global:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:610    .text.enable_interrupt_global:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:612    .text.enable_interrupt_global:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:614    .text.enable_interrupt_global:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:621    .text.disable_interrupt_global:00000000 disable_interrupt_global
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:624    .text.disable_interrupt_global:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:625    .text.disable_interrupt_global:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:625    .text.disable_interrupt_global:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:626    .text.disable_interrupt_global:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:629    .text.disable_interrupt_global:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:630    .text.disable_interrupt_global:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:632    .text.disable_interrupt_global:00000008 .L0 
+        ../src/irq.c:191    .text.disable_interrupt_global:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:640    .text.disable_interrupt_global:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:642    .text.disable_interrupt_global:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:644    .text.disable_interrupt_global:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:645    .text.disable_interrupt_global:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:647    .text.disable_interrupt_global:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:649    .text.disable_interrupt_global:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:656    .text.set_timer:00000000 set_timer
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:659    .text.set_timer:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:660    .text.set_timer:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:660    .text.set_timer:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:661    .text.set_timer:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:664    .text.set_timer:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:665    .text.set_timer:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:667    .text.set_timer:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:670    .text.set_timer:0000000c .L0 
+        ../src/irq.c:199    .text.set_timer:00000010 .L0 
+        ../src/irq.c:200    .text.set_timer:00000012 $d
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:680    .text.set_timer:00000016 .L0 
+        ../src/irq.c:201    .text.set_timer:00000016 $x
+        ../src/irq.c:201    .text.set_timer:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:687    .text.set_timer:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:689    .text.set_timer:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:691    .text.set_timer:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:693    .text.set_timer:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:694    .text.set_timer:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:696    .text.set_timer:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:698    .text.set_timer:0000002a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:0000003b .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:00000069 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:00000070 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:000000b6 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:000000f8 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:00000136 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:0000013c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:00000142 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:00000153 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1591   .debug_line_str:0000015d .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:220    .text.irq:0000019c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:247    .text.return_from_irq:0000000e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:294    .text.mask_irq:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:345    .text.irq_enable_one_bit:0000004e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:394    .text.irq_disable_one_bit:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:441    .text.enable_external_interrupt:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:488    .text.disable_external_interrupt:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:535    .text.enable_timer_interrupt:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:582    .text.disable_timer_interrupt:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:617    .text.enable_interrupt_global:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:652    .text.disable_interrupt_global:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:701    .text.set_timer:0000002a .L0 
+                     .debug_frame:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:75     .text.irq:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:86     .text.irq:00000054 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:97     .text.irq:0000006e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:108    .text.irq:00000088 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:26     .rodata:00000000 .LC0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:170    .text.irq:000000f6 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:29     .rodata:00000014 .LC1
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:174    .text.irq:0000010a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:32     .rodata:0000001c .LC2
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:177    .text.irq:0000011a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:181    .text.irq:0000012e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:35     .rodata:00000024 .LC3
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:190    .text.irq:00000146 .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:194    .text.irq:0000015a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:197    .text.irq:0000016a .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:201    .text.irq:0000017e .L0 
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:78     .text.irq:0000004a .L2
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:89     .text.irq:00000062 .L3
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:100    .text.irq:0000007c .L4
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:111    .text.irq:00000096 .L5
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:203    .text.irq:0000018e .L6
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:131    .text.irq:000000b2 .L7
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:137    .text.irq:000000ba .L8
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:163    .text.irq:000000ee .L9
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:183    .text.irq:0000013e .L10
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1075   .debug_abbrev:00000000 .Ldebug_abbrev0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1517   .debug_str:0000006e .LASF42
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1586   .debug_line_str:00000000 .LASF0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1588   .debug_line_str:0000000d .LASF1
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1459   .debug_rnglists:0000000c .LLRL0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1499   .debug_line:00000000 .Ldebug_line0
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1573   .debug_str:000002ac .LASF2
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1503   .debug_str:00000005 .LASF5
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1523   .debug_str:00000175 .LASF3
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1557   .debug_str:00000244 .LASF4
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1515   .debug_str:00000063 .LASF6
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1527   .debug_str:00000195 .LASF7
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1569   .debug_str:00000297 .LASF8
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1533   .debug_str:000001be .LASF9
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1525   .debug_str:00000183 .LASF10
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1547   .debug_str:0000021c .LASF11
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1541   .debug_str:000001f5 .LASF12
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1539   .debug_str:000001e8 .LASF13
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1571   .debug_str:000002a0 .LASF14
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1501   .debug_str:00000000 .LASF15
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1513   .debug_str:0000005b .LASF16
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1561   .debug_str:00000254 .LASF17
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1567   .debug_str:0000028e .LASF18
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1529   .debug_str:000001a8 .LASF19
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1531   .debug_str:000001b3 .LASF20
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1545   .debug_str:00000211 .LASF21
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1583   .debug_str:000002f7 .LASF22
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1551   .debug_str:0000022f .LASF43
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1579   .debug_str:000002da .LASF35
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:657    .text.set_timer:00000000 .LFB14
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:699    .text.set_timer:0000002a .LFE14
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1519   .debug_str:00000157 .LASF29
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1537   .debug_str:000001e0 .LASF31
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1563   .debug_str:0000025d .LASF23
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:622    .text.disable_interrupt_global:00000000 .LFB13
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:650    .text.disable_interrupt_global:00000016 .LFE13
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1565   .debug_str:00000276 .LASF24
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:587    .text.enable_interrupt_global:00000000 .LFB12
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:615    .text.enable_interrupt_global:00000016 .LFE12
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1507   .debug_str:0000002a .LASF25
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:540    .text.disable_timer_interrupt:00000000 .LFB11
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:580    .text.disable_timer_interrupt:00000022 .LFE11
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1535   .debug_str:000001c9 .LASF26
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:493    .text.enable_timer_interrupt:00000000 .LFB10
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:533    .text.enable_timer_interrupt:00000022 .LFE10
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1505   .debug_str:0000000f .LASF27
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:446    .text.disable_external_interrupt:00000000 .LFB9
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:486    .text.disable_external_interrupt:00000024 .LFE9
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1577   .debug_str:000002c0 .LASF28
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:399    .text.enable_external_interrupt:00000000 .LFB8
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:439    .text.enable_external_interrupt:00000024 .LFE8
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1521   .debug_str:00000161 .LASF33
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:350    .text.irq_disable_one_bit:00000000 .LFB7
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:392    .text.irq_disable_one_bit:0000004a .LFE7
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1575   .debug_str:000002b8 .LASF30
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1549   .debug_str:0000022a .LASF32
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1581   .debug_str:000002e4 .LASF34
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:299    .text.irq_enable_one_bit:00000000 .LFB6
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:343    .text.irq_enable_one_bit:0000004e .LFE6
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1555   .debug_str:0000023b .LASF36
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:252    .text.mask_irq:00000000 .LFB5
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:292    .text.mask_irq:00000026 .LFE5
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1511   .debug_str:00000052 .LASF37
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1509   .debug_str:00000042 .LASF38
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:225    .text.return_from_irq:00000000 .LFB4
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:245    .text.return_from_irq:0000000e .LFE4
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:42     .text.irq:00000000 .LFB3
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:218    .text.irq:0000019c .LFE3
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1543   .debug_str:0000020c .LASF39
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1553   .debug_str:00000236 .LASF40
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:117    .text.irq:0000009e .LBB2
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:204    .text.irq:0000018e .LBE2
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:1559   .debug_str:0000024e .LASF41
+C:\Users\nesus\AppData\Local\Temp\cc4fIxbB.s:707    .debug_info:00000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+irq00_flag
+irq13_flag
+irq20_flag
+irq21_flag
+printf

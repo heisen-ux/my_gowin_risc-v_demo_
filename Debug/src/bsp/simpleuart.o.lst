@@ -1,0 +1,464 @@
+   1              		.file	"simpleuart.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p1_m2p0_c2p0_zicsr2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.file 0 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\Debug" "../src/bsp/simpleuart.c"
+  10              		.section	.text.uart_init,"ax",@progbits
+  11              		.align	1
+  12              		.globl	uart_init
+  14              	uart_init:
+  15              	.LFB3:
+  16              		.file 1 "../src/bsp/simpleuart.c"
+   1:../src/bsp/simpleuart.c **** /*
+   2:../src/bsp/simpleuart.c ****  ******************************************************************************************
+   3:../src/bsp/simpleuart.c ****  * @file		simpleuart.c
+   4:../src/bsp/simpleuart.c ****  * @author		GowinSemicoductor
+   5:../src/bsp/simpleuart.c ****  * @device		Gowin_PicoRV32
+   6:../src/bsp/simpleuart.c ****  * @brief		Simple UART Peripheral.
+   7:../src/bsp/simpleuart.c ****  ******************************************************************************************
+   8:../src/bsp/simpleuart.c ****  */
+   9:../src/bsp/simpleuart.c **** 
+  10:../src/bsp/simpleuart.c **** /* Includes ----------------------------------------------------------------------- */
+  11:../src/bsp/simpleuart.c **** #include "simpleuart.h"
+  12:../src/bsp/simpleuart.c **** 
+  13:../src/bsp/simpleuart.c **** 
+  14:../src/bsp/simpleuart.c **** /* Definitions -------------------------------------------------------------------- */
+  15:../src/bsp/simpleuart.c **** 
+  16:../src/bsp/simpleuart.c **** void uart_init(uint32_t BaudRate)
+  17:../src/bsp/simpleuart.c **** {
+  17              		.loc 1 17 1
+  18              		.cfi_startproc
+  19 0000 0111     		addi	sp,sp,-32
+  20              		.cfi_def_cfa_offset 32
+  21 0002 06CE     		sw	ra,28(sp)
+  22 0004 22CC     		sw	s0,24(sp)
+  23              		.cfi_offset 1, -4
+  24              		.cfi_offset 8, -8
+  25 0006 0010     		addi	s0,sp,32
+  26              		.cfi_def_cfa 8, 0
+  27 0008 2326A4FE 		sw	a0,-20(s0)
+  18:../src/bsp/simpleuart.c **** 	PICO_SIMPLEUART->CLKDIV = SYSCLKFREQ / BaudRate;
+  28              		.loc 1 18 17
+  29 000c B7070003 		li	a5,50331648
+  30              		.loc 1 18 39
+  31 0010 37079C01 		li	a4,27000832
+  32 0014 930607CC 		addi	a3,a4,-832
+  33 0018 0327C4FE 		lw	a4,-20(s0)
+  34 001c 33D7E602 		divu	a4,a3,a4
+  35              		.loc 1 18 26
+  36 0020 D8C3     		sw	a4,4(a5)
+  19:../src/bsp/simpleuart.c **** }
+  37              		.loc 1 19 1
+  38 0022 0100     		nop
+  39 0024 F240     		lw	ra,28(sp)
+  40              		.cfi_restore 1
+  41 0026 6244     		lw	s0,24(sp)
+  42              		.cfi_restore 8
+  43              		.cfi_def_cfa 2, 32
+  44 0028 0561     		addi	sp,sp,32
+  45              		.cfi_def_cfa_offset 0
+  46 002a 8280     		jr	ra
+  47              		.cfi_endproc
+  48              	.LFE3:
+  50              		.section	.text.outbyte,"ax",@progbits
+  51              		.align	1
+  52              		.globl	outbyte
+  54              	outbyte:
+  55              	.LFB4:
+  20:../src/bsp/simpleuart.c **** 
+  21:../src/bsp/simpleuart.c **** int outbyte(int c)
+  22:../src/bsp/simpleuart.c **** {
+  56              		.loc 1 22 1
+  57              		.cfi_startproc
+  58 0000 0111     		addi	sp,sp,-32
+  59              		.cfi_def_cfa_offset 32
+  60 0002 06CE     		sw	ra,28(sp)
+  61 0004 22CC     		sw	s0,24(sp)
+  62              		.cfi_offset 1, -4
+  63              		.cfi_offset 8, -8
+  64 0006 0010     		addi	s0,sp,32
+  65              		.cfi_def_cfa 8, 0
+  66 0008 2326A4FE 		sw	a0,-20(s0)
+  23:../src/bsp/simpleuart.c **** 	if (c == '\n')
+  67              		.loc 1 23 5
+  68 000c 0327C4FE 		lw	a4,-20(s0)
+  69 0010 A947     		li	a5,10
+  70 0012 6317F700 		bne	a4,a5,.L3
+  24:../src/bsp/simpleuart.c **** 	{
+  25:../src/bsp/simpleuart.c **** 		outbyte('\r');
+  71              		.loc 1 25 3
+  72 0016 3545     		li	a0,13
+  73 0018 97000000 		call	outbyte
+  73      E7800000 
+  74              	.L3:
+  26:../src/bsp/simpleuart.c **** 	}
+  27:../src/bsp/simpleuart.c **** 
+  28:../src/bsp/simpleuart.c **** 	PICO_SIMPLEUART->DATA = c;
+  75              		.loc 1 28 17
+  76 0020 B7070003 		li	a5,50331648
+  77              		.loc 1 28 24
+  78 0024 0327C4FE 		lw	a4,-20(s0)
+  79 0028 98C7     		sw	a4,8(a5)
+  29:../src/bsp/simpleuart.c **** 
+  30:../src/bsp/simpleuart.c **** 	return c;
+  80              		.loc 1 30 9
+  81 002a 8327C4FE 		lw	a5,-20(s0)
+  31:../src/bsp/simpleuart.c **** }
+  82              		.loc 1 31 1
+  83 002e 3E85     		mv	a0,a5
+  84 0030 F240     		lw	ra,28(sp)
+  85              		.cfi_restore 1
+  86 0032 6244     		lw	s0,24(sp)
+  87              		.cfi_restore 8
+  88              		.cfi_def_cfa 2, 32
+  89 0034 0561     		addi	sp,sp,32
+  90              		.cfi_def_cfa_offset 0
+  91 0036 8280     		jr	ra
+  92              		.cfi_endproc
+  93              	.LFE4:
+  95              		.section	.text.uart_putchar,"ax",@progbits
+  96              		.align	1
+  97              		.globl	uart_putchar
+  99              	uart_putchar:
+ 100              	.LFB5:
+  32:../src/bsp/simpleuart.c **** 
+  33:../src/bsp/simpleuart.c **** void uart_putchar(char c)
+  34:../src/bsp/simpleuart.c **** {
+ 101              		.loc 1 34 1
+ 102              		.cfi_startproc
+ 103 0000 0111     		addi	sp,sp,-32
+ 104              		.cfi_def_cfa_offset 32
+ 105 0002 06CE     		sw	ra,28(sp)
+ 106 0004 22CC     		sw	s0,24(sp)
+ 107              		.cfi_offset 1, -4
+ 108              		.cfi_offset 8, -8
+ 109 0006 0010     		addi	s0,sp,32
+ 110              		.cfi_def_cfa 8, 0
+ 111 0008 AA87     		mv	a5,a0
+ 112 000a A307F4FE 		sb	a5,-17(s0)
+  35:../src/bsp/simpleuart.c **** 	PICO_SIMPLEUART->DATA = c;
+ 113              		.loc 1 35 17
+ 114 000e B7070003 		li	a5,50331648
+ 115              		.loc 1 35 24
+ 116 0012 0347F4FE 		lbu	a4,-17(s0)
+ 117 0016 98C7     		sw	a4,8(a5)
+  36:../src/bsp/simpleuart.c **** }
+ 118              		.loc 1 36 1
+ 119 0018 0100     		nop
+ 120 001a F240     		lw	ra,28(sp)
+ 121              		.cfi_restore 1
+ 122 001c 6244     		lw	s0,24(sp)
+ 123              		.cfi_restore 8
+ 124              		.cfi_def_cfa 2, 32
+ 125 001e 0561     		addi	sp,sp,32
+ 126              		.cfi_def_cfa_offset 0
+ 127 0020 8280     		jr	ra
+ 128              		.cfi_endproc
+ 129              	.LFE5:
+ 131              		.section	.text.getchar_prompt,"ax",@progbits
+ 132              		.align	1
+ 133              		.globl	getchar_prompt
+ 135              	getchar_prompt:
+ 136              	.LFB6:
+  37:../src/bsp/simpleuart.c **** 
+  38:../src/bsp/simpleuart.c **** char getchar_prompt(char *prompt)
+  39:../src/bsp/simpleuart.c **** {
+ 137              		.loc 1 39 1
+ 138              		.cfi_startproc
+ 139 0000 7971     		addi	sp,sp,-48
+ 140              		.cfi_def_cfa_offset 48
+ 141 0002 06D6     		sw	ra,44(sp)
+ 142 0004 22D4     		sw	s0,40(sp)
+ 143              		.cfi_offset 1, -4
+ 144              		.cfi_offset 8, -8
+ 145 0006 0018     		addi	s0,sp,48
+ 146              		.cfi_def_cfa 8, 0
+ 147 0008 232EA4FC 		sw	a0,-36(s0)
+  40:../src/bsp/simpleuart.c **** 	int32_t c = -1;
+ 148              		.loc 1 40 10
+ 149 000c FD57     		li	a5,-1
+ 150 000e 2326F4FE 		sw	a5,-20(s0)
+  41:../src/bsp/simpleuart.c **** 	uint32_t cycles_begin, cycles_now, cycles;
+  42:../src/bsp/simpleuart.c **** 
+  43:../src/bsp/simpleuart.c **** 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+ 151              		.loc 1 43 2
+ 152              	 #APP
+ 153              	# 43 "../src/bsp/simpleuart.c" 1
+  44              	
+ 154              		rdcycle a5
+ 155              	# 0 "" 2
+ 156              	 #NO_APP
+ 157 0016 2324F4FE 		sw	a5,-24(s0)
+  45:../src/bsp/simpleuart.c **** 	while (c == -1)
+ 158              		.loc 1 45 8
+ 159 001a 35A8     		j	.L7
+ 160              	.L9:
+  46:../src/bsp/simpleuart.c **** 	{
+  47:../src/bsp/simpleuart.c **** 		__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+ 161              		.loc 1 47 3
+ 162              	 #APP
+ 163              	# 47 "../src/bsp/simpleuart.c" 1
+  48              	
+ 164              		rdcycle a5
+ 165              	# 0 "" 2
+ 166              	 #NO_APP
+ 167 0020 2322F4FE 		sw	a5,-28(s0)
+  49:../src/bsp/simpleuart.c **** 		cycles = cycles_now - cycles_begin;
+ 168              		.loc 1 49 10
+ 169 0024 032744FE 		lw	a4,-28(s0)
+ 170 0028 832784FE 		lw	a5,-24(s0)
+ 171 002c B307F740 		sub	a5,a4,a5
+ 172 0030 2320F4FE 		sw	a5,-32(s0)
+  50:../src/bsp/simpleuart.c **** 		if (cycles > 12000000)
+ 173              		.loc 1 50 6
+ 174 0034 032704FE 		lw	a4,-32(s0)
+ 175 0038 B727B700 		li	a5,12001280
+ 176 003c 938707B0 		addi	a5,a5,-1280
+ 177 0040 63F6E700 		bleu	a4,a5,.L8
+  51:../src/bsp/simpleuart.c **** 		{
+  52:../src/bsp/simpleuart.c **** 			cycles_begin = cycles_now;
+ 178              		.loc 1 52 17
+ 179 0044 832744FE 		lw	a5,-28(s0)
+ 180 0048 2324F4FE 		sw	a5,-24(s0)
+ 181              	.L8:
+  53:../src/bsp/simpleuart.c **** 		}
+  54:../src/bsp/simpleuart.c **** 
+  55:../src/bsp/simpleuart.c **** 		c = PICO_SIMPLEUART->DATA;
+ 182              		.loc 1 55 22
+ 183 004c B7070003 		li	a5,50331648
+ 184 0050 9C47     		lw	a5,8(a5)
+ 185              		.loc 1 55 5
+ 186 0052 2326F4FE 		sw	a5,-20(s0)
+ 187              	.L7:
+  45:../src/bsp/simpleuart.c **** 	{
+ 188              		.loc 1 45 11
+ 189 0056 0327C4FE 		lw	a4,-20(s0)
+ 190 005a FD57     		li	a5,-1
+ 191 005c E300F7FC 		beq	a4,a5,.L9
+  56:../src/bsp/simpleuart.c **** 	}
+  57:../src/bsp/simpleuart.c **** 
+  58:../src/bsp/simpleuart.c **** 	return c;
+ 192              		.loc 1 58 9
+ 193 0060 8327C4FE 		lw	a5,-20(s0)
+ 194 0064 93F7F70F 		andi	a5,a5,0xff
+  59:../src/bsp/simpleuart.c **** }
+ 195              		.loc 1 59 1
+ 196 0068 3E85     		mv	a0,a5
+ 197 006a B250     		lw	ra,44(sp)
+ 198              		.cfi_restore 1
+ 199 006c 2254     		lw	s0,40(sp)
+ 200              		.cfi_restore 8
+ 201              		.cfi_def_cfa 2, 48
+ 202 006e 4561     		addi	sp,sp,48
+ 203              		.cfi_def_cfa_offset 0
+ 204 0070 8280     		jr	ra
+ 205              		.cfi_endproc
+ 206              	.LFE6:
+ 208              		.section	.text.uart_getchar,"ax",@progbits
+ 209              		.align	1
+ 210              		.globl	uart_getchar
+ 212              	uart_getchar:
+ 213              	.LFB7:
+  60:../src/bsp/simpleuart.c **** 
+  61:../src/bsp/simpleuart.c **** char uart_getchar(void)
+  62:../src/bsp/simpleuart.c **** {
+ 214              		.loc 1 62 1
+ 215              		.cfi_startproc
+ 216 0000 4111     		addi	sp,sp,-16
+ 217              		.cfi_def_cfa_offset 16
+ 218 0002 06C6     		sw	ra,12(sp)
+ 219 0004 22C4     		sw	s0,8(sp)
+ 220              		.cfi_offset 1, -4
+ 221              		.cfi_offset 8, -8
+ 222 0006 0008     		addi	s0,sp,16
+ 223              		.cfi_def_cfa 8, 0
+  63:../src/bsp/simpleuart.c **** 	return getchar_prompt(0);
+ 224              		.loc 1 63 9
+ 225 0008 0145     		li	a0,0
+ 226 000a 97000000 		call	getchar_prompt
+ 226      E7800000 
+ 227 0012 AA87     		mv	a5,a0
+  64:../src/bsp/simpleuart.c **** }
+ 228              		.loc 1 64 1
+ 229 0014 3E85     		mv	a0,a5
+ 230 0016 B240     		lw	ra,12(sp)
+ 231              		.cfi_restore 1
+ 232 0018 2244     		lw	s0,8(sp)
+ 233              		.cfi_restore 8
+ 234              		.cfi_def_cfa 2, 16
+ 235 001a 4101     		addi	sp,sp,16
+ 236              		.cfi_def_cfa_offset 0
+ 237 001c 8280     		jr	ra
+ 238              		.cfi_endproc
+ 239              	.LFE7:
+ 241              		.text
+ 242              	.Letext0:
+ 243              		.file 2 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/machine/_default_types.h"
+ 244              		.file 3 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/sys/_stdint.h"
+ 245              		.file 4 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\src/picorv32.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 simpleuart.c
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:14     .text.uart_init:00000000 uart_init
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:18     .text.uart_init:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:19     .text.uart_init:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:19     .text.uart_init:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:20     .text.uart_init:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:23     .text.uart_init:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:24     .text.uart_init:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:26     .text.uart_init:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:29     .text.uart_init:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:31     .text.uart_init:00000010 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:36     .text.uart_init:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:38     .text.uart_init:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:40     .text.uart_init:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:42     .text.uart_init:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:43     .text.uart_init:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:45     .text.uart_init:0000002a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:47     .text.uart_init:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:54     .text.outbyte:00000000 outbyte
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:57     .text.outbyte:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:58     .text.outbyte:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:58     .text.outbyte:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:59     .text.outbyte:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:62     .text.outbyte:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:63     .text.outbyte:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:65     .text.outbyte:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:68     .text.outbyte:0000000c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:72     .text.outbyte:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:76     .text.outbyte:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:78     .text.outbyte:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:81     .text.outbyte:0000002a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:83     .text.outbyte:0000002e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:85     .text.outbyte:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:87     .text.outbyte:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:88     .text.outbyte:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:90     .text.outbyte:00000036 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:92     .text.outbyte:00000038 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:99     .text.uart_putchar:00000000 uart_putchar
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:102    .text.uart_putchar:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:103    .text.uart_putchar:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:103    .text.uart_putchar:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:104    .text.uart_putchar:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:107    .text.uart_putchar:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:108    .text.uart_putchar:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:110    .text.uart_putchar:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:114    .text.uart_putchar:0000000e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:116    .text.uart_putchar:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:119    .text.uart_putchar:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:121    .text.uart_putchar:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:123    .text.uart_putchar:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:124    .text.uart_putchar:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:126    .text.uart_putchar:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:128    .text.uart_putchar:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:135    .text.getchar_prompt:00000000 getchar_prompt
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:138    .text.getchar_prompt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:139    .text.getchar_prompt:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:139    .text.getchar_prompt:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:140    .text.getchar_prompt:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:143    .text.getchar_prompt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:144    .text.getchar_prompt:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:146    .text.getchar_prompt:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:149    .text.getchar_prompt:0000000c .L0 
+../src/bsp/simpleuart.c:43     .text.getchar_prompt:00000012 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:159    .text.getchar_prompt:0000001a .L0 
+../src/bsp/simpleuart.c:47     .text.getchar_prompt:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:169    .text.getchar_prompt:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:174    .text.getchar_prompt:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:179    .text.getchar_prompt:00000044 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:183    .text.getchar_prompt:0000004c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:186    .text.getchar_prompt:00000052 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:189    .text.getchar_prompt:00000056 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:193    .text.getchar_prompt:00000060 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:196    .text.getchar_prompt:00000068 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:198    .text.getchar_prompt:0000006c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:200    .text.getchar_prompt:0000006e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:201    .text.getchar_prompt:0000006e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:203    .text.getchar_prompt:00000070 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:205    .text.getchar_prompt:00000072 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:212    .text.uart_getchar:00000000 uart_getchar
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:215    .text.uart_getchar:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:216    .text.uart_getchar:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:216    .text.uart_getchar:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:217    .text.uart_getchar:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:220    .text.uart_getchar:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:221    .text.uart_getchar:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:223    .text.uart_getchar:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:225    .text.uart_getchar:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:229    .text.uart_getchar:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:231    .text.uart_getchar:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:233    .text.uart_getchar:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:234    .text.uart_getchar:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:236    .text.uart_getchar:0000001c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:238    .text.uart_getchar:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:00000074 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:0000007f .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:000000c5 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:00000107 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:00000133 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:00000140 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:0000014d .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:0000015e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:917    .debug_line_str:00000168 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:50     .text.uart_init:0000002c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:95     .text.outbyte:00000038 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:131    .text.uart_putchar:00000022 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:208    .text.getchar_prompt:00000072 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:241    .text.uart_getchar:0000001e .L0 
+                     .debug_frame:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:74     .text.outbyte:00000020 .L3
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:187    .text.getchar_prompt:00000056 .L7
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:181    .text.getchar_prompt:0000004c .L8
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:160    .text.getchar_prompt:0000001c .L9
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:485    .debug_abbrev:00000000 .Ldebug_abbrev0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:857    .debug_str:00000024 .LASF28
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:914    .debug_line_str:0000002e .LASF0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:912    .debug_line_str:00000000 .LASF1
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:830    .debug_rnglists:0000000c .LLRL0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:849    .debug_line:00000000 .Ldebug_line0
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:907    .debug_str:00000220 .LASF2
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:865    .debug_str:00000129 .LASF3
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:897    .debug_str:000001f0 .LASF4
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:869    .debug_str:00000149 .LASF5
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:853    .debug_str:0000000f .LASF7
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:901    .debug_str:00000203 .LASF6
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:873    .debug_str:00000165 .LASF8
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:867    .debug_str:00000137 .LASF9
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:885    .debug_str:000001aa .LASF10
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:879    .debug_str:00000184 .LASF11
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:875    .debug_str:00000170 .LASF12
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:881    .debug_str:0000019b .LASF13
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:899    .debug_str:000001fa .LASF14
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:903    .debug_str:0000020c .LASF15
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:889    .debug_str:000001c5 .LASF16
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:871    .debug_str:0000015c .LASF17
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:877    .debug_str:0000017d .LASF18
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:859    .debug_str:0000010d .LASF19
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:895    .debug_str:000001de .LASF20
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:887    .debug_str:000001b8 .LASF29
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:213    .text.uart_getchar:00000000 .LFB7
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:239    .text.uart_getchar:0000001e .LFE7
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:851    .debug_str:00000000 .LASF25
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:136    .text.getchar_prompt:00000000 .LFB6
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:206    .text.getchar_prompt:00000072 .LFE6
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:883    .debug_str:000001a3 .LASF24
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:863    .debug_str:0000011c .LASF21
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:855    .debug_str:00000019 .LASF22
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:891    .debug_str:000001ca .LASF23
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:893    .debug_str:000001d1 .LASF30
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:100    .text.uart_putchar:00000000 .LFB5
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:129    .text.uart_putchar:00000022 .LFE5
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:905    .debug_str:00000218 .LASF26
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:55     .text.outbyte:00000000 .LFB4
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:93     .text.outbyte:00000038 .LFE4
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:861    .debug_str:00000112 .LASF31
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:15     .text.uart_init:00000000 .LFB3
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:48     .text.uart_init:0000002c .LFE3
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:909    .debug_str:0000022c .LASF27
+C:\Users\nesus\AppData\Local\Temp\ccF9XyrQ.s:247    .debug_info:00000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS

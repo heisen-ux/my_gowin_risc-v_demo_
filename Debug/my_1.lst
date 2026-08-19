@@ -1,0 +1,2645 @@
+
+my_1.elf:     file format elf32-littleriscv
+my_1.elf
+architecture: riscv:rv32, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
+start address 0x0200014e
+
+Program Header:
+0x70000003 off    0x00006433 vaddr 0x00000000 paddr 0x00000000 align 2**0
+         filesz 0x0000003c memsz 0x00000000 flags r--
+    LOAD off    0x00001000 vaddr 0x02000000 paddr 0x00000000 align 2**12
+         filesz 0x00000d84 memsz 0x00000d84 flags r-x
+    LOAD off    0x00002000 vaddr 0x01000000 paddr 0x00000d84 align 2**12
+         filesz 0x00000004 memsz 0x00000014 flags rw-
+   STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**4
+         filesz 0x00000000 memsz 0x00000000 flags rw-
+
+Sections:
+Idx Name              Size      VMA       LMA       File off  Algn  Flags
+  0 .btsec            00000000  10400000  10400000  00002004  2**0  CONTENTS
+  1 .text             00000d84  02000000  00000000  00001000  2**4  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .ldsec            00000000  02000d84  02000d84  00002004  2**0  CONTENTS
+  3 .data             00000004  01000000  00000d84  00002000  2**0  CONTENTS, ALLOC, LOAD, DATA
+  4 .bss              00000010  01000004  00000d88  00002004  2**2  ALLOC
+  5 .heap             00000000  01000014  01000014  00002004  2**0  CONTENTS
+  6 .eh_frame         00000000  01000014  01000014  00002004  2**0  CONTENTS
+  7 .debug_info       00001101  00000000  00000000  00002004  2**0  CONTENTS, READONLY, DEBUGGING, OCTETS
+  8 .debug_abbrev     000006ed  00000000  00000000  00003105  2**0  CONTENTS, READONLY, DEBUGGING, OCTETS
+  9 .debug_loclists   000005a3  00000000  00000000  000037f2  2**0  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 10 .debug_aranges    000001d0  00000000  00000000  00003d98  2**3  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 11 .debug_rnglists   00000125  00000000  00000000  00003f68  2**0  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 12 .debug_line       00001807  00000000  00000000  0000408d  2**0  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 13 .debug_str        000007bd  00000000  00000000  00005894  2**0  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_line_str   000003af  00000000  00000000  00006051  2**0  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .comment          00000033  00000000  00000000  00006400  2**0  CONTENTS, READONLY
+ 16 .riscv.attributes 0000003c  00000000  00000000  00006433  2**0  CONTENTS, READONLY
+ 17 .debug_frame      00000578  00000000  00000000  00006470  2**2  CONTENTS, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+10400000 l    d  .btsec	00000000 .btsec
+02000000 l    d  .text	00000000 .text
+02000d84 l    d  .ldsec	00000000 .ldsec
+01000000 l    d  .data	00000000 .data
+01000004 l    d  .bss	00000000 .bss
+01000014 l    d  .heap	00000000 .heap
+01000014 l    d  .eh_frame	00000000 .eh_frame
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_loclists	00000000 .debug_loclists
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_rnglists	00000000 .debug_rnglists
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .debug_line_str	00000000 .debug_line_str
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .riscv.attributes	00000000 .riscv.attributes
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 l    df *ABS*	00000000 start.o
+02000000 l       .text	00000000 reset_vec
+02000010 l       .text	00000000 irq_vec
+020001c2 l       .text	00000000 end_init_data
+020001b6 l       .text	00000000 loop_init_data
+020001e0 l       .text	00000000 end_init_bss
+020001d6 l       .text	00000000 loop_init_bss
+00000000 l    df *ABS*	00000000 save-restore.o
+00000000 l    df *ABS*	00000000 printf.c
+02000250 l     F .text	00000016 printchar
+02000266 l     F .text	00000086 prints
+020002ec l     F .text	0000009e printi
+0200038a l     F .text	0000013a print
+00000000 l    df *ABS*	00000000 wbgpio.c
+00000000 l    df *ABS*	00000000 wbuart.c
+00000000 l    df *ABS*	00000000 irq.c
+00000000 l    df *ABS*	00000000 main.c
+01000000 l     O .data	00000001 g_flow_dir
+01000008 l     O .bss	00000001 g_flow_pos
+0100000c l     O .bss	00000004 g_gpio_out
+01000010 l     O .bss	00000004 g_tick
+0200089c l     F .text	00000024 gpio_flush
+020008c0 l     F .text	000000a6 led_flow_step
+02000966 l     F .text	0000002c square_wave_toggle
+00000000 l    df *ABS*	00000000 strlen.c
+01000007 g     O .bss	00000001 irq21_flag
+00000d84 g       *ABS*	00000000 _lma_ldsec_end
+0200085c g     F .text	00000016 enable_interrupt_global
+020004c4 g     F .text	00000022 printf
+020001f8 g     F .text	00000028 .hidden __riscv_save_8
+02000872 g     F .text	0000002a set_timer
+02000244 g     F .text	0000000c .hidden __riscv_restore_3
+02000d84 g       .ldsec	00000000 _vsloader
+10400d84 g       *ABS*	00000000 _cp_ldsec_start
+02000524 g     F .text	00000024 GPIO_SetDir
+02000230 g     F .text	00000020 .hidden __riscv_restore_10
+02000d84 g       .ldsec	00000000 _sidata
+020001f8 g     F .text	00000028 .hidden __riscv_save_11
+020005ee g     F .text	00000032 wbuart_getc
+02000d84 g       .text	00000000 _etext
+01000004 g       .bss	00000000 _sbss
+00000d84 g       *ABS*	00000000 _lma_ldsec_start
+02000244 g     F .text	0000000c .hidden __riscv_restore_2
+020001f0 g     F .text	00000030 .hidden __riscv_save_12
+020007d4 g     F .text	00000042 irq_enable_one_bit
+020004e6 g     F .text	0000003e GPIO_Init
+02000230 g     F .text	00000020 .hidden __riscv_restore_11
+01000000 g       .data	00000000 _sdata
+02000220 g     F .text	0000000c .hidden __riscv_save_1
+02000244 g     F .text	0000000c .hidden __riscv_restore_0
+02000206 g     F .text	0000001a .hidden __riscv_save_7
+01000004 g     O .bss	00000001 irq00_flag
+0200023a g     F .text	00000016 .hidden __riscv_restore_5
+0200023a g     F .text	00000016 .hidden __riscv_restore_6
+01000014 g       .bss	00000000 _ebss
+01000014 g       .heap	00000000 _heap_start
+020001f8 g     F .text	00000028 .hidden __riscv_save_9
+0200056c g     F .text	00000038 wbuart_init
+01000000 g       .data	00000000 _ram_start
+02000206 g     F .text	0000001a .hidden __riscv_save_4
+10400d88 g       *ABS*	00000000 _cp_data_end
+00000d84 g       *ABS*	00000000 _lma_data_start
+02000220 g     F .text	0000000c .hidden __riscv_save_3
+02000000 g       .text	00000000 _vstext
+02000d84 g       .ldsec	00000000 _eldsec
+0200064e g     F .text	00000160 irq
+0200083a g     F .text	00000022 enable_timer_interrupt
+10400d84 g       *ABS*	00000000 _cp_ldsec_end
+020001f8 g     F .text	00000028 .hidden __riscv_save_10
+0200023a g     F .text	00000016 .hidden __riscv_restore_4
+02000230 g     F .text	00000020 .hidden __riscv_restore_8
+02000206 g     F .text	0000001a .hidden __riscv_save_6
+02000230 g     F .text	00000020 .hidden __riscv_restore_9
+0200023a g     F .text	00000016 .hidden __riscv_restore_7
+02000992 g     F .text	000001bc main
+00000d88 g       *ABS*	00000000 _lma_data_end
+00000d88 g       *ABS*	00000000 _lma_eh_frame_start
+00000000 g       *ABS*	00000000 _lma_btsec_start
+01000005 g     O .bss	00000001 irq13_flag
+02000220 g     F .text	0000000c .hidden __riscv_save_2
+02000620 g     F .text	0000002e wbuart_outbyte
+02000206 g     F .text	0000001a .hidden __riscv_save_5
+020005a4 g     F .text	0000004a wbuart_putc
+01000004 g       .data	00000000 _edata
+00000000 g       *ABS*	00000000 _lma_text_start
+0200014e g     F .text	00000000 start
+0200022c g     F .text	00000024 .hidden __riscv_restore_12
+02000548 g     F .text	00000024 GPIO_WriteData
+02000220 g     F .text	0000000c .hidden __riscv_save_0
+10400d84 g       *ABS*	00000000 _cp_text_end
+02000b4e g     F .text	00000064 strlen
+01000006 g     O .bss	00000001 irq20_flag
+02000244 g     F .text	0000000c .hidden __riscv_restore_1
+00000000 g       *ABS*	00000000 _lma_btsec_end
+020007ae g     F .text	00000026 mask_irq
+02000816 g     F .text	00000024 enable_external_interrupt
+10400d84 g       *ABS*	00000000 _cp_data_start
+10400000 g       *ABS*	00000000 _cp_text_start
+10400000 g       .btsec	00000000 _vsbtsec
+00000d84 g       *ABS*	00000000 _lma_text_end
+
+
+
+Disassembly of section .text:
+
+02000000 <_vstext>:
+reset_vec():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:26
+	.section .text
+	.global irq
+
+reset_vec:
+#No more than 16 bytes here !
+	j start
+ 2000000:	a2b9                	j	200014e <start>
+ 2000002:	0001                	nop
+ 2000004:	00000013          	nop
+ 2000008:	00000013          	nop
+ 200000c:	00000013          	nop
+
+02000010 <irq_vec>:
+irq_vec():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:26
+ 2000010:	0200a10b          	.word	0x0200a10b
+ 2000014:	0201218b          	.word	0x0201218b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:35
+irq_vec:
+# Save registers
+	picorv32_setq_insn(q2, x1)
+	picorv32_setq_insn(q3, x2)
+
+	addi x1, x2, -128
+ 2000018:	f8010093          	addi	ra,sp,-128
+ 200001c:	0001c10b          	.word	0x0001c10b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:38
+
+	picorv32_getq_insn(x2, q3)   //Store x2
+	sw x2,   2*4(x1)
+ 2000020:	0020a423          	sw	sp,8(ra)
+ 2000024:	0000410b          	.word	0x0000410b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:40
+	picorv32_getq_insn(x2, q0)   //Store q0
+	sw x2,   0*4(x1)
+ 2000028:	0020a023          	sw	sp,0(ra)
+ 200002c:	0001410b          	.word	0x0001410b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:42
+	picorv32_getq_insn(x2, q2)   //Store x1
+	sw x2,   1*4(x1)
+ 2000030:	0020a223          	sw	sp,4(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:44
+
+	mv x2, x1                    //Update sp
+ 2000034:	8106                	mv	sp,ra
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:46
+
+	sw x3,   3*4(x1)
+ 2000036:	0030a623          	sw	gp,12(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:47
+	sw x4,   4*4(x1)
+ 200003a:	0040a823          	sw	tp,16(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:48
+	sw x5,   5*4(x1)
+ 200003e:	0050aa23          	sw	t0,20(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:49
+	sw x6,   6*4(x1)
+ 2000042:	0060ac23          	sw	t1,24(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:50
+	sw x7,   7*4(x1)
+ 2000046:	0070ae23          	sw	t2,28(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:51
+	sw x8,   8*4(x1)
+ 200004a:	0280a023          	sw	s0,32(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:52
+	sw x9,   9*4(x1)
+ 200004e:	0290a223          	sw	s1,36(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:53
+	sw x10, 10*4(x1)
+ 2000052:	02a0a423          	sw	a0,40(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:54
+	sw x11, 11*4(x1)
+ 2000056:	02b0a623          	sw	a1,44(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:55
+	sw x12, 12*4(x1)
+ 200005a:	02c0a823          	sw	a2,48(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:56
+	sw x13, 13*4(x1)
+ 200005e:	02d0aa23          	sw	a3,52(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:57
+	sw x14, 14*4(x1)
+ 2000062:	02e0ac23          	sw	a4,56(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:58
+	sw x15, 15*4(x1)
+ 2000066:	02f0ae23          	sw	a5,60(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:59
+	sw x16, 16*4(x1)
+ 200006a:	0500a023          	sw	a6,64(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:60
+	sw x17, 17*4(x1)
+ 200006e:	0510a223          	sw	a7,68(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:61
+	sw x18, 18*4(x1)
+ 2000072:	0520a423          	sw	s2,72(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:62
+	sw x19, 19*4(x1)
+ 2000076:	0530a623          	sw	s3,76(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:63
+	sw x20, 20*4(x1)
+ 200007a:	0540a823          	sw	s4,80(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:64
+	sw x21, 21*4(x1)
+ 200007e:	0550aa23          	sw	s5,84(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:65
+	sw x22, 22*4(x1)
+ 2000082:	0560ac23          	sw	s6,88(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:66
+	sw x23, 23*4(x1)
+ 2000086:	0570ae23          	sw	s7,92(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:67
+	sw x24, 24*4(x1)
+ 200008a:	0780a023          	sw	s8,96(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:68
+	sw x25, 25*4(x1)
+ 200008e:	0790a223          	sw	s9,100(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:69
+	sw x26, 26*4(x1)
+ 2000092:	07a0a423          	sw	s10,104(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:70
+	sw x27, 27*4(x1)
+ 2000096:	07b0a623          	sw	s11,108(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:71
+	sw x28, 28*4(x1)
+ 200009a:	07c0a823          	sw	t3,112(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:72
+	sw x29, 29*4(x1)
+ 200009e:	07d0aa23          	sw	t4,116(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:73
+	sw x30, 30*4(x1)
+ 20000a2:	07e0ac23          	sw	t5,120(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:74
+	sw x31, 31*4(x1)
+ 20000a6:	07f0ae23          	sw	t6,124(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:78
+
+
+# Call interrupt handler C function
+	mv a0, x1
+ 20000aa:	8506                	mv	a0,ra
+ 20000ac:	0000c58b          	.word	0x0000c58b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:84
+
+# arg1 = interrupt type
+	picorv32_getq_insn(a1, q1)
+
+# Call to C function
+	jal ra, irq
+ 20000b0:	59e000ef          	jal	200064e <irq>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:88
+
+# Restore registers
+# New irq_regs address returned from C code in a0
+	addi x1, x2, 0
+ 20000b4:	808a                	mv	ra,sp
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:90
+
+	lw x2,   0*4(x1)
+ 20000b6:	0000a103          	lw	sp,0(ra)
+ 20000ba:	0201200b          	.word	0x0201200b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:93
+	picorv32_setq_insn(q0, x2)
+
+	lw x2,   1*4(x1)
+ 20000be:	0040a103          	lw	sp,4(ra)
+ 20000c2:	0201208b          	.word	0x0201208b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:96
+	picorv32_setq_insn(q1, x2)
+
+	lw x2,   2*4(x1)
+ 20000c6:	0080a103          	lw	sp,8(ra)
+ 20000ca:	0201210b          	.word	0x0201210b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:99
+	picorv32_setq_insn(q2, x2)
+
+	lw x3,   3*4(x1)
+ 20000ce:	00c0a183          	lw	gp,12(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:100
+	lw x4,   4*4(x1)
+ 20000d2:	0100a203          	lw	tp,16(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:101
+	lw x5,   5*4(x1)
+ 20000d6:	0140a283          	lw	t0,20(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:102
+	lw x6,   6*4(x1)
+ 20000da:	0180a303          	lw	t1,24(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:103
+	lw x7,   7*4(x1)
+ 20000de:	01c0a383          	lw	t2,28(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:104
+	lw x8,   8*4(x1)
+ 20000e2:	0200a403          	lw	s0,32(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:105
+	lw x9,   9*4(x1)
+ 20000e6:	0240a483          	lw	s1,36(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:106
+	lw x10, 10*4(x1)
+ 20000ea:	0280a503          	lw	a0,40(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:107
+	lw x11, 11*4(x1)
+ 20000ee:	02c0a583          	lw	a1,44(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:108
+	lw x12, 12*4(x1)
+ 20000f2:	0300a603          	lw	a2,48(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:109
+	lw x13, 13*4(x1)
+ 20000f6:	0340a683          	lw	a3,52(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:110
+	lw x14, 14*4(x1)
+ 20000fa:	0380a703          	lw	a4,56(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:111
+	lw x15, 15*4(x1)
+ 20000fe:	03c0a783          	lw	a5,60(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:112
+	lw x16, 16*4(x1)
+ 2000102:	0400a803          	lw	a6,64(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:113
+	lw x17, 17*4(x1)
+ 2000106:	0440a883          	lw	a7,68(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:114
+	lw x18, 18*4(x1)
+ 200010a:	0480a903          	lw	s2,72(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:115
+	lw x19, 19*4(x1)
+ 200010e:	04c0a983          	lw	s3,76(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:116
+	lw x20, 20*4(x1)
+ 2000112:	0500aa03          	lw	s4,80(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:117
+	lw x21, 21*4(x1)
+ 2000116:	0540aa83          	lw	s5,84(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:118
+	lw x22, 22*4(x1)
+ 200011a:	0580ab03          	lw	s6,88(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:119
+	lw x23, 23*4(x1)
+ 200011e:	05c0ab83          	lw	s7,92(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:120
+	lw x24, 24*4(x1)
+ 2000122:	0600ac03          	lw	s8,96(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:121
+	lw x25, 25*4(x1)
+ 2000126:	0640ac83          	lw	s9,100(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:122
+	lw x26, 26*4(x1)
+ 200012a:	0680ad03          	lw	s10,104(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:123
+	lw x27, 27*4(x1)
+ 200012e:	06c0ad83          	lw	s11,108(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:124
+	lw x28, 28*4(x1)
+ 2000132:	0700ae03          	lw	t3,112(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:125
+	lw x29, 29*4(x1)
+ 2000136:	0740ae83          	lw	t4,116(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:126
+	lw x30, 30*4(x1)
+ 200013a:	0780af03          	lw	t5,120(ra)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:127
+	lw x31, 31*4(x1)
+ 200013e:	07c0af83          	lw	t6,124(ra)
+ 2000142:	0000c08b          	.word	0x0000c08b
+ 2000146:	0001410b          	.word	0x0001410b
+ 200014a:	0400000b          	.word	0x0400000b
+
+0200014e <start>:
+start():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:139
+	.type start,@function
+
+start:
+# For debug test
+# zero-initialize register file
+	addi x1, zero, 0
+ 200014e:	4081                	li	ra,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:141
+# x2 (sp) is initialized by reset
+	addi x3, zero, 0
+ 2000150:	4181                	li	gp,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:142
+	addi x4, zero, 0
+ 2000152:	4201                	li	tp,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:143
+	addi x5, zero, 0
+ 2000154:	4281                	li	t0,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:144
+	addi x6, zero, 0
+ 2000156:	4301                	li	t1,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:145
+	addi x7, zero, 0
+ 2000158:	4381                	li	t2,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:146
+	addi x8, zero, 0
+ 200015a:	4401                	li	s0,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:147
+	addi x9, zero, 0
+ 200015c:	4481                	li	s1,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:148
+	addi x10, zero, 0
+ 200015e:	4501                	li	a0,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:149
+	addi x11, zero, 0
+ 2000160:	4581                	li	a1,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:150
+	addi x12, zero, 0
+ 2000162:	4601                	li	a2,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:151
+	addi x13, zero, 0
+ 2000164:	4681                	li	a3,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:152
+	addi x14, zero, 0
+ 2000166:	4701                	li	a4,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:153
+	addi x15, zero, 0
+ 2000168:	4781                	li	a5,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:154
+	addi x16, zero, 0
+ 200016a:	4801                	li	a6,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:155
+	addi x17, zero, 0
+ 200016c:	4881                	li	a7,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:156
+	addi x18, zero, 0
+ 200016e:	4901                	li	s2,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:157
+	addi x19, zero, 0
+ 2000170:	4981                	li	s3,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:158
+	addi x20, zero, 0
+ 2000172:	4a01                	li	s4,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:159
+	addi x21, zero, 0
+ 2000174:	4a81                	li	s5,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:160
+	addi x22, zero, 0
+ 2000176:	4b01                	li	s6,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:161
+	addi x23, zero, 0
+ 2000178:	4b81                	li	s7,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:162
+	addi x24, zero, 0
+ 200017a:	4c01                	li	s8,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:163
+	addi x25, zero, 0
+ 200017c:	4c81                	li	s9,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:164
+	addi x26, zero, 0
+ 200017e:	4d01                	li	s10,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:165
+	addi x27, zero, 0
+ 2000180:	4d81                	li	s11,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:166
+	addi x28, zero, 0
+ 2000182:	4e01                	li	t3,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:167
+	addi x29, zero, 0
+ 2000184:	4e81                	li	t4,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:168
+	addi x30, zero, 0
+ 2000186:	4f01                	li	t5,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:169
+	addi x31, zero, 0
+ 2000188:	4f81                	li	t6,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:172
+
+# Initialize control and status registers
+	csrw mepc,        zero
+ 200018a:	34101073          	csrw	mepc,zero
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:173
+	csrw mcause,      zero
+ 200018e:	34201073          	csrw	mcause,zero
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:174
+	csrw mscratch,    zero
+ 2000192:	34001073          	csrw	mscratch,zero
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:175
+	csrw mtval,       zero
+ 2000196:	34301073          	csrw	mtval,zero
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:180
+
+#if BUILD_MODE != BUILD_BURN
+# While using build_burn mode, the data section in dtcm will be set by boot loader function.
+# Copy data section
+	la a0, _sidata
+ 200019a:	00001517          	auipc	a0,0x1
+ 200019e:	bea50513          	addi	a0,a0,-1046 # 2000d84 <_etext>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:181
+	la a1, _sdata
+ 20001a2:	ff000597          	auipc	a1,0xff000
+ 20001a6:	e5e58593          	addi	a1,a1,-418 # 1000000 <g_flow_dir>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:182
+	la a2, _edata
+ 20001aa:	ff000617          	auipc	a2,0xff000
+ 20001ae:	e5a60613          	addi	a2,a2,-422 # 1000004 <irq00_flag>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:183
+	bge a1, a2, end_init_data
+ 20001b2:	00c5d863          	bge	a1,a2,20001c2 <end_init_data>
+
+020001b6 <loop_init_data>:
+loop_init_data():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:185
+loop_init_data:
+	lw a3, 0(a0)
+ 20001b6:	4114                	lw	a3,0(a0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:186
+	sw a3, 0(a1)
+ 20001b8:	c194                	sw	a3,0(a1)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:187
+	addi a0, a0, 4
+ 20001ba:	0511                	addi	a0,a0,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:188
+	addi a1, a1, 4
+ 20001bc:	0591                	addi	a1,a1,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:189
+	blt a1, a2, loop_init_data
+ 20001be:	fec5cce3          	blt	a1,a2,20001b6 <loop_init_data>
+
+020001c2 <end_init_data>:
+end_init_data():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:195
+end_init_data:
+#endif
+
+
+# zero-init bss section
+	la a0, _sbss
+ 20001c2:	ff000517          	auipc	a0,0xff000
+ 20001c6:	e4250513          	addi	a0,a0,-446 # 1000004 <irq00_flag>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:196
+	la a1, _ebss
+ 20001ca:	ff000597          	auipc	a1,0xff000
+ 20001ce:	e4a58593          	addi	a1,a1,-438 # 1000014 <_ebss>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:197
+	bge a0, a1, end_init_bss
+ 20001d2:	00b55763          	bge	a0,a1,20001e0 <end_init_bss>
+
+020001d6 <loop_init_bss>:
+loop_init_bss():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:199
+loop_init_bss:
+	sw zero, 0(a0)
+ 20001d6:	00052023          	sw	zero,0(a0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:200
+	addi a0, a0, 4
+ 20001da:	0511                	addi	a0,a0,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:201
+	blt a0, a1, loop_init_bss
+ 20001dc:	feb54de3          	blt	a0,a1,20001d6 <loop_init_bss>
+
+020001e0 <end_init_bss>:
+end_init_bss():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:222
+	blt a1, a2, init_irqsec
+#endif
+
+
+# Jump to main C code
+	jal ra,main
+ 20001e0:	7b2000ef          	jal	2000992 <main>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:224
+1:
+	j 1b
+ 20001e4:	a001                	j	20001e4 <end_init_bss+0x4>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/start.S:227
+
+	/* Trap */
+	ebreak
+ 20001e6:	9002                	ebreak
+	...
+
+020001f0 <__riscv_save_12>:
+__riscv_save_12():
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:344
+ 20001f0:	7139                	addi	sp,sp,-64
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:346
+ 20001f2:	4301                	li	t1,0
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:347
+ 20001f4:	c66e                	sw	s11,12(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:349
+ 20001f6:	a019                	j	20001fc <__riscv_save_10+0x4>
+
+020001f8 <__riscv_save_10>:
+__riscv_save_8():
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:356
+ 20001f8:	7139                	addi	sp,sp,-64
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:358
+ 20001fa:	5341                	li	t1,-16
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:360
+ 20001fc:	c86a                	sw	s10,16(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:362
+ 20001fe:	ca66                	sw	s9,20(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:364
+ 2000200:	cc62                	sw	s8,24(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:366
+ 2000202:	ce5e                	sw	s7,28(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:368
+ 2000204:	a019                	j	200020a <__riscv_save_4+0x4>
+
+02000206 <__riscv_save_4>:
+__riscv_save_4():
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:379
+ 2000206:	7139                	addi	sp,sp,-64
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:381
+ 2000208:	5301                	li	t1,-32
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:383
+ 200020a:	d05a                	sw	s6,32(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:385
+ 200020c:	d256                	sw	s5,36(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:387
+ 200020e:	d452                	sw	s4,40(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:389
+ 2000210:	d64e                	sw	s3,44(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:391
+ 2000212:	d84a                	sw	s2,48(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:393
+ 2000214:	da26                	sw	s1,52(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:395
+ 2000216:	dc22                	sw	s0,56(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:397
+ 2000218:	de06                	sw	ra,60(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:401
+ 200021a:	40610133          	sub	sp,sp,t1
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:402
+ 200021e:	8282                	jr	t0
+
+02000220 <__riscv_save_0>:
+__riscv_save_0():
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:421
+ 2000220:	1141                	addi	sp,sp,-16
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:423
+ 2000222:	c04a                	sw	s2,0(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:424
+ 2000224:	c226                	sw	s1,4(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:426
+ 2000226:	c422                	sw	s0,8(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:428
+ 2000228:	c606                	sw	ra,12(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:430
+ 200022a:	8282                	jr	t0
+
+0200022c <__riscv_restore_12>:
+__riscv_restore_12():
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:453
+ 200022c:	4db2                	lw	s11,12(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:455
+ 200022e:	0141                	addi	sp,sp,16
+
+02000230 <__riscv_restore_10>:
+__riscv_restore_8():
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:463
+ 2000230:	4d02                	lw	s10,0(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:465
+ 2000232:	4c92                	lw	s9,4(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:467
+ 2000234:	4c22                	lw	s8,8(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:469
+ 2000236:	4bb2                	lw	s7,12(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:471
+ 2000238:	0141                	addi	sp,sp,16
+
+0200023a <__riscv_restore_4>:
+__riscv_restore_4():
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:483
+ 200023a:	4b02                	lw	s6,0(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:485
+ 200023c:	4a92                	lw	s5,4(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:487
+ 200023e:	4a22                	lw	s4,8(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:489
+ 2000240:	49b2                	lw	s3,12(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:491
+ 2000242:	0141                	addi	sp,sp,16
+
+02000244 <__riscv_restore_0>:
+__riscv_restore_0():
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:506
+ 2000244:	4902                	lw	s2,0(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:508
+ 2000246:	4492                	lw	s1,4(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:510
+ 2000248:	4422                	lw	s0,8(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:512
+ 200024a:	40b2                	lw	ra,12(sp)
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:514
+ 200024c:	0141                	addi	sp,sp,16
+/__w/riscv-none-elf-gcc-xpack/riscv-none-elf-gcc-xpack/build-assets/build/win32-x64/sources/gcc-14.2.0/libgcc/config/riscv/save-restore.S:516
+ 200024e:	8082                	ret
+
+02000250 <printchar>:
+printchar():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:38
+#else
+#define putchar(c) outbyte(c)
+#endif
+
+static void  __attribute__((optimize("Os"))) printchar(char **str, int c)
+{
+ 2000250:	87aa                	mv	a5,a0
+ 2000252:	852e                	mv	a0,a1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:41
+	extern int putchar(int c);
+
+	if (str) {
+ 2000254:	cb81                	beqz	a5,2000264 <printchar+0x14>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:42
+		**str = c;
+ 2000256:	4398                	lw	a4,0(a5)
+ 2000258:	00b70023          	sb	a1,0(a4)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:43
+		++(*str);
+ 200025c:	4398                	lw	a4,0(a5)
+ 200025e:	0705                	addi	a4,a4,1
+ 2000260:	c398                	sw	a4,0(a5)
+ 2000262:	8082                	ret
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:45
+	}
+	else (void)putchar(c);
+ 2000264:	ae75                	j	2000620 <wbuart_outbyte>
+
+02000266 <prints>:
+prints():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:52
+
+#define PAD_RIGHT 1
+#define PAD_ZERO 2
+
+static int  __attribute__((optimize("Os"))) prints(char **out, const char *string, int width, int pad)
+{
+ 2000266:	fa1ff2ef          	jal	t0,2000206 <__riscv_save_4>
+ 200026a:	89aa                	mv	s3,a0
+ 200026c:	8aae                	mv	s5,a1
+ 200026e:	8432                	mv	s0,a2
+ 2000270:	84b6                	mv	s1,a3
+ 2000272:	02000913          	li	s2,32
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:55
+	register int pc = 0, padchar = ' ';
+
+	if (width > 0) {
+ 2000276:	00c05e63          	blez	a2,2000292 <prints+0x2c>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:58 (discriminator 1)
+		register int len = 0;
+		register const char *ptr;
+		for (ptr = string; *ptr; ++ptr) ++len;
+ 200027a:	852e                	mv	a0,a1
+ 200027c:	0d3000ef          	jal	2000b4e <strlen>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:59
+		if (len >= width) width = 0;
+ 2000280:	00855e63          	bge	a0,s0,200029c <prints+0x36>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:60
+		else width -= len;
+ 2000284:	8c09                	sub	s0,s0,a0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:53
+	register int pc = 0, padchar = ' ';
+ 2000286:	00349913          	slli	s2,s1,0x3
+ 200028a:	01097913          	andi	s2,s2,16
+ 200028e:	02090913          	addi	s2,s2,32
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:63
+		if (pad & PAD_ZERO) padchar = '0';
+	}
+	if (!(pad & PAD_RIGHT)) {
+ 2000292:	8885                	andi	s1,s1,1
+ 2000294:	c095                	beqz	s1,20002b8 <prints+0x52>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:53
+	register int pc = 0, padchar = ' ';
+ 2000296:	4481                	li	s1,0
+ 2000298:	8a26                	mv	s4,s1
+ 200029a:	a025                	j	20002c2 <prints+0x5c>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:59 (discriminator 1)
+		if (len >= width) width = 0;
+ 200029c:	4401                	li	s0,0
+ 200029e:	b7e5                	j	2000286 <prints+0x20>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:65
+		for ( ; width > 0; --width) {
+			printchar (out, padchar);
+ 20002a0:	85ca                	mv	a1,s2
+ 20002a2:	854e                	mv	a0,s3
+ 20002a4:	3775                	jal	2000250 <printchar>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:64 (discriminator 2)
+		for ( ; width > 0; --width) {
+ 20002a6:	14fd                	addi	s1,s1,-1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:64 (discriminator 1)
+ 20002a8:	fe904ce3          	bgtz	s1,20002a0 <prints+0x3a>
+ 20002ac:	fff44493          	not	s1,s0
+ 20002b0:	84fd                	srai	s1,s1,0x1f
+ 20002b2:	8ce1                	and	s1,s1,s0
+ 20002b4:	8c05                	sub	s0,s0,s1
+ 20002b6:	b7cd                	j	2000298 <prints+0x32>
+ 20002b8:	84a2                	mv	s1,s0
+ 20002ba:	b7fd                	j	20002a8 <prints+0x42>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:70
+			++pc;
+		}
+	}
+	for ( ; *string ; ++string) {
+		printchar (out, *string);
+ 20002bc:	854e                	mv	a0,s3
+ 20002be:	3f49                	jal	2000250 <printchar>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:71
+		++pc;
+ 20002c0:	0a05                	addi	s4,s4,1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:69 (discriminator 1)
+	for ( ; *string ; ++string) {
+ 20002c2:	409a07b3          	sub	a5,s4,s1
+ 20002c6:	97d6                	add	a5,a5,s5
+ 20002c8:	0007c583          	lbu	a1,0(a5)
+ 20002cc:	f9e5                	bnez	a1,20002bc <prints+0x56>
+ 20002ce:	84a2                	mv	s1,s0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:73 (discriminator 1)
+	}
+	for ( ; width > 0; --width) {
+ 20002d0:	00904963          	bgtz	s1,20002e2 <prints+0x7c>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:78 (discriminator 1)
+		printchar (out, padchar);
+		++pc;
+	}
+
+	return pc;
+ 20002d4:	fff44793          	not	a5,s0
+ 20002d8:	87fd                	srai	a5,a5,0x1f
+ 20002da:	00f47533          	and	a0,s0,a5
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:79
+}
+ 20002de:	9552                	add	a0,a0,s4
+ 20002e0:	bfa9                	j	200023a <__riscv_restore_4>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:74
+		printchar (out, padchar);
+ 20002e2:	85ca                	mv	a1,s2
+ 20002e4:	854e                	mv	a0,s3
+ 20002e6:	37ad                	jal	2000250 <printchar>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:73 (discriminator 2)
+	for ( ; width > 0; --width) {
+ 20002e8:	14fd                	addi	s1,s1,-1
+ 20002ea:	b7dd                	j	20002d0 <prints+0x6a>
+
+020002ec <printi>:
+printi():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:85
+
+/* The following should be enough for 32 bit int */
+#define PRINT_BUF_LEN 12
+
+static int  __attribute__((optimize("Os"))) printi(char **out, int i, int b, int sg, int width, int pad, int letbase)
+{
+ 20002ec:	f35ff2ef          	jal	t0,2000220 <__riscv_save_0>
+ 20002f0:	88b2                	mv	a7,a2
+ 20002f2:	8436                	mv	s0,a3
+ 20002f4:	1101                	addi	sp,sp,-32
+ 20002f6:	863a                	mv	a2,a4
+ 20002f8:	86be                	mv	a3,a5
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:91
+	char print_buf[PRINT_BUF_LEN];
+	register char *s;
+	register int t, neg = 0, pc = 0;
+	register unsigned int u = i;
+
+	if (i == 0) {
+ 20002fa:	e989                	bnez	a1,200030c <printi+0x20>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:92
+		print_buf[0] = '0';
+ 20002fc:	03000793          	li	a5,48
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:94
+		print_buf[1] = '\0';
+		return prints (out, print_buf, width, pad);
+ 2000300:	084c                	addi	a1,sp,20
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:92
+		print_buf[0] = '0';
+ 2000302:	00f11a23          	sh	a5,20(sp)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:94
+		return prints (out, print_buf, width, pad);
+ 2000306:	3785                	jal	2000266 <prints>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:125
+			*--s = '-';
+		}
+	}
+
+	return pc + prints (out, s, width, pad);
+}
+ 2000308:	6105                	addi	sp,sp,32
+ 200030a:	bf2d                	j	2000244 <__riscv_restore_0>
+ 200030c:	84aa                	mv	s1,a0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:97
+	if (sg && b == 10 && i < 0) {
+ 200030e:	c811                	beqz	s0,2000322 <printi+0x36>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:97 (discriminator 1)
+ 2000310:	47a9                	li	a5,10
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:88
+	register int t, neg = 0, pc = 0;
+ 2000312:	4401                	li	s0,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:97 (discriminator 1)
+	if (sg && b == 10 && i < 0) {
+ 2000314:	00f89763          	bne	a7,a5,2000322 <printi+0x36>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:97 (discriminator 2)
+ 2000318:	0005d563          	bgez	a1,2000322 <printi+0x36>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:99
+		u = -i;
+ 200031c:	40b005b3          	neg	a1,a1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:98
+		neg = 1;
+ 2000320:	4405                	li	s0,1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:103
+	*s = '\0';
+ 2000322:	00010fa3          	sb	zero,31(sp)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:102
+	s = print_buf + PRINT_BUF_LEN-1;
+ 2000326:	01f10793          	addi	a5,sp,31
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:107
+		if( t >= 10 )
+ 200032a:	4525                	li	a0,9
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:108
+			t += letbase - '0' - 10;
+ 200032c:	fc680813          	addi	a6,a6,-58
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:106
+		t = u % b;
+ 2000330:	0315f733          	remu	a4,a1,a7
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:107
+		if( t >= 10 )
+ 2000334:	00e55363          	bge	a0,a4,200033a <printi+0x4e>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:108
+			t += letbase - '0' - 10;
+ 2000338:	9742                	add	a4,a4,a6
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:109
+		*--s = t + '0';
+ 200033a:	03070713          	addi	a4,a4,48
+ 200033e:	fee78fa3          	sb	a4,-1(a5)
+ 2000342:	fff78913          	addi	s2,a5,-1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:110
+		u /= b;
+ 2000346:	0315d733          	divu	a4,a1,a7
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:105
+	while (u) {
+ 200034a:	0315f563          	bgeu	a1,a7,2000374 <printi+0x88>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:113
+	if (neg) {
+ 200034e:	cc11                	beqz	s0,200036a <printi+0x7e>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:114
+		if( width && (pad & PAD_ZERO) ) {
+ 2000350:	c60d                	beqz	a2,200037a <printi+0x8e>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:114 (discriminator 1)
+ 2000352:	0026f713          	andi	a4,a3,2
+ 2000356:	c315                	beqz	a4,200037a <printi+0x8e>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:115
+			printchar (out, '-');
+ 2000358:	02d00593          	li	a1,45
+ 200035c:	8526                	mv	a0,s1
+ 200035e:	c636                	sw	a3,12(sp)
+ 2000360:	c432                	sw	a2,8(sp)
+ 2000362:	35fd                	jal	2000250 <printchar>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:117
+			--width;
+ 2000364:	4622                	lw	a2,8(sp)
+ 2000366:	46b2                	lw	a3,12(sp)
+ 2000368:	167d                	addi	a2,a2,-1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:124
+	return pc + prints (out, s, width, pad);
+ 200036a:	85ca                	mv	a1,s2
+ 200036c:	8526                	mv	a0,s1
+ 200036e:	3de5                	jal	2000266 <prints>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:124 (discriminator 1)
+ 2000370:	9522                	add	a0,a0,s0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:124
+ 2000372:	bf59                	j	2000308 <printi+0x1c>
+ 2000374:	85ba                	mv	a1,a4
+ 2000376:	87ca                	mv	a5,s2
+ 2000378:	bf65                	j	2000330 <printi+0x44>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:120
+			*--s = '-';
+ 200037a:	02d00713          	li	a4,45
+ 200037e:	fee90fa3          	sb	a4,-1(s2)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:88
+	register int t, neg = 0, pc = 0;
+ 2000382:	4401                	li	s0,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:120
+			*--s = '-';
+ 2000384:	ffe78913          	addi	s2,a5,-2
+ 2000388:	b7cd                	j	200036a <printi+0x7e>
+
+0200038a <print>:
+print():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:128
+
+static int  __attribute__((optimize("Os"))) print( char **out, const char *format, va_list args )
+{
+ 200038a:	e6fff2ef          	jal	t0,20001f8 <__riscv_save_10>
+ 200038e:	1141                	addi	sp,sp,-16
+ 2000390:	89aa                	mv	s3,a0
+ 2000392:	84ae                	mv	s1,a1
+ 2000394:	8432                	mv	s0,a2
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:130
+	register int width, pad;
+	register int pc = 0;
+ 2000396:	4901                	li	s2,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:134
+	char scr[2];
+
+	for (; *format != 0; ++format) {
+		if (*format == '%') {
+ 2000398:	02500a13          	li	s4,37
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:139
+			++format;
+			width = pad = 0;
+			if (*format == '\0') break;
+			if (*format == '%') goto out;
+			if (*format == '-') {
+ 200039c:	02d00b13          	li	s6,45
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:143
+				++format;
+				pad = PAD_RIGHT;
+			}
+			while (*format == '0') {
+ 20003a0:	03000b93          	li	s7,48
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:147 (discriminator 1)
+				++format;
+				pad |= PAD_ZERO;
+			}
+			for ( ; *format >= '0' && *format <= '9'; ++format) {
+ 20003a4:	4c25                	li	s8,9
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:148
+				width *= 10;
+ 20003a6:	4ca9                	li	s9,10
+ 20003a8:	07300a93          	li	s5,115
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:133 (discriminator 1)
+	for (; *format != 0; ++format) {
+ 20003ac:	0004c583          	lbu	a1,0(s1)
+ 20003b0:	e991                	bnez	a1,20003c4 <print+0x3a>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:186
+		out:
+			printchar (out, *format);
+			++pc;
+		}
+	}
+	if (out) **out = '\0';
+ 20003b2:	00098663          	beqz	s3,20003be <print+0x34>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:186 (discriminator 1)
+ 20003b6:	0009a783          	lw	a5,0(s3)
+ 20003ba:	00078023          	sb	zero,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:189
+	va_end( args );
+	return pc;
+}
+ 20003be:	854a                	mv	a0,s2
+ 20003c0:	0141                	addi	sp,sp,16
+ 20003c2:	b5bd                	j	2000230 <__riscv_restore_10>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:134
+		if (*format == '%') {
+ 20003c4:	0f459c63          	bne	a1,s4,20004bc <print+0x132>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:137
+			if (*format == '\0') break;
+ 20003c8:	0014c583          	lbu	a1,1(s1)
+ 20003cc:	d1fd                	beqz	a1,20003b2 <print+0x28>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:135
+			++format;
+ 20003ce:	00148713          	addi	a4,s1,1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:138
+			if (*format == '%') goto out;
+ 20003d2:	0f458463          	beq	a1,s4,20004ba <print+0x130>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:136
+			width = pad = 0;
+ 20003d6:	4781                	li	a5,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:139
+			if (*format == '-') {
+ 20003d8:	01659563          	bne	a1,s6,20003e2 <print+0x58>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:140
+				++format;
+ 20003dc:	00248713          	addi	a4,s1,2
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:141
+				pad = PAD_RIGHT;
+ 20003e0:	4785                	li	a5,1
+ 20003e2:	84ba                	mv	s1,a4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:143
+			while (*format == '0') {
+ 20003e4:	0004c703          	lbu	a4,0(s1)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:144
+				++format;
+ 20003e8:	00148693          	addi	a3,s1,1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:143
+			while (*format == '0') {
+ 20003ec:	03770f63          	beq	a4,s7,200042a <print+0xa0>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:136
+			width = pad = 0;
+ 20003f0:	4701                	li	a4,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:147 (discriminator 1)
+			for ( ; *format >= '0' && *format <= '9'; ++format) {
+ 20003f2:	0004c683          	lbu	a3,0(s1)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:147 (discriminator 2)
+ 20003f6:	00148513          	addi	a0,s1,1
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:147 (discriminator 1)
+ 20003fa:	fd068613          	addi	a2,a3,-48
+ 20003fe:	0ff67593          	zext.b	a1,a2
+ 2000402:	02bc7863          	bgeu	s8,a1,2000432 <print+0xa8>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:151
+			if( *format == 's' ) {
+ 2000406:	05568a63          	beq	a3,s5,200045a <print+0xd0>
+ 200040a:	02dae963          	bltu	s5,a3,200043c <print+0xb2>
+ 200040e:	06300613          	li	a2,99
+ 2000412:	08c68963          	beq	a3,a2,20004a4 <print+0x11a>
+ 2000416:	06400613          	li	a2,100
+ 200041a:	04c68e63          	beq	a3,a2,2000476 <print+0xec>
+ 200041e:	05800613          	li	a2,88
+ 2000422:	06c68663          	beq	a3,a2,200048e <print+0x104>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:133
+	for (; *format != 0; ++format) {
+ 2000426:	0485                	addi	s1,s1,1
+ 2000428:	b751                	j	20003ac <print+0x22>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:145
+				pad |= PAD_ZERO;
+ 200042a:	0027e793          	ori	a5,a5,2
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:144
+				++format;
+ 200042e:	84b6                	mv	s1,a3
+ 2000430:	bf55                	j	20003e4 <print+0x5a>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:148
+				width *= 10;
+ 2000432:	03970733          	mul	a4,a4,s9
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:147 (discriminator 2)
+			for ( ; *format >= '0' && *format <= '9'; ++format) {
+ 2000436:	84aa                	mv	s1,a0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:149
+				width += *format - '0';
+ 2000438:	9732                	add	a4,a4,a2
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:147 (discriminator 2)
+			for ( ; *format >= '0' && *format <= '9'; ++format) {
+ 200043a:	bf65                	j	20003f2 <print+0x68>
+ 200043c:	07500613          	li	a2,117
+ 2000440:	04c68c63          	beq	a3,a2,2000498 <print+0x10e>
+ 2000444:	07800613          	li	a2,120
+ 2000448:	fcc69fe3          	bne	a3,a2,2000426 <print+0x9c>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:161
+				pc += printi (out, va_arg( args, int ), 16, 0, width, pad, 'a');
+ 200044c:	00440d13          	addi	s10,s0,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:161 (discriminator 1)
+ 2000450:	06100813          	li	a6,97
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:165 (discriminator 1)
+				pc += printi (out, va_arg( args, int ), 16, 0, width, pad, 'A');
+ 2000454:	4681                	li	a3,0
+ 2000456:	4641                	li	a2,16
+ 2000458:	a02d                	j	2000482 <print+0xf8>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:152
+				register char *s = (char *)((long)va_arg( args, int ));
+ 200045a:	4014                	lw	a3,0(s0)
+ 200045c:	00440d13          	addi	s10,s0,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:153 (discriminator 2)
+				pc += prints (out, s?s:"(null)", width, pad);
+ 2000460:	00001597          	auipc	a1,0x1
+ 2000464:	91c58593          	addi	a1,a1,-1764 # 2000d7c <strlen+0x22e>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:153
+ 2000468:	c291                	beqz	a3,200046c <print+0xe2>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:152 (discriminator 1)
+				register char *s = (char *)((long)va_arg( args, int ));
+ 200046a:	85b6                	mv	a1,a3
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:153 (discriminator 4)
+				pc += prints (out, s?s:"(null)", width, pad);
+ 200046c:	86be                	mv	a3,a5
+ 200046e:	863a                	mv	a2,a4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:176
+				pc += prints (out, scr, width, pad);
+ 2000470:	854e                	mv	a0,s3
+ 2000472:	3bd5                	jal	2000266 <prints>
+ 2000474:	a811                	j	2000488 <print+0xfe>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:157
+				pc += printi (out, va_arg( args, int ), 10, 1, width, pad, 'a');
+ 2000476:	00440d13          	addi	s10,s0,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:157 (discriminator 1)
+ 200047a:	06100813          	li	a6,97
+ 200047e:	4685                	li	a3,1
+ 2000480:	4629                	li	a2,10
+ 2000482:	400c                	lw	a1,0(s0)
+ 2000484:	854e                	mv	a0,s3
+ 2000486:	359d                	jal	20002ec <printi>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:157 (discriminator 2)
+ 2000488:	992a                	add	s2,s2,a0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:157
+ 200048a:	846a                	mv	s0,s10
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:158
+				continue;
+ 200048c:	bf69                	j	2000426 <print+0x9c>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:165
+				pc += printi (out, va_arg( args, int ), 16, 0, width, pad, 'A');
+ 200048e:	00440d13          	addi	s10,s0,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:165 (discriminator 1)
+ 2000492:	04100813          	li	a6,65
+ 2000496:	bf7d                	j	2000454 <print+0xca>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:169
+				pc += printi (out, va_arg( args, int ), 10, 0, width, pad, 'a');
+ 2000498:	00440d13          	addi	s10,s0,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:169 (discriminator 1)
+ 200049c:	06100813          	li	a6,97
+ 20004a0:	4681                	li	a3,0
+ 20004a2:	bff9                	j	2000480 <print+0xf6>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:174 (discriminator 1)
+				scr[0] = (char)va_arg( args, int );
+ 20004a4:	4014                	lw	a3,0(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:174
+ 20004a6:	00440d13          	addi	s10,s0,4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:175
+				scr[1] = '\0';
+ 20004aa:	000106a3          	sb	zero,13(sp)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:174 (discriminator 1)
+				scr[0] = (char)va_arg( args, int );
+ 20004ae:	00d10623          	sb	a3,12(sp)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:176
+				pc += prints (out, scr, width, pad);
+ 20004b2:	863a                	mv	a2,a4
+ 20004b4:	86be                	mv	a3,a5
+ 20004b6:	006c                	addi	a1,sp,12
+ 20004b8:	bf65                	j	2000470 <print+0xe6>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:135
+			++format;
+ 20004ba:	84ba                	mv	s1,a4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:182
+			printchar (out, *format);
+ 20004bc:	854e                	mv	a0,s3
+ 20004be:	3b49                	jal	2000250 <printchar>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:183
+			++pc;
+ 20004c0:	0905                	addi	s2,s2,1
+ 20004c2:	b795                	j	2000426 <print+0x9c>
+
+020004c4 <printf>:
+printf():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:192
+
+int  __attribute__((optimize("Os"))) printf(const char *format, ...)
+{
+ 20004c4:	7139                	addi	sp,sp,-64
+ 20004c6:	d22e                	sw	a1,36(sp)
+ 20004c8:	d432                	sw	a2,40(sp)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:196
+        va_list args;
+
+        va_start( args, format );
+        return print( 0, format, args );
+ 20004ca:	85aa                	mv	a1,a0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:195
+        va_start( args, format );
+ 20004cc:	1050                	addi	a2,sp,36
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:196
+        return print( 0, format, args );
+ 20004ce:	4501                	li	a0,0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:192
+{
+ 20004d0:	ce06                	sw	ra,28(sp)
+ 20004d2:	d636                	sw	a3,44(sp)
+ 20004d4:	d83a                	sw	a4,48(sp)
+ 20004d6:	da3e                	sw	a5,52(sp)
+ 20004d8:	dc42                	sw	a6,56(sp)
+ 20004da:	de46                	sw	a7,60(sp)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:195
+        va_start( args, format );
+ 20004dc:	c632                	sw	a2,12(sp)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:196
+        return print( 0, format, args );
+ 20004de:	3575                	jal	200038a <print>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/lib/printf.c:197
+}
+ 20004e0:	40f2                	lw	ra,28(sp)
+ 20004e2:	6121                	addi	sp,sp,64
+ 20004e4:	8082                	ret
+
+020004e6 <GPIO_Init>:
+GPIO_Init():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:17
+
+
+/* Definitions --------------------------------------------------------------------- */
+
+void GPIO_Init(WBGPIO_RegDef* GPIOx)
+{
+ 20004e6:	1101                	addi	sp,sp,-32
+ 20004e8:	ce06                	sw	ra,28(sp)
+ 20004ea:	cc22                	sw	s0,24(sp)
+ 20004ec:	1000                	addi	s0,sp,32
+ 20004ee:	fea42623          	sw	a0,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:18
+	GPIOx->CFG = 0;
+ 20004f2:	fec42783          	lw	a5,-20(s0)
+ 20004f6:	0007a023          	sw	zero,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:19
+	GPIOx->IE = 0;
+ 20004fa:	fec42783          	lw	a5,-20(s0)
+ 20004fe:	0007a223          	sw	zero,4(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:20
+	GPIOx->DIR = 0;
+ 2000502:	fec42783          	lw	a5,-20(s0)
+ 2000506:	0007a823          	sw	zero,16(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:21
+	GPIOx->IN = 0;
+ 200050a:	fec42783          	lw	a5,-20(s0)
+ 200050e:	0007aa23          	sw	zero,20(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:22
+	GPIOx->OUT = 0;
+ 2000512:	fec42783          	lw	a5,-20(s0)
+ 2000516:	0007ac23          	sw	zero,24(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:23
+}
+ 200051a:	0001                	nop
+ 200051c:	40f2                	lw	ra,28(sp)
+ 200051e:	4462                	lw	s0,24(sp)
+ 2000520:	6105                	addi	sp,sp,32
+ 2000522:	8082                	ret
+
+02000524 <GPIO_SetDir>:
+GPIO_SetDir():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:31
+{
+	return GPIOx->DIR;
+}
+
+void GPIO_SetDir(WBGPIO_RegDef* GPIOx, uint32_t dir)
+{
+ 2000524:	1101                	addi	sp,sp,-32
+ 2000526:	ce06                	sw	ra,28(sp)
+ 2000528:	cc22                	sw	s0,24(sp)
+ 200052a:	1000                	addi	s0,sp,32
+ 200052c:	fea42623          	sw	a0,-20(s0)
+ 2000530:	feb42423          	sw	a1,-24(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:32
+	GPIOx->DIR = dir;
+ 2000534:	fec42783          	lw	a5,-20(s0)
+ 2000538:	fe842703          	lw	a4,-24(s0)
+ 200053c:	cb98                	sw	a4,16(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:33
+}
+ 200053e:	0001                	nop
+ 2000540:	40f2                	lw	ra,28(sp)
+ 2000542:	4462                	lw	s0,24(sp)
+ 2000544:	6105                	addi	sp,sp,32
+ 2000546:	8082                	ret
+
+02000548 <GPIO_WriteData>:
+GPIO_WriteData():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:52
+	tmp = tmp & (~(1UL << bit));
+	GPIOx->DIR = tmp;
+}
+
+void GPIO_WriteData(WBGPIO_RegDef* GPIOx, uint32_t data)
+{
+ 2000548:	1101                	addi	sp,sp,-32
+ 200054a:	ce06                	sw	ra,28(sp)
+ 200054c:	cc22                	sw	s0,24(sp)
+ 200054e:	1000                	addi	s0,sp,32
+ 2000550:	fea42623          	sw	a0,-20(s0)
+ 2000554:	feb42423          	sw	a1,-24(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:53
+	GPIOx->OUT = data;
+ 2000558:	fec42783          	lw	a5,-20(s0)
+ 200055c:	fe842703          	lw	a4,-24(s0)
+ 2000560:	cf98                	sw	a4,24(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbgpio.c:54
+}
+ 2000562:	0001                	nop
+ 2000564:	40f2                	lw	ra,28(sp)
+ 2000566:	4462                	lw	s0,24(sp)
+ 2000568:	6105                	addi	sp,sp,32
+ 200056a:	8082                	ret
+
+0200056c <wbuart_init>:
+wbuart_init():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:17
+
+
+/* Definitions --------------------------------------------------------------------- */
+
+uint32_t wbuart_init(unsigned int BaudRate)
+{
+ 200056c:	7179                	addi	sp,sp,-48
+ 200056e:	d606                	sw	ra,44(sp)
+ 2000570:	d422                	sw	s0,40(sp)
+ 2000572:	1800                	addi	s0,sp,48
+ 2000574:	fca42e23          	sw	a0,-36(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:18
+	uint32_t ClkDiv = SYSCLKFREQ / BaudRate;
+ 2000578:	019c07b7          	lui	a5,0x19c0
+ 200057c:	cc078713          	addi	a4,a5,-832 # 19bfcc0 <_ebss+0x9bfcac>
+ 2000580:	fdc42783          	lw	a5,-36(s0)
+ 2000584:	02f757b3          	divu	a5,a4,a5
+ 2000588:	fef42623          	sw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:20
+
+	PICO_WBUART->SETUP = ClkDiv;
+ 200058c:	110007b7          	lui	a5,0x11000
+ 2000590:	fec42703          	lw	a4,-20(s0)
+ 2000594:	c398                	sw	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:22
+
+	return ClkDiv;
+ 2000596:	fec42783          	lw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:23
+}
+ 200059a:	853e                	mv	a0,a5
+ 200059c:	50b2                	lw	ra,44(sp)
+ 200059e:	5422                	lw	s0,40(sp)
+ 20005a0:	6145                	addi	sp,sp,48
+ 20005a2:	8082                	ret
+
+020005a4 <wbuart_putc>:
+wbuart_putc():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:26
+
+int wbuart_putc(int c)
+{
+ 20005a4:	7179                	addi	sp,sp,-48
+ 20005a6:	d606                	sw	ra,44(sp)
+ 20005a8:	d422                	sw	s0,40(sp)
+ 20005aa:	1800                	addi	s0,sp,48
+ 20005ac:	fca42e23          	sw	a0,-36(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:27
+	while((PICO_WBUART->TXREG) & (1UL << 8));
+ 20005b0:	0001                	nop
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:27 (discriminator 1)
+ 20005b2:	110007b7          	lui	a5,0x11000
+ 20005b6:	47dc                	lw	a5,12(a5)
+ 20005b8:	1007f793          	andi	a5,a5,256
+ 20005bc:	fbfd                	bnez	a5,20005b2 <wbuart_putc+0xe>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:28
+	uint32_t tmp = PICO_WBUART->TXREG & (~0xff);
+ 20005be:	110007b7          	lui	a5,0x11000
+ 20005c2:	47dc                	lw	a5,12(a5)
+ 20005c4:	f007f793          	andi	a5,a5,-256
+ 20005c8:	fef42623          	sw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:29
+	PICO_WBUART->TXREG = tmp + (c & 0xff);
+ 20005cc:	fdc42783          	lw	a5,-36(s0)
+ 20005d0:	0ff7f693          	zext.b	a3,a5
+ 20005d4:	110007b7          	lui	a5,0x11000
+ 20005d8:	fec42703          	lw	a4,-20(s0)
+ 20005dc:	9736                	add	a4,a4,a3
+ 20005de:	c7d8                	sw	a4,12(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:31
+
+	return c;
+ 20005e0:	fdc42783          	lw	a5,-36(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:32
+}
+ 20005e4:	853e                	mv	a0,a5
+ 20005e6:	50b2                	lw	ra,44(sp)
+ 20005e8:	5422                	lw	s0,40(sp)
+ 20005ea:	6145                	addi	sp,sp,48
+ 20005ec:	8082                	ret
+
+020005ee <wbuart_getc>:
+wbuart_getc():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:35
+
+int wbuart_getc(void)
+{
+ 20005ee:	1101                	addi	sp,sp,-32
+ 20005f0:	ce06                	sw	ra,28(sp)
+ 20005f2:	cc22                	sw	s0,24(sp)
+ 20005f4:	1000                	addi	s0,sp,32
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:36
+	uint8_t tmp = 0;
+ 20005f6:	fe0407a3          	sb	zero,-17(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:38
+
+	while((PICO_WBUART->RXREG) & (1UL << 8));
+ 20005fa:	0001                	nop
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:38 (discriminator 1)
+ 20005fc:	110007b7          	lui	a5,0x11000
+ 2000600:	479c                	lw	a5,8(a5)
+ 2000602:	1007f793          	andi	a5,a5,256
+ 2000606:	fbfd                	bnez	a5,20005fc <wbuart_getc+0xe>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:39
+	tmp = (PICO_WBUART->RXREG) & 0xff;
+ 2000608:	110007b7          	lui	a5,0x11000
+ 200060c:	479c                	lw	a5,8(a5)
+ 200060e:	fef407a3          	sb	a5,-17(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:41
+
+	return tmp;
+ 2000612:	fef44783          	lbu	a5,-17(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:42
+}
+ 2000616:	853e                	mv	a0,a5
+ 2000618:	40f2                	lw	ra,28(sp)
+ 200061a:	4462                	lw	s0,24(sp)
+ 200061c:	6105                	addi	sp,sp,32
+ 200061e:	8082                	ret
+
+02000620 <wbuart_outbyte>:
+wbuart_outbyte():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:45
+
+int wbuart_outbyte(int c)
+{
+ 2000620:	1101                	addi	sp,sp,-32
+ 2000622:	ce06                	sw	ra,28(sp)
+ 2000624:	cc22                	sw	s0,24(sp)
+ 2000626:	1000                	addi	s0,sp,32
+ 2000628:	fea42623          	sw	a0,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:46
+	wbuart_putc(c);
+ 200062c:	fec42503          	lw	a0,-20(s0)
+ 2000630:	3f95                	jal	20005a4 <wbuart_putc>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:47
+	if (c =='\n')
+ 2000632:	fec42703          	lw	a4,-20(s0)
+ 2000636:	47a9                	li	a5,10
+ 2000638:	00f71463          	bne	a4,a5,2000640 <wbuart_outbyte+0x20>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:49
+	{
+		wbuart_putc('\r');
+ 200063c:	4535                	li	a0,13
+ 200063e:	379d                	jal	20005a4 <wbuart_putc>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:52
+	}
+
+	return c;
+ 2000640:	fec42783          	lw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/bsp/wbuart.c:53
+}
+ 2000644:	853e                	mv	a0,a5
+ 2000646:	40f2                	lw	ra,28(sp)
+ 2000648:	4462                	lw	s0,24(sp)
+ 200064a:	6105                	addi	sp,sp,32
+ 200064c:	8082                	ret
+
+0200064e <irq>:
+irq():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:41
+#define put_char(c)  uart_putchar(c)
+#endif
+
+
+uint32_t *irq(uint32_t *regs, uint32_t irqs)
+{
+ 200064e:	7179                	addi	sp,sp,-48
+ 2000650:	d606                	sw	ra,44(sp)
+ 2000652:	d422                	sw	s0,40(sp)
+ 2000654:	1800                	addi	s0,sp,48
+ 2000656:	fca42e23          	sw	a0,-36(s0)
+ 200065a:	fcb42c23          	sw	a1,-40(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:42
+	volatile uint32_t mask = mask_irq(0xffffffff) | irqs;
+ 200065e:	557d                	li	a0,-1
+ 2000660:	22b9                	jal	20007ae <mask_irq>
+ 2000662:	872a                	mv	a4,a0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:42 (discriminator 1)
+ 2000664:	fd842783          	lw	a5,-40(s0)
+ 2000668:	8fd9                	or	a5,a5,a4
+ 200066a:	fef42223          	sw	a5,-28(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:44
+
+	mask_irq(mask);
+ 200066e:	fe442783          	lw	a5,-28(s0)
+ 2000672:	853e                	mv	a0,a5
+ 2000674:	2a2d                	jal	20007ae <mask_irq>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:46
+
+	if ((irqs & 1) != 0)
+ 2000676:	fd842783          	lw	a5,-40(s0)
+ 200067a:	8b85                	andi	a5,a5,1
+ 200067c:	cb81                	beqz	a5,200068c <irq+0x3e>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:48
+	{
+		irq00_flag = 1;
+ 200067e:	ff000797          	auipc	a5,0xff000
+ 2000682:	98678793          	addi	a5,a5,-1658 # 1000004 <irq00_flag>
+ 2000686:	4705                	li	a4,1
+ 2000688:	00e78023          	sb	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:51
+	}
+
+	if ((irqs & (1<<13)) != 0)
+ 200068c:	fd842703          	lw	a4,-40(s0)
+ 2000690:	6789                	lui	a5,0x2
+ 2000692:	8ff9                	and	a5,a5,a4
+ 2000694:	cb81                	beqz	a5,20006a4 <irq+0x56>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:53
+	{
+		irq13_flag = 1;
+ 2000696:	ff000797          	auipc	a5,0xff000
+ 200069a:	96f78793          	addi	a5,a5,-1681 # 1000005 <irq13_flag>
+ 200069e:	4705                	li	a4,1
+ 20006a0:	00e78023          	sb	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:56
+	}
+
+	if ((irqs & (1<<20)) != 0)
+ 20006a4:	fd842703          	lw	a4,-40(s0)
+ 20006a8:	001007b7          	lui	a5,0x100
+ 20006ac:	8ff9                	and	a5,a5,a4
+ 20006ae:	cb81                	beqz	a5,20006be <irq+0x70>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:58
+	{
+		irq20_flag = 1;
+ 20006b0:	ff000797          	auipc	a5,0xff000
+ 20006b4:	95678793          	addi	a5,a5,-1706 # 1000006 <irq20_flag>
+ 20006b8:	4705                	li	a4,1
+ 20006ba:	00e78023          	sb	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:61
+	}
+
+	if ((irqs & (1<<21)) != 0)
+ 20006be:	fd842703          	lw	a4,-40(s0)
+ 20006c2:	002007b7          	lui	a5,0x200
+ 20006c6:	8ff9                	and	a5,a5,a4
+ 20006c8:	cb81                	beqz	a5,20006d8 <irq+0x8a>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:63
+	{
+		irq21_flag = 1;
+ 20006ca:	ff000797          	auipc	a5,0xff000
+ 20006ce:	93d78793          	addi	a5,a5,-1731 # 1000007 <irq21_flag>
+ 20006d2:	4705                	li	a4,1
+ 20006d4:	00e78023          	sb	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:67
+	}
+
+
+	if ((irqs & 14) != 0)
+ 20006d8:	fd842783          	lw	a5,-40(s0)
+ 20006dc:	8bb9                	andi	a5,a5,14
+ 20006de:	c3e9                	beqz	a5,20007a0 <irq+0x152>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:69
+	{
+		uint32_t pc = (regs[0] & 1) ? regs[0] - 3 : regs[0] - 4;
+ 20006e0:	fdc42783          	lw	a5,-36(s0)
+ 20006e4:	439c                	lw	a5,0(a5)
+ 20006e6:	8b85                	andi	a5,a5,1
+ 20006e8:	c791                	beqz	a5,20006f4 <irq+0xa6>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:69 (discriminator 1)
+ 20006ea:	fdc42783          	lw	a5,-36(s0)
+ 20006ee:	439c                	lw	a5,0(a5)
+ 20006f0:	17f5                	addi	a5,a5,-3
+ 20006f2:	a029                	j	20006fc <irq+0xae>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:69 (discriminator 2)
+ 20006f4:	fdc42783          	lw	a5,-36(s0)
+ 20006f8:	439c                	lw	a5,0(a5)
+ 20006fa:	17f1                	addi	a5,a5,-4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:69 (discriminator 4)
+ 20006fc:	fef42423          	sw	a5,-24(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:70
+		uint32_t instr = *(uint16_t*)pc;
+ 2000700:	fe842783          	lw	a5,-24(s0)
+ 2000704:	0007d783          	lhu	a5,0(a5)
+ 2000708:	fef42623          	sw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:72
+
+		if ((instr & 3) == 3)
+ 200070c:	fec42783          	lw	a5,-20(s0)
+ 2000710:	0037f713          	andi	a4,a5,3
+ 2000714:	478d                	li	a5,3
+ 2000716:	00f71d63          	bne	a4,a5,2000730 <irq+0xe2>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:74
+		{
+			instr = instr | (*(uint16_t*)(pc + 2)) << 16;
+ 200071a:	fe842783          	lw	a5,-24(s0)
+ 200071e:	0789                	addi	a5,a5,2
+ 2000720:	0007d783          	lhu	a5,0(a5)
+ 2000724:	07c2                	slli	a5,a5,0x10
+ 2000726:	fec42703          	lw	a4,-20(s0)
+ 200072a:	8fd9                	or	a5,a5,a4
+ 200072c:	fef42623          	sw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:77
+		}
+
+		if ((irqs & 8) != 0)
+ 2000730:	fd842783          	lw	a5,-40(s0)
+ 2000734:	8ba1                	andi	a5,a5,8
+ 2000736:	cb8d                	beqz	a5,2000768 <irq+0x11a>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:79
+		{
+			printf("Illegal Ins at 0x");
+ 2000738:	00000517          	auipc	a0,0x0
+ 200073c:	47c50513          	addi	a0,a0,1148 # 2000bb4 <strlen+0x66>
+ 2000740:	3351                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:80
+			printf("%x\r\n", pc);
+ 2000742:	fe842583          	lw	a1,-24(s0)
+ 2000746:	00000517          	auipc	a0,0x0
+ 200074a:	48250513          	addi	a0,a0,1154 # 2000bc8 <strlen+0x7a>
+ 200074e:	3b9d                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:81
+			printf(": 0x");
+ 2000750:	00000517          	auipc	a0,0x0
+ 2000754:	48050513          	addi	a0,a0,1152 # 2000bd0 <strlen+0x82>
+ 2000758:	33b5                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:82
+			printf("%x\r\n", instr);
+ 200075a:	fec42583          	lw	a1,-20(s0)
+ 200075e:	00000517          	auipc	a0,0x0
+ 2000762:	46a50513          	addi	a0,a0,1130 # 2000bc8 <strlen+0x7a>
+ 2000766:	3bb9                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:85
+		}
+
+		if ((irqs & 4) != 0)
+ 2000768:	fd842783          	lw	a5,-40(s0)
+ 200076c:	8b91                	andi	a5,a5,4
+ 200076e:	cb8d                	beqz	a5,20007a0 <irq+0x152>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:87
+		{
+			printf("Bus error at 0x");
+ 2000770:	00000517          	auipc	a0,0x0
+ 2000774:	46850513          	addi	a0,a0,1128 # 2000bd8 <strlen+0x8a>
+ 2000778:	33b1                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:88
+			printf("%x\r\n", pc);
+ 200077a:	fe842583          	lw	a1,-24(s0)
+ 200077e:	00000517          	auipc	a0,0x0
+ 2000782:	44a50513          	addi	a0,a0,1098 # 2000bc8 <strlen+0x7a>
+ 2000786:	3b3d                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:89
+			printf(": 0x");
+ 2000788:	00000517          	auipc	a0,0x0
+ 200078c:	44850513          	addi	a0,a0,1096 # 2000bd0 <strlen+0x82>
+ 2000790:	3b15                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:90
+			printf("%x\r\n", instr);
+ 2000792:	fec42583          	lw	a1,-20(s0)
+ 2000796:	00000517          	auipc	a0,0x0
+ 200079a:	43250513          	addi	a0,a0,1074 # 2000bc8 <strlen+0x7a>
+ 200079e:	331d                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:94
+		}
+	}
+
+	return regs;
+ 20007a0:	fdc42783          	lw	a5,-36(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:95
+}
+ 20007a4:	853e                	mv	a0,a5
+ 20007a6:	50b2                	lw	ra,44(sp)
+ 20007a8:	5422                	lw	s0,40(sp)
+ 20007aa:	6145                	addi	sp,sp,48
+ 20007ac:	8082                	ret
+
+020007ae <mask_irq>:
+mask_irq():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:106
+	__asm__ __volatile__(".word(0x0400000b)");
+}
+
+//Mask IRQ
+inline uint32_t mask_irq(uint32_t mask)
+{
+ 20007ae:	7179                	addi	sp,sp,-48
+ 20007b0:	d606                	sw	ra,44(sp)
+ 20007b2:	d422                	sw	s0,40(sp)
+ 20007b4:	1800                	addi	s0,sp,48
+ 20007b6:	fca42e23          	sw	a0,-36(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:109
+	uint32_t old_mask;
+
+	__asm__ __volatile__("mv a4, a0");
+ 20007ba:	872a                	mv	a4,a0
+ 20007bc:	0607678b          	.word	0x0607678b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:111
+	__asm__ __volatile__(".word(0x0607678b)");
+	__asm__ __volatile__("add %[dest], x0, a5" :[dest]"=r"(old_mask));
+ 20007c0:	87be                	mv	a5,a5
+ 20007c2:	fef42623          	sw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:113
+
+	return old_mask;
+ 20007c6:	fec42783          	lw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:114
+}
+ 20007ca:	853e                	mv	a0,a5
+ 20007cc:	50b2                	lw	ra,44(sp)
+ 20007ce:	5422                	lw	s0,40(sp)
+ 20007d0:	6145                	addi	sp,sp,48
+ 20007d2:	8082                	ret
+
+020007d4 <irq_enable_one_bit>:
+irq_enable_one_bit():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:118
+
+//Enable a local interrupt
+inline void irq_enable_one_bit(uint32_t irq_num)
+{
+ 20007d4:	7179                	addi	sp,sp,-48
+ 20007d6:	d606                	sw	ra,44(sp)
+ 20007d8:	d422                	sw	s0,40(sp)
+ 20007da:	1800                	addi	s0,sp,48
+ 20007dc:	fca42e23          	sw	a0,-36(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:119
+	uint32_t mask = 0;
+ 20007e0:	fe042623          	sw	zero,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:121
+
+	mask = mask_irq(0xffffffff);
+ 20007e4:	557d                	li	a0,-1
+ 20007e6:	37e1                	jal	20007ae <mask_irq>
+ 20007e8:	fea42623          	sw	a0,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:122
+	mask = mask & (~(1 << irq_num));
+ 20007ec:	fdc42783          	lw	a5,-36(s0)
+ 20007f0:	4705                	li	a4,1
+ 20007f2:	00f717b3          	sll	a5,a4,a5
+ 20007f6:	fff7c793          	not	a5,a5
+ 20007fa:	873e                	mv	a4,a5
+ 20007fc:	fec42783          	lw	a5,-20(s0)
+ 2000800:	8ff9                	and	a5,a5,a4
+ 2000802:	fef42623          	sw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:123
+	mask_irq(mask);
+ 2000806:	fec42503          	lw	a0,-20(s0)
+ 200080a:	3755                	jal	20007ae <mask_irq>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:125
+
+	return;
+ 200080c:	0001                	nop
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:126
+}
+ 200080e:	50b2                	lw	ra,44(sp)
+ 2000810:	5422                	lw	s0,40(sp)
+ 2000812:	6145                	addi	sp,sp,48
+ 2000814:	8082                	ret
+
+02000816 <enable_external_interrupt>:
+enable_external_interrupt():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:143
+}
+
+//Enable external interrupts
+//Register 'mie' 's external interrupt bit
+inline void enable_external_interrupt(void)
+{
+ 2000816:	1141                	addi	sp,sp,-16
+ 2000818:	c606                	sw	ra,12(sp)
+ 200081a:	c422                	sw	s0,8(sp)
+ 200081c:	0800                	addi	s0,sp,16
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:144
+	__asm__ __volatile__("csrr   t4, mie");
+ 200081e:	30402ef3          	csrr	t4,mie
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:145
+	__asm__ __volatile__("li     t5, 0x800");
+ 2000822:	6f05                	lui	t5,0x1
+ 2000824:	800f0f13          	addi	t5,t5,-2048 # 800 <_lma_btsec_end+0x800>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:146
+	__asm__ __volatile__("or    t4, t4, t5");
+ 2000828:	01eeeeb3          	or	t4,t4,t5
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:147
+	__asm__ __volatile__("csrrw  t5, mie, t4");
+ 200082c:	304e9f73          	csrrw	t5,mie,t4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:148
+}
+ 2000830:	0001                	nop
+ 2000832:	40b2                	lw	ra,12(sp)
+ 2000834:	4422                	lw	s0,8(sp)
+ 2000836:	0141                	addi	sp,sp,16
+ 2000838:	8082                	ret
+
+0200083a <enable_timer_interrupt>:
+enable_timer_interrupt():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:163
+}
+
+//Enable timer interrupt
+//Register 'mie' 's timer interrupt bit
+inline void enable_timer_interrupt(void)
+{
+ 200083a:	1141                	addi	sp,sp,-16
+ 200083c:	c606                	sw	ra,12(sp)
+ 200083e:	c422                	sw	s0,8(sp)
+ 2000840:	0800                	addi	s0,sp,16
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:164
+	__asm__ __volatile__("csrr   t4, mie");
+ 2000842:	30402ef3          	csrr	t4,mie
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:165
+	__asm__ __volatile__("li     t5, 0x80");
+ 2000846:	08000f13          	li	t5,128
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:166
+	__asm__ __volatile__("or     t4, t4, t5");
+ 200084a:	01eeeeb3          	or	t4,t4,t5
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:167
+	__asm__ __volatile__("csrrw  t5, mie, t4");
+ 200084e:	304e9f73          	csrrw	t5,mie,t4
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:168
+}
+ 2000852:	0001                	nop
+ 2000854:	40b2                	lw	ra,12(sp)
+ 2000856:	4422                	lw	s0,8(sp)
+ 2000858:	0141                	addi	sp,sp,16
+ 200085a:	8082                	ret
+
+0200085c <enable_interrupt_global>:
+enable_interrupt_global():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:183
+}
+
+//Enable global interrupt
+//Register 'mstatus' 's 'MIE' bit (global interrupt)
+inline void enable_interrupt_global(void)
+{
+ 200085c:	1141                	addi	sp,sp,-16
+ 200085e:	c606                	sw	ra,12(sp)
+ 2000860:	c422                	sw	s0,8(sp)
+ 2000862:	0800                	addi	s0,sp,16
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:184
+	__asm__ __volatile__("csrrwi t5, mstatus, 8");
+ 2000864:	30045f73          	csrrwi	t5,mstatus,8
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:185
+}
+ 2000868:	0001                	nop
+ 200086a:	40b2                	lw	ra,12(sp)
+ 200086c:	4422                	lw	s0,8(sp)
+ 200086e:	0141                	addi	sp,sp,16
+ 2000870:	8082                	ret
+
+02000872 <set_timer>:
+set_timer():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:196
+	__asm__ __volatile__("csrrwi t5, mstatus, 0");
+}
+
+//Set timer
+uint32_t set_timer(uint32_t timer_val)
+{
+ 2000872:	7179                	addi	sp,sp,-48
+ 2000874:	d606                	sw	ra,44(sp)
+ 2000876:	d422                	sw	s0,40(sp)
+ 2000878:	1800                	addi	s0,sp,48
+ 200087a:	fca42e23          	sw	a0,-36(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:197
+	uint32_t old_val = 0;
+ 200087e:	fe042623          	sw	zero,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:199
+
+	__asm__ __volatile__("mv a4, a0");
+ 2000882:	872a                	mv	a4,a0
+ 2000884:	0a07078b          	.word	0x0a07078b
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:201
+	__asm__ __volatile__(".word(0x0a07078b)");
+	__asm__ __volatile__("mv %[dest], a5"  :[dest]"=r"(old_val));
+ 2000888:	87be                	mv	a5,a5
+ 200088a:	fef42623          	sw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:203
+
+	return old_val;
+ 200088e:	fec42783          	lw	a5,-20(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/irq.c:204
+}
+ 2000892:	853e                	mv	a0,a5
+ 2000894:	50b2                	lw	ra,44(sp)
+ 2000896:	5422                	lw	s0,40(sp)
+ 2000898:	6145                	addi	sp,sp,48
+ 200089a:	8082                	ret
+
+0200089c <gpio_flush>:
+gpio_flush():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:48
+static uint32_t g_gpio_out = 0;		/* 当前 GPIO 输出值 */
+static uint32_t g_tick     = 0;		/* 定时器节拍计数 */
+
+/* 将 g_gpio_out 写入 GPIO 寄存器 */
+static void gpio_flush(void)
+{
+ 200089c:	1141                	addi	sp,sp,-16
+ 200089e:	c606                	sw	ra,12(sp)
+ 20008a0:	c422                	sw	s0,8(sp)
+ 20008a2:	0800                	addi	s0,sp,16
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:49
+	GPIO_WriteData(PICO_WBGPIO, g_gpio_out);
+ 20008a4:	fefff797          	auipc	a5,0xfefff
+ 20008a8:	76878793          	addi	a5,a5,1896 # 100000c <g_gpio_out>
+ 20008ac:	439c                	lw	a5,0(a5)
+ 20008ae:	85be                	mv	a1,a5
+ 20008b0:	11001537          	lui	a0,0x11001
+ 20008b4:	3951                	jal	2000548 <GPIO_WriteData>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:50
+}
+ 20008b6:	0001                	nop
+ 20008b8:	40b2                	lw	ra,12(sp)
+ 20008ba:	4422                	lw	s0,8(sp)
+ 20008bc:	0141                	addi	sp,sp,16
+ 20008be:	8082                	ret
+
+020008c0 <led_flow_step>:
+led_flow_step():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:54
+
+/* 流水灯前进一步 */
+static void led_flow_step(void)
+{
+ 20008c0:	1141                	addi	sp,sp,-16
+ 20008c2:	c606                	sw	ra,12(sp)
+ 20008c4:	c422                	sw	s0,8(sp)
+ 20008c6:	0800                	addi	s0,sp,16
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:55
+	if (g_flow_dir)
+ 20008c8:	fefff797          	auipc	a5,0xfefff
+ 20008cc:	73878793          	addi	a5,a5,1848 # 1000000 <g_flow_dir>
+ 20008d0:	0007c783          	lbu	a5,0(a5)
+ 20008d4:	c78d                	beqz	a5,20008fe <led_flow_step+0x3e>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:56
+		g_flow_pos = (g_flow_pos + 1) % 6;		/* 左移 */
+ 20008d6:	fefff797          	auipc	a5,0xfefff
+ 20008da:	73278793          	addi	a5,a5,1842 # 1000008 <g_flow_pos>
+ 20008de:	0007c783          	lbu	a5,0(a5)
+ 20008e2:	00178713          	addi	a4,a5,1
+ 20008e6:	4799                	li	a5,6
+ 20008e8:	02f767b3          	rem	a5,a4,a5
+ 20008ec:	0ff7f713          	zext.b	a4,a5
+ 20008f0:	fefff797          	auipc	a5,0xfefff
+ 20008f4:	71878793          	addi	a5,a5,1816 # 1000008 <g_flow_pos>
+ 20008f8:	00e78023          	sb	a4,0(a5)
+ 20008fc:	a025                	j	2000924 <led_flow_step+0x64>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:58
+	else
+		g_flow_pos = (g_flow_pos + 5) % 6;		/* 右移（减 1） */
+ 20008fe:	fefff797          	auipc	a5,0xfefff
+ 2000902:	70a78793          	addi	a5,a5,1802 # 1000008 <g_flow_pos>
+ 2000906:	0007c783          	lbu	a5,0(a5)
+ 200090a:	00578713          	addi	a4,a5,5
+ 200090e:	4799                	li	a5,6
+ 2000910:	02f767b3          	rem	a5,a4,a5
+ 2000914:	0ff7f713          	zext.b	a4,a5
+ 2000918:	fefff797          	auipc	a5,0xfefff
+ 200091c:	6f078793          	addi	a5,a5,1776 # 1000008 <g_flow_pos>
+ 2000920:	00e78023          	sb	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:61
+
+	/* LED 低电平点亮：bit 为 1 表示熄灭 */
+	g_gpio_out = (g_gpio_out & ~GPIO_LED_MASK)
+ 2000924:	fefff797          	auipc	a5,0xfefff
+ 2000928:	6e878793          	addi	a5,a5,1768 # 100000c <g_gpio_out>
+ 200092c:	439c                	lw	a5,0(a5)
+ 200092e:	fc07f713          	andi	a4,a5,-64
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:62
+	           | ((~(1UL << g_flow_pos)) & GPIO_LED_MASK);
+ 2000932:	fefff797          	auipc	a5,0xfefff
+ 2000936:	6d678793          	addi	a5,a5,1750 # 1000008 <g_flow_pos>
+ 200093a:	0007c783          	lbu	a5,0(a5)
+ 200093e:	86be                	mv	a3,a5
+ 2000940:	4785                	li	a5,1
+ 2000942:	00d797b3          	sll	a5,a5,a3
+ 2000946:	fff7c793          	not	a5,a5
+ 200094a:	03f7f793          	andi	a5,a5,63
+ 200094e:	8f5d                	or	a4,a4,a5
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:61
+	g_gpio_out = (g_gpio_out & ~GPIO_LED_MASK)
+ 2000950:	fefff797          	auipc	a5,0xfefff
+ 2000954:	6bc78793          	addi	a5,a5,1724 # 100000c <g_gpio_out>
+ 2000958:	c398                	sw	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:63
+	gpio_flush();
+ 200095a:	3789                	jal	200089c <gpio_flush>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:64
+}
+ 200095c:	0001                	nop
+ 200095e:	40b2                	lw	ra,12(sp)
+ 2000960:	4422                	lw	s0,8(sp)
+ 2000962:	0141                	addi	sp,sp,16
+ 2000964:	8082                	ret
+
+02000966 <square_wave_toggle>:
+square_wave_toggle():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:68
+
+/* 翻转方波输出位 */
+static void square_wave_toggle(void)
+{
+ 2000966:	1141                	addi	sp,sp,-16
+ 2000968:	c606                	sw	ra,12(sp)
+ 200096a:	c422                	sw	s0,8(sp)
+ 200096c:	0800                	addi	s0,sp,16
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:69
+	g_gpio_out ^= (1UL << GPIO_SQWAVE_BIT);
+ 200096e:	fefff797          	auipc	a5,0xfefff
+ 2000972:	69e78793          	addi	a5,a5,1694 # 100000c <g_gpio_out>
+ 2000976:	439c                	lw	a5,0(a5)
+ 2000978:	0407c713          	xori	a4,a5,64
+ 200097c:	fefff797          	auipc	a5,0xfefff
+ 2000980:	69078793          	addi	a5,a5,1680 # 100000c <g_gpio_out>
+ 2000984:	c398                	sw	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:70
+	gpio_flush();
+ 2000986:	3f19                	jal	200089c <gpio_flush>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:71
+}
+ 2000988:	0001                	nop
+ 200098a:	40b2                	lw	ra,12(sp)
+ 200098c:	4422                	lw	s0,8(sp)
+ 200098e:	0141                	addi	sp,sp,16
+ 2000990:	8082                	ret
+
+02000992 <main>:
+main():
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:75
+
+/* =================== 主函数 =================== */
+int main(void)
+{
+ 2000992:	1101                	addi	sp,sp,-32
+ 2000994:	ce06                	sw	ra,28(sp)
+ 2000996:	cc22                	sw	s0,24(sp)
+ 2000998:	1000                	addi	s0,sp,32
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:77
+	/* 1. 关闭所有中断，初始化外设 */
+	mask_irq(0xFFFFFFFF);
+ 200099a:	557d                	li	a0,-1
+ 200099c:	3d09                	jal	20007ae <mask_irq>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:78
+	wbuart_init(115200);				/* WBUART 115200bps */
+ 200099e:	67f1                	lui	a5,0x1c
+ 20009a0:	20078513          	addi	a0,a5,512 # 1c200 <_lma_data_end+0x1b478>
+ 20009a4:	36e1                	jal	200056c <wbuart_init>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:79
+	GPIO_Init(PICO_WBGPIO);
+ 20009a6:	11001537          	lui	a0,0x11001
+ 20009aa:	3e35                	jal	20004e6 <GPIO_Init>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:82
+
+	/* 2. GPIO 全部输出：bit[5:0]=LED, bit[6]=方波 */
+	GPIO_SetDir(PICO_WBGPIO, 0x7F);
+ 20009ac:	07f00593          	li	a1,127
+ 20009b0:	11001537          	lui	a0,0x11001
+ 20009b4:	3e85                	jal	2000524 <GPIO_SetDir>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:83
+	g_gpio_out = GPIO_LED_MASK;			/* 初始 LED 全灭，方波低电平 */
+ 20009b6:	fefff797          	auipc	a5,0xfefff
+ 20009ba:	65678793          	addi	a5,a5,1622 # 100000c <g_gpio_out>
+ 20009be:	03f00713          	li	a4,63
+ 20009c2:	c398                	sw	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:84
+	gpio_flush();
+ 20009c4:	3de1                	jal	200089c <gpio_flush>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:86
+
+	printf("\r\n==========================================\r\n");
+ 20009c6:	00000517          	auipc	a0,0x0
+ 20009ca:	22250513          	addi	a0,a0,546 # 2000be8 <strlen+0x9a>
+ 20009ce:	3cdd                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:87
+	printf("Tang Nano 9K PicoRV32 SOPC Demo\r\n");
+ 20009d0:	00000517          	auipc	a0,0x0
+ 20009d4:	24850513          	addi	a0,a0,584 # 2000c18 <strlen+0xca>
+ 20009d8:	34f5                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:88
+	printf("System Clock: %d MHz\r\n", SYSCLKFREQ / MHz);
+ 20009da:	45ed                	li	a1,27
+ 20009dc:	00000517          	auipc	a0,0x0
+ 20009e0:	26050513          	addi	a0,a0,608 # 2000c3c <strlen+0xee>
+ 20009e4:	34c5                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:89
+	printf("==========================================\r\n\r\n");
+ 20009e6:	00000517          	auipc	a0,0x0
+ 20009ea:	26e50513          	addi	a0,a0,622 # 2000c54 <strlen+0x106>
+ 20009ee:	3cd9                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:92
+
+	/* 3. 使能中断 */
+	irq_enable_one_bit(0);				/* 定时器中断 */
+ 20009f0:	4501                	li	a0,0
+ 20009f2:	33cd                	jal	20007d4 <irq_enable_one_bit>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:93
+	irq_enable_one_bit(20);				/* 按键外部中断 */
+ 20009f4:	4551                	li	a0,20
+ 20009f6:	3bf9                	jal	20007d4 <irq_enable_one_bit>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:94
+	irq_enable_one_bit(13);				/* WBUART 接收中断 */
+ 20009f8:	4535                	li	a0,13
+ 20009fa:	3be9                	jal	20007d4 <irq_enable_one_bit>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:95
+	enable_timer_interrupt();
+ 20009fc:	3d3d                	jal	200083a <enable_timer_interrupt>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:96
+	enable_external_interrupt();
+ 20009fe:	3d21                	jal	2000816 <enable_external_interrupt>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:97
+	enable_interrupt_global();
+ 2000a00:	3db1                	jal	200085c <enable_interrupt_global>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:100
+
+	/* 4. 启动定时器 -> 产生方波 */
+	set_timer(SQ_WAVE_HALF_PERIOD);
+ 2000a02:	678d                	lui	a5,0x3
+ 2000a04:	4bc78513          	addi	a0,a5,1212 # 34bc <_lma_data_end+0x2734>
+ 2000a08:	35ad                	jal	2000872 <set_timer>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:102
+
+	printf("[OK] LED flow running...\r\n");
+ 2000a0a:	00000517          	auipc	a0,0x0
+ 2000a0e:	27a50513          	addi	a0,a0,634 # 2000c84 <strlen+0x136>
+ 2000a12:	3c4d                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:103
+	printf("[OK] Press S1 key to switch LED direction\r\n");
+ 2000a14:	00000517          	auipc	a0,0x0
+ 2000a18:	28c50513          	addi	a0,a0,652 # 2000ca0 <strlen+0x152>
+ 2000a1c:	3465                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:104
+	printf("[OK] gpio_io[6] outputs ~1kHz square wave\r\n");
+ 2000a1e:	00000517          	auipc	a0,0x0
+ 2000a22:	2ae50513          	addi	a0,a0,686 # 2000ccc <strlen+0x17e>
+ 2000a26:	3c79                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:105
+	printf("[OK] UART echo enabled, type any char to test\r\n\r\n");
+ 2000a28:	00000517          	auipc	a0,0x0
+ 2000a2c:	2d050513          	addi	a0,a0,720 # 2000cf8 <strlen+0x1aa>
+ 2000a30:	3c51                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:111
+
+	/* 5. 主循环：非阻塞，轮询中断标志 */
+	while (1)
+	{
+		/* 定时器中断：方波翻转 + 流水灯节拍计数 */
+		if (irq00_flag)
+ 2000a32:	fefff797          	auipc	a5,0xfefff
+ 2000a36:	5d278793          	addi	a5,a5,1490 # 1000004 <irq00_flag>
+ 2000a3a:	0007c783          	lbu	a5,0(a5)
+ 2000a3e:	c7a9                	beqz	a5,2000a88 <main+0xf6>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:113
+		{
+			irq00_flag = 0;
+ 2000a40:	fefff797          	auipc	a5,0xfefff
+ 2000a44:	5c478793          	addi	a5,a5,1476 # 1000004 <irq00_flag>
+ 2000a48:	00078023          	sb	zero,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:114
+			g_tick++;
+ 2000a4c:	fefff797          	auipc	a5,0xfefff
+ 2000a50:	5c478793          	addi	a5,a5,1476 # 1000010 <g_tick>
+ 2000a54:	439c                	lw	a5,0(a5)
+ 2000a56:	00178713          	addi	a4,a5,1
+ 2000a5a:	fefff797          	auipc	a5,0xfefff
+ 2000a5e:	5b678793          	addi	a5,a5,1462 # 1000010 <g_tick>
+ 2000a62:	c398                	sw	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:115
+			square_wave_toggle();
+ 2000a64:	3709                	jal	2000966 <square_wave_toggle>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:116
+			if ((g_tick % FLOW_STEP_TICKS) == 0)
+ 2000a66:	fefff797          	auipc	a5,0xfefff
+ 2000a6a:	5aa78793          	addi	a5,a5,1450 # 1000010 <g_tick>
+ 2000a6e:	4398                	lw	a4,0(a5)
+ 2000a70:	19000793          	li	a5,400
+ 2000a74:	02f777b3          	remu	a5,a4,a5
+ 2000a78:	e391                	bnez	a5,2000a7c <main+0xea>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:117
+				led_flow_step();
+ 2000a7a:	3599                	jal	20008c0 <led_flow_step>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:118
+			irq_enable_one_bit(0);
+ 2000a7c:	4501                	li	a0,0
+ 2000a7e:	3b99                	jal	20007d4 <irq_enable_one_bit>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:119
+			set_timer(SQ_WAVE_HALF_PERIOD);	/* 重新装载定时器 */
+ 2000a80:	678d                	lui	a5,0x3
+ 2000a82:	4bc78513          	addi	a0,a5,1212 # 34bc <_lma_data_end+0x2734>
+ 2000a86:	33f5                	jal	2000872 <set_timer>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:123
+		}
+
+		/* 按键外部中断：切换流水灯方向 */
+		if (irq20_flag)
+ 2000a88:	fefff797          	auipc	a5,0xfefff
+ 2000a8c:	57e78793          	addi	a5,a5,1406 # 1000006 <irq20_flag>
+ 2000a90:	0007c783          	lbu	a5,0(a5)
+ 2000a94:	c3a5                	beqz	a5,2000af4 <main+0x162>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:125
+		{
+			irq20_flag = 0;
+ 2000a96:	fefff797          	auipc	a5,0xfefff
+ 2000a9a:	57078793          	addi	a5,a5,1392 # 1000006 <irq20_flag>
+ 2000a9e:	00078023          	sb	zero,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:126
+			g_flow_dir = !g_flow_dir;
+ 2000aa2:	fefff797          	auipc	a5,0xfefff
+ 2000aa6:	55e78793          	addi	a5,a5,1374 # 1000000 <g_flow_dir>
+ 2000aaa:	0007c783          	lbu	a5,0(a5)
+ 2000aae:	0017b793          	seqz	a5,a5
+ 2000ab2:	0ff7f793          	zext.b	a5,a5
+ 2000ab6:	873e                	mv	a4,a5
+ 2000ab8:	fefff797          	auipc	a5,0xfefff
+ 2000abc:	54878793          	addi	a5,a5,1352 # 1000000 <g_flow_dir>
+ 2000ac0:	00e78023          	sb	a4,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:128
+			printf("[INT] Key pressed! LED direction -> %s\r\n",
+			       g_flow_dir ? "LEFT" : "RIGHT");
+ 2000ac4:	fefff797          	auipc	a5,0xfefff
+ 2000ac8:	53c78793          	addi	a5,a5,1340 # 1000000 <g_flow_dir>
+ 2000acc:	0007c783          	lbu	a5,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:127
+			printf("[INT] Key pressed! LED direction -> %s\r\n",
+ 2000ad0:	c791                	beqz	a5,2000adc <main+0x14a>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:127 (discriminator 1)
+ 2000ad2:	00000797          	auipc	a5,0x0
+ 2000ad6:	25a78793          	addi	a5,a5,602 # 2000d2c <strlen+0x1de>
+ 2000ada:	a029                	j	2000ae4 <main+0x152>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:127 (discriminator 2)
+ 2000adc:	00000797          	auipc	a5,0x0
+ 2000ae0:	25878793          	addi	a5,a5,600 # 2000d34 <strlen+0x1e6>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:127 (discriminator 4)
+ 2000ae4:	85be                	mv	a1,a5
+ 2000ae6:	00000517          	auipc	a0,0x0
+ 2000aea:	25650513          	addi	a0,a0,598 # 2000d3c <strlen+0x1ee>
+ 2000aee:	3ad9                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:129
+			irq_enable_one_bit(20);
+ 2000af0:	4551                	li	a0,20
+ 2000af2:	31cd                	jal	20007d4 <irq_enable_one_bit>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:133
+		}
+
+		/* WBUART 接收中断：读取并回显 */
+		if (irq13_flag)
+ 2000af4:	fefff797          	auipc	a5,0xfefff
+ 2000af8:	51178793          	addi	a5,a5,1297 # 1000005 <irq13_flag>
+ 2000afc:	0007c783          	lbu	a5,0(a5)
+ 2000b00:	db8d                	beqz	a5,2000a32 <main+0xa0>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:135
+		{
+			irq13_flag = 0;
+ 2000b02:	fefff797          	auipc	a5,0xfefff
+ 2000b06:	50378793          	addi	a5,a5,1283 # 1000005 <irq13_flag>
+ 2000b0a:	00078023          	sb	zero,0(a5)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:136
+			uint8_t ch = wbuart_getc();
+ 2000b0e:	34c5                	jal	20005ee <wbuart_getc>
+ 2000b10:	87aa                	mv	a5,a0
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:136 (discriminator 1)
+ 2000b12:	fef407a3          	sb	a5,-17(s0)
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:137
+			printf("RX: 0x%02X '%c'\r\n", ch,
+ 2000b16:	fef44683          	lbu	a3,-17(s0)
+ 2000b1a:	fef44703          	lbu	a4,-17(s0)
+ 2000b1e:	47fd                	li	a5,31
+ 2000b20:	00e7fb63          	bgeu	a5,a4,2000b36 <main+0x1a4>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:138
+			       (ch >= 32 && ch <= 126) ? ch : '.');
+ 2000b24:	fef44703          	lbu	a4,-17(s0)
+ 2000b28:	07e00793          	li	a5,126
+ 2000b2c:	00e7e563          	bltu	a5,a4,2000b36 <main+0x1a4>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:137
+			printf("RX: 0x%02X '%c'\r\n", ch,
+ 2000b30:	fef44783          	lbu	a5,-17(s0)
+ 2000b34:	a019                	j	2000b3a <main+0x1a8>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:137 (discriminator 1)
+ 2000b36:	02e00793          	li	a5,46
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:137 (discriminator 3)
+ 2000b3a:	863e                	mv	a2,a5
+ 2000b3c:	85b6                	mv	a1,a3
+ 2000b3e:	00000517          	auipc	a0,0x0
+ 2000b42:	22a50513          	addi	a0,a0,554 # 2000d68 <strlen+0x21a>
+ 2000b46:	3abd                	jal	20004c4 <printf>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:139
+			irq_enable_one_bit(13);
+ 2000b48:	4535                	li	a0,13
+ 2000b4a:	3169                	jal	20007d4 <irq_enable_one_bit>
+F:\ALL_PROJECT\gowin\GMD_workspace\my_1\Debug/../src/main.c:111
+		if (irq00_flag)
+ 2000b4c:	b5dd                	j	2000a32 <main+0xa0>
+
+02000b4e <strlen>:
+strlen():
+ 2000b4e:	00357793          	andi	a5,a0,3
+ 2000b52:	872a                	mv	a4,a0
+ 2000b54:	ef9d                	bnez	a5,2000b92 <strlen+0x44>
+ 2000b56:	7f7f86b7          	lui	a3,0x7f7f8
+ 2000b5a:	f7f68693          	addi	a3,a3,-129 # 7f7f7f7f <_cp_data_end+0x6f3f71f7>
+ 2000b5e:	55fd                	li	a1,-1
+ 2000b60:	4310                	lw	a2,0(a4)
+ 2000b62:	0711                	addi	a4,a4,4
+ 2000b64:	00d677b3          	and	a5,a2,a3
+ 2000b68:	97b6                	add	a5,a5,a3
+ 2000b6a:	8fd1                	or	a5,a5,a2
+ 2000b6c:	8fd5                	or	a5,a5,a3
+ 2000b6e:	feb789e3          	beq	a5,a1,2000b60 <strlen+0x12>
+ 2000b72:	ffc74683          	lbu	a3,-4(a4)
+ 2000b76:	40a707b3          	sub	a5,a4,a0
+ 2000b7a:	ca8d                	beqz	a3,2000bac <strlen+0x5e>
+ 2000b7c:	ffd74683          	lbu	a3,-3(a4)
+ 2000b80:	c29d                	beqz	a3,2000ba6 <strlen+0x58>
+ 2000b82:	ffe74503          	lbu	a0,-2(a4)
+ 2000b86:	00a03533          	snez	a0,a0
+ 2000b8a:	953e                	add	a0,a0,a5
+ 2000b8c:	1579                	addi	a0,a0,-2
+ 2000b8e:	8082                	ret
+ 2000b90:	d2f9                	beqz	a3,2000b56 <strlen+0x8>
+ 2000b92:	00074783          	lbu	a5,0(a4)
+ 2000b96:	0705                	addi	a4,a4,1
+ 2000b98:	00377693          	andi	a3,a4,3
+ 2000b9c:	fbf5                	bnez	a5,2000b90 <strlen+0x42>
+ 2000b9e:	8f09                	sub	a4,a4,a0
+ 2000ba0:	fff70513          	addi	a0,a4,-1
+ 2000ba4:	8082                	ret
+ 2000ba6:	ffd78513          	addi	a0,a5,-3
+ 2000baa:	8082                	ret
+ 2000bac:	ffc78513          	addi	a0,a5,-4
+ 2000bb0:	8082                	ret
+ 2000bb2:	0000                	unimp
+ 2000bb4:	6c49                	lui	s8,0x12
+ 2000bb6:	656c                	.insn	2, 0x656c
+ 2000bb8:	206c6167          	.insn	4, 0x206c6167
+ 2000bbc:	6e49                	lui	t3,0x12
+ 2000bbe:	74612073          	.insn	4, 0x74612073
+ 2000bc2:	3020                	.insn	2, 0x3020
+ 2000bc4:	0078                	addi	a4,sp,12
+ 2000bc6:	0000                	unimp
+ 2000bc8:	7825                	lui	a6,0xfffe9
+ 2000bca:	0a0d                	addi	s4,s4,3
+ 2000bcc:	0000                	unimp
+ 2000bce:	0000                	unimp
+ 2000bd0:	203a                	.insn	2, 0x203a
+ 2000bd2:	7830                	.insn	2, 0x7830
+ 2000bd4:	0000                	unimp
+ 2000bd6:	0000                	unimp
+ 2000bd8:	7542                	.insn	2, 0x7542
+ 2000bda:	72652073          	.insn	4, 0x72652073
+ 2000bde:	6f72                	.insn	2, 0x6f72
+ 2000be0:	2072                	.insn	2, 0x2072
+ 2000be2:	7461                	lui	s0,0xffff8
+ 2000be4:	3020                	.insn	2, 0x3020
+ 2000be6:	0078                	addi	a4,sp,12
+ 2000be8:	0a0d                	addi	s4,s4,3
+ 2000bea:	3d3d                	jal	2000a28 <main+0x96>
+ 2000bec:	3d3d                	jal	2000a2a <main+0x98>
+ 2000bee:	3d3d                	jal	2000a2c <main+0x9a>
+ 2000bf0:	3d3d                	jal	2000a2e <main+0x9c>
+ 2000bf2:	3d3d                	jal	2000a30 <main+0x9e>
+ 2000bf4:	3d3d                	jal	2000a32 <main+0xa0>
+ 2000bf6:	3d3d                	jal	2000a34 <main+0xa2>
+ 2000bf8:	3d3d                	jal	2000a36 <main+0xa4>
+ 2000bfa:	3d3d                	jal	2000a38 <main+0xa6>
+ 2000bfc:	3d3d                	jal	2000a3a <main+0xa8>
+ 2000bfe:	3d3d                	jal	2000a3c <main+0xaa>
+ 2000c00:	3d3d                	jal	2000a3e <main+0xac>
+ 2000c02:	3d3d                	jal	2000a40 <main+0xae>
+ 2000c04:	3d3d                	jal	2000a42 <main+0xb0>
+ 2000c06:	3d3d                	jal	2000a44 <main+0xb2>
+ 2000c08:	3d3d                	jal	2000a46 <main+0xb4>
+ 2000c0a:	3d3d                	jal	2000a48 <main+0xb6>
+ 2000c0c:	3d3d                	jal	2000a4a <main+0xb8>
+ 2000c0e:	3d3d                	jal	2000a4c <main+0xba>
+ 2000c10:	3d3d                	jal	2000a4e <main+0xbc>
+ 2000c12:	3d3d                	jal	2000a50 <main+0xbe>
+ 2000c14:	0a0d                	addi	s4,s4,3
+ 2000c16:	0000                	unimp
+ 2000c18:	6154                	.insn	2, 0x6154
+ 2000c1a:	676e                	.insn	2, 0x676e
+ 2000c1c:	4e20                	lw	s0,88(a2)
+ 2000c1e:	6e61                	lui	t3,0x18
+ 2000c20:	4b39206f          	j	20938d2 <_etext+0x92b4e>
+ 2000c24:	5020                	lw	s0,96(s0)
+ 2000c26:	6369                	lui	t1,0x1a
+ 2000c28:	3356526f          	jal	tp,206675c <_etext+0x659d8>
+ 2000c2c:	2032                	.insn	2, 0x2032
+ 2000c2e:	43504f53          	.insn	4, 0x43504f53
+ 2000c32:	4420                	lw	s0,72(s0)
+ 2000c34:	6d65                	lui	s10,0x19
+ 2000c36:	000a0d6f          	jal	s10,20a0c36 <_etext+0x9feb2>
+ 2000c3a:	0000                	unimp
+ 2000c3c:	74737953          	.insn	4, 0x74737953
+ 2000c40:	6d65                	lui	s10,0x19
+ 2000c42:	4320                	lw	s0,64(a4)
+ 2000c44:	6f6c                	.insn	2, 0x6f6c
+ 2000c46:	203a6b63          	bltu	s4,gp,2000e5c <_etext+0xd8>
+ 2000c4a:	6425                	lui	s0,0x9
+ 2000c4c:	4d20                	lw	s0,88(a0)
+ 2000c4e:	7a48                	.insn	2, 0x7a48
+ 2000c50:	0a0d                	addi	s4,s4,3
+ 2000c52:	0000                	unimp
+ 2000c54:	3d3d                	jal	2000a92 <main+0x100>
+ 2000c56:	3d3d                	jal	2000a94 <main+0x102>
+ 2000c58:	3d3d                	jal	2000a96 <main+0x104>
+ 2000c5a:	3d3d                	jal	2000a98 <main+0x106>
+ 2000c5c:	3d3d                	jal	2000a9a <main+0x108>
+ 2000c5e:	3d3d                	jal	2000a9c <main+0x10a>
+ 2000c60:	3d3d                	jal	2000a9e <main+0x10c>
+ 2000c62:	3d3d                	jal	2000aa0 <main+0x10e>
+ 2000c64:	3d3d                	jal	2000aa2 <main+0x110>
+ 2000c66:	3d3d                	jal	2000aa4 <main+0x112>
+ 2000c68:	3d3d                	jal	2000aa6 <main+0x114>
+ 2000c6a:	3d3d                	jal	2000aa8 <main+0x116>
+ 2000c6c:	3d3d                	jal	2000aaa <main+0x118>
+ 2000c6e:	3d3d                	jal	2000aac <main+0x11a>
+ 2000c70:	3d3d                	jal	2000aae <main+0x11c>
+ 2000c72:	3d3d                	jal	2000ab0 <main+0x11e>
+ 2000c74:	3d3d                	jal	2000ab2 <main+0x120>
+ 2000c76:	3d3d                	jal	2000ab4 <main+0x122>
+ 2000c78:	3d3d                	jal	2000ab6 <main+0x124>
+ 2000c7a:	3d3d                	jal	2000ab8 <main+0x126>
+ 2000c7c:	3d3d                	jal	2000aba <main+0x128>
+ 2000c7e:	0a0d                	addi	s4,s4,3
+ 2000c80:	0a0d                	addi	s4,s4,3
+ 2000c82:	0000                	unimp
+ 2000c84:	5d4b4f5b          	.insn	4, 0x5d4b4f5b
+ 2000c88:	4c20                	lw	s0,88(s0)
+ 2000c8a:	4445                	li	s0,17
+ 2000c8c:	6620                	.insn	2, 0x6620
+ 2000c8e:	6f6c                	.insn	2, 0x6f6c
+ 2000c90:	75722077          	.insn	4, 0x75722077
+ 2000c94:	6e6e                	.insn	2, 0x6e6e
+ 2000c96:	6e69                	lui	t3,0x1a
+ 2000c98:	2e2e2e67          	.insn	4, 0x2e2e2e67
+ 2000c9c:	0a0d                	addi	s4,s4,3
+ 2000c9e:	0000                	unimp
+ 2000ca0:	5d4b4f5b          	.insn	4, 0x5d4b4f5b
+ 2000ca4:	5020                	lw	s0,96(s0)
+ 2000ca6:	6572                	.insn	2, 0x6572
+ 2000ca8:	53207373          	.insn	4, 0x53207373
+ 2000cac:	2031                	jal	2000cb8 <strlen+0x16a>
+ 2000cae:	2079656b          	.insn	4, 0x2079656b
+ 2000cb2:	6f74                	.insn	2, 0x6f74
+ 2000cb4:	7320                	.insn	2, 0x7320
+ 2000cb6:	63746977          	.insn	4, 0x63746977
+ 2000cba:	2068                	.insn	2, 0x2068
+ 2000cbc:	454c                	lw	a1,12(a0)
+ 2000cbe:	2044                	.insn	2, 0x2044
+ 2000cc0:	6964                	.insn	2, 0x6964
+ 2000cc2:	6572                	.insn	2, 0x6572
+ 2000cc4:	6f697463          	bgeu	s2,s6,20013ac <_etext+0x628>
+ 2000cc8:	0d6e                	slli	s10,s10,0x1b
+ 2000cca:	000a                	c.slli	zero,0x2
+ 2000ccc:	5d4b4f5b          	.insn	4, 0x5d4b4f5b
+ 2000cd0:	6720                	.insn	2, 0x6720
+ 2000cd2:	6970                	.insn	2, 0x6970
+ 2000cd4:	6f695f6f          	jal	t5,20963ca <_etext+0x95646>
+ 2000cd8:	205d365b          	.insn	4, 0x205d365b
+ 2000cdc:	7074756f          	jal	a0,2048be2 <_etext+0x47e5e>
+ 2000ce0:	7475                	lui	s0,0xffffd
+ 2000ce2:	317e2073          	.insn	4, 0x317e2073
+ 2000ce6:	207a486b          	.insn	4, 0x207a486b
+ 2000cea:	61757173          	.insn	4, 0x61757173
+ 2000cee:	6572                	.insn	2, 0x6572
+ 2000cf0:	7720                	.insn	2, 0x7720
+ 2000cf2:	7661                	lui	a2,0xffff8
+ 2000cf4:	0d65                	addi	s10,s10,25 # 19019 <_lma_data_end+0x18291>
+ 2000cf6:	000a                	c.slli	zero,0x2
+ 2000cf8:	5d4b4f5b          	.insn	4, 0x5d4b4f5b
+ 2000cfc:	5520                	lw	s0,104(a0)
+ 2000cfe:	5241                	li	tp,-16
+ 2000d00:	2054                	.insn	2, 0x2054
+ 2000d02:	6365                	lui	t1,0x19
+ 2000d04:	6f68                	.insn	2, 0x6f68
+ 2000d06:	6520                	.insn	2, 0x6520
+ 2000d08:	616e                	.insn	2, 0x616e
+ 2000d0a:	6c62                	.insn	2, 0x6c62
+ 2000d0c:	6465                	lui	s0,0x19
+ 2000d0e:	202c                	.insn	2, 0x202c
+ 2000d10:	7974                	.insn	2, 0x7974
+ 2000d12:	6570                	.insn	2, 0x6570
+ 2000d14:	6120                	.insn	2, 0x6120
+ 2000d16:	796e                	.insn	2, 0x796e
+ 2000d18:	6320                	.insn	2, 0x6320
+ 2000d1a:	6168                	.insn	2, 0x6168
+ 2000d1c:	2072                	.insn	2, 0x2072
+ 2000d1e:	6f74                	.insn	2, 0x6f74
+ 2000d20:	7420                	.insn	2, 0x7420
+ 2000d22:	7365                	lui	t1,0xffff9
+ 2000d24:	0d74                	addi	a3,sp,668
+ 2000d26:	0d0a                	slli	s10,s10,0x2
+ 2000d28:	000a                	c.slli	zero,0x2
+ 2000d2a:	0000                	unimp
+ 2000d2c:	454c                	lw	a1,12(a0)
+ 2000d2e:	5446                	lw	s0,112(sp)
+ 2000d30:	0000                	unimp
+ 2000d32:	0000                	unimp
+ 2000d34:	4952                	lw	s2,20(sp)
+ 2000d36:	00544847          	.insn	4, 0x00544847
+ 2000d3a:	0000                	unimp
+ 2000d3c:	544e495b          	.insn	4, 0x544e495b
+ 2000d40:	205d                	jal	2000de6 <_etext+0x62>
+ 2000d42:	2079654b          	.insn	4, 0x2079654b
+ 2000d46:	7270                	.insn	2, 0x7270
+ 2000d48:	7365                	lui	t1,0xffff9
+ 2000d4a:	21646573          	.insn	4, 0x21646573
+ 2000d4e:	4c20                	lw	s0,88(s0)
+ 2000d50:	4445                	li	s0,17
+ 2000d52:	6420                	.insn	2, 0x6420
+ 2000d54:	7269                	lui	tp,0xffffa
+ 2000d56:	6365                	lui	t1,0x19
+ 2000d58:	6974                	.insn	2, 0x6974
+ 2000d5a:	2d206e6f          	jal	t3,200702c <_etext+0x62a8>
+ 2000d5e:	203e                	.insn	2, 0x203e
+ 2000d60:	7325                	lui	t1,0xfffe9
+ 2000d62:	0a0d                	addi	s4,s4,3
+ 2000d64:	0000                	unimp
+ 2000d66:	0000                	unimp
+ 2000d68:	5852                	lw	a6,52(sp)
+ 2000d6a:	203a                	.insn	2, 0x203a
+ 2000d6c:	7830                	.insn	2, 0x7830
+ 2000d6e:	3025                	jal	2000596 <wbuart_init+0x2a>
+ 2000d70:	5832                	lw	a6,44(sp)
+ 2000d72:	2720                	.insn	2, 0x2720
+ 2000d74:	6325                	lui	t1,0x9
+ 2000d76:	000a0d27          	.insn	4, 0x000a0d27
+ 2000d7a:	0000                	unimp
+ 2000d7c:	6e28                	.insn	2, 0x6e28
+ 2000d7e:	6c75                	lui	s8,0x1d
+ 2000d80:	296c                	.insn	2, 0x296c
+	...

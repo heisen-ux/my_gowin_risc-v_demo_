@@ -1,0 +1,717 @@
+   1              		.file	"firmware.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p1_m2p0_c2p0_zicsr2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.file 0 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\Debug" "../src/lib/firmware.c"
+  10              		.section	.text.stats_print_dec,"ax",@progbits
+  11              		.align	1
+  13              	stats_print_dec:
+  14              	.LFB3:
+  15              		.file 1 "../src/lib/firmware.c"
+   1:../src/lib/firmware.c **** /*
+   2:../src/lib/firmware.c ****  ******************************************************************************************
+   3:../src/lib/firmware.c ****  * @file		firmware.c
+   4:../src/lib/firmware.c ****  * @author		GowinSemicoductor
+   5:../src/lib/firmware.c ****  * @device		Gowin_PicoRV32
+   6:../src/lib/firmware.c ****  * @brief		Firmware.
+   7:../src/lib/firmware.c ****  ******************************************************************************************
+   8:../src/lib/firmware.c ****  */
+   9:../src/lib/firmware.c **** 
+  10:../src/lib/firmware.c **** /* Includes -------------------------------------------------------------------------- */
+  11:../src/lib/firmware.c **** #include "firmware.h"
+  12:../src/lib/firmware.c **** #include "picorv32.h"
+  13:../src/lib/firmware.c **** #include "wbuart.h"
+  14:../src/lib/firmware.c **** 
+  15:../src/lib/firmware.c **** 
+  16:../src/lib/firmware.c **** /* Definitions ----------------------------------------------------------------------- */
+  17:../src/lib/firmware.c **** 
+  18:../src/lib/firmware.c **** #ifdef USE_WBUART
+  19:../src/lib/firmware.c **** #define put_char(c) wbuart_outbyte(c)
+  20:../src/lib/firmware.c **** #else
+  21:../src/lib/firmware.c **** #define put_char(c) outbyte(c)
+  22:../src/lib/firmware.c **** #endif
+  23:../src/lib/firmware.c **** 
+  24:../src/lib/firmware.c **** 
+  25:../src/lib/firmware.c **** static void stats_print_dec(unsigned int val, int digits, bool zero_pad)
+  26:../src/lib/firmware.c **** {
+  16              		.loc 1 26 1
+  17              		.cfi_startproc
+  18 0000 5D71     		addi	sp,sp,-80
+  19              		.cfi_def_cfa_offset 80
+  20 0002 86C6     		sw	ra,76(sp)
+  21 0004 A2C4     		sw	s0,72(sp)
+  22              		.cfi_offset 1, -4
+  23              		.cfi_offset 8, -8
+  24 0006 8008     		addi	s0,sp,80
+  25              		.cfi_def_cfa 8, 0
+  26 0008 232EA4FA 		sw	a0,-68(s0)
+  27 000c 232CB4FA 		sw	a1,-72(s0)
+  28 0010 B287     		mv	a5,a2
+  29 0012 A30BF4FA 		sb	a5,-73(s0)
+  27:../src/lib/firmware.c **** 	char buffer[32];
+  28:../src/lib/firmware.c **** 	char *p = buffer;
+  30              		.loc 1 28 8
+  31 0016 9307C4FC 		addi	a5,s0,-52
+  32 001a 2326F4FE 		sw	a5,-20(s0)
+  29:../src/lib/firmware.c **** 
+  30:../src/lib/firmware.c **** 	while (val || digits > 0)
+  33              		.loc 1 30 8
+  34 001e A5A0     		j	.L2
+  35              	.L7:
+  31:../src/lib/firmware.c **** 	{
+  32:../src/lib/firmware.c **** 		if (val)
+  36              		.loc 1 32 6
+  37 0020 8327C4FB 		lw	a5,-68(s0)
+  38 0024 8DC7     		beq	a5,zero,.L3
+  33:../src/lib/firmware.c **** 		{
+  34:../src/lib/firmware.c **** 			*(p++) = '0' + val % 10;
+  39              		.loc 1 34 23
+  40 0026 0327C4FB 		lw	a4,-68(s0)
+  41 002a A947     		li	a5,10
+  42 002c B377F702 		remu	a5,a4,a5
+  43              		.loc 1 34 17
+  44 0030 13F7F70F 		andi	a4,a5,0xff
+  45              		.loc 1 34 7
+  46 0034 8327C4FE 		lw	a5,-20(s0)
+  47 0038 93861700 		addi	a3,a5,1
+  48 003c 2326D4FE 		sw	a3,-20(s0)
+  49              		.loc 1 34 17
+  50 0040 13070703 		addi	a4,a4,48
+  51 0044 1377F70F 		andi	a4,a4,0xff
+  52              		.loc 1 34 11
+  53 0048 2380E700 		sb	a4,0(a5)
+  54 004c 0DA0     		j	.L4
+  55              	.L3:
+  35:../src/lib/firmware.c **** 		}
+  36:../src/lib/firmware.c **** 		else
+  37:../src/lib/firmware.c **** 		{
+  38:../src/lib/firmware.c **** 			*(p++) = zero_pad ? '0' : ' ';
+  56              		.loc 1 38 11
+  57 004e 834774FB 		lbu	a5,-73(s0)
+  58 0052 81C7     		beq	a5,zero,.L5
+  59              		.loc 1 38 11 is_stmt 0 discriminator 1
+  60 0054 13070003 		li	a4,48
+  61 0058 19A0     		j	.L6
+  62              	.L5:
+  63              		.loc 1 38 11 discriminator 2
+  64 005a 13070002 		li	a4,32
+  65              	.L6:
+  66              		.loc 1 38 7 is_stmt 1 discriminator 4
+  67 005e 8327C4FE 		lw	a5,-20(s0)
+  68 0062 93861700 		addi	a3,a5,1
+  69 0066 2326D4FE 		sw	a3,-20(s0)
+  70              		.loc 1 38 11 discriminator 4
+  71 006a 2380E700 		sb	a4,0(a5)
+  72              	.L4:
+  39:../src/lib/firmware.c **** 		}
+  40:../src/lib/firmware.c **** 
+  41:../src/lib/firmware.c **** 		val = val / 10;
+  73              		.loc 1 41 7
+  74 006e 0327C4FB 		lw	a4,-68(s0)
+  75 0072 A947     		li	a5,10
+  76 0074 B357F702 		divu	a5,a4,a5
+  77 0078 232EF4FA 		sw	a5,-68(s0)
+  42:../src/lib/firmware.c **** 		digits--;
+  78              		.loc 1 42 9
+  79 007c 832784FB 		lw	a5,-72(s0)
+  80 0080 FD17     		addi	a5,a5,-1
+  81 0082 232CF4FA 		sw	a5,-72(s0)
+  82              	.L2:
+  30:../src/lib/firmware.c **** 	{
+  83              		.loc 1 30 13
+  84 0086 8327C4FB 		lw	a5,-68(s0)
+  85 008a D9FB     		bne	a5,zero,.L7
+  30:../src/lib/firmware.c **** 	{
+  86              		.loc 1 30 13 is_stmt 0 discriminator 1
+  87 008c 832784FB 		lw	a5,-72(s0)
+  88 0090 E348F0F8 		bgt	a5,zero,.L7
+  43:../src/lib/firmware.c **** 	}
+  44:../src/lib/firmware.c **** 	while (p != buffer)
+  89              		.loc 1 44 8 is_stmt 1
+  90 0094 81A8     		j	.L8
+  91              	.L10:
+  45:../src/lib/firmware.c **** 	{
+  46:../src/lib/firmware.c **** 		if (p[-1] == ' ' && p[-2] == ' ')
+  92              		.loc 1 46 8
+  93 0096 8327C4FE 		lw	a5,-20(s0)
+  94 009a FD17     		addi	a5,a5,-1
+  95 009c 03C70700 		lbu	a4,0(a5)
+  96              		.loc 1 46 6
+  97 00a0 93070002 		li	a5,32
+  98 00a4 6312F702 		bne	a4,a5,.L9
+  99              		.loc 1 46 24 discriminator 1
+ 100 00a8 8327C4FE 		lw	a5,-20(s0)
+ 101 00ac F917     		addi	a5,a5,-2
+ 102 00ae 03C70700 		lbu	a4,0(a5)
+ 103              		.loc 1 46 20 discriminator 1
+ 104 00b2 93070002 		li	a5,32
+ 105 00b6 6319F700 		bne	a4,a5,.L9
+  47:../src/lib/firmware.c **** 		{
+  48:../src/lib/firmware.c **** 			p[-1] = '.';
+ 106              		.loc 1 48 5
+ 107 00ba 8327C4FE 		lw	a5,-20(s0)
+ 108 00be FD17     		addi	a5,a5,-1
+ 109              		.loc 1 48 10
+ 110 00c0 1307E002 		li	a4,46
+ 111 00c4 2380E700 		sb	a4,0(a5)
+ 112              	.L9:
+  49:../src/lib/firmware.c **** 		}
+  50:../src/lib/firmware.c **** 
+  51:../src/lib/firmware.c **** 		put_char(*(--p));
+ 113              		.loc 1 51 3
+ 114 00c8 8327C4FE 		lw	a5,-20(s0)
+ 115 00cc FD17     		addi	a5,a5,-1
+ 116 00ce 2326F4FE 		sw	a5,-20(s0)
+ 117 00d2 8327C4FE 		lw	a5,-20(s0)
+ 118 00d6 83C70700 		lbu	a5,0(a5)
+ 119 00da 3E85     		mv	a0,a5
+ 120 00dc 97000000 		call	wbuart_outbyte
+ 120      E7800000 
+ 121              	.L8:
+  44:../src/lib/firmware.c **** 	{
+ 122              		.loc 1 44 11
+ 123 00e4 9307C4FC 		addi	a5,s0,-52
+ 124 00e8 0327C4FE 		lw	a4,-20(s0)
+ 125 00ec E315F7FA 		bne	a4,a5,.L10
+  52:../src/lib/firmware.c **** 	}
+  53:../src/lib/firmware.c **** }
+ 126              		.loc 1 53 1
+ 127 00f0 0100     		nop
+ 128 00f2 0100     		nop
+ 129 00f4 B640     		lw	ra,76(sp)
+ 130              		.cfi_restore 1
+ 131 00f6 2644     		lw	s0,72(sp)
+ 132              		.cfi_restore 8
+ 133              		.cfi_def_cfa 2, 80
+ 134 00f8 6161     		addi	sp,sp,80
+ 135              		.cfi_def_cfa_offset 0
+ 136 00fa 8280     		jr	ra
+ 137              		.cfi_endproc
+ 138              	.LFE3:
+ 140              		.section	.rodata
+ 141              		.align	2
+ 142              	.LC0:
+ 143 0000 0D0A2D2D 		.string	"\r\n-------------------------------------\r\n"
+ 143      2D2D2D2D 
+ 143      2D2D2D2D 
+ 143      2D2D2D2D 
+ 143      2D2D2D2D 
+ 144 002a 0000     		.align	2
+ 145              	.LC1:
+ 146 002c 52756E6E 		.string	"Running status: \r\n"
+ 146      696E6720 
+ 146      73746174 
+ 146      75733A20 
+ 146      0D0A00
+ 147 003f 00       		.align	2
+ 148              	.LC2:
+ 149 0040 4379636C 		.string	"Cycle counter ........: %u\r\n"
+ 149      6520636F 
+ 149      756E7465 
+ 149      72202E2E 
+ 149      2E2E2E2E 
+ 150 005d 000000   		.align	2
+ 151              	.LC3:
+ 152 0060 496E7374 		.string	"Instruction counter ..: %u\r\n"
+ 152      72756374 
+ 152      696F6E20 
+ 152      636F756E 
+ 152      74657220 
+ 153 007d 000000   		.align	2
+ 154              	.LC4:
+ 155 0080 4350493A 		.string	"CPI: "
+ 155      2000
+ 156 0086 0000     		.align	2
+ 157              	.LC5:
+ 158 0088 2E00     		.string	"."
+ 159 008a 0000     		.align	2
+ 160              	.LC6:
+ 161 008c 0D0A00   		.string	"\r\n"
+ 162 008f 00       		.align	2
+ 163              	.LC7:
+ 164 0090 2D2D2D2D 		.string	"-------------------------------------\r\n"
+ 164      2D2D2D2D 
+ 164      2D2D2D2D 
+ 164      2D2D2D2D 
+ 164      2D2D2D2D 
+ 165              		.section	.text.stats,"ax",@progbits
+ 166              		.align	1
+ 167              		.globl	stats
+ 169              	stats:
+ 170              	.LFB4:
+  54:../src/lib/firmware.c **** 
+  55:../src/lib/firmware.c **** void stats(void)
+  56:../src/lib/firmware.c **** {
+ 171              		.loc 1 56 1
+ 172              		.cfi_startproc
+ 173 0000 0111     		addi	sp,sp,-32
+ 174              		.cfi_def_cfa_offset 32
+ 175 0002 06CE     		sw	ra,28(sp)
+ 176 0004 22CC     		sw	s0,24(sp)
+ 177              		.cfi_offset 1, -4
+ 178              		.cfi_offset 8, -8
+ 179 0006 0010     		addi	s0,sp,32
+ 180              		.cfi_def_cfa 8, 0
+  57:../src/lib/firmware.c **** 	unsigned int num_cycles, num_instr;
+  58:../src/lib/firmware.c **** 
+  59:../src/lib/firmware.c **** 	__asm__ volatile ("rdcycle %0; rdinstret %1;" : "=r"(num_cycles), "=r"(num_instr));
+ 181              		.loc 1 59 2
+ 182              	 #APP
+ 183              	# 59 "../src/lib/firmware.c" 1
+  60              	
+ 184              		rdcycle a4; rdinstret a5;
+ 185              	# 0 "" 2
+ 186              	 #NO_APP
+ 187 0010 2326E4FE 		sw	a4,-20(s0)
+ 188 0014 2324F4FE 		sw	a5,-24(s0)
+  61:../src/lib/firmware.c **** 	printf("\r\n-------------------------------------\r\n");
+ 189              		.loc 1 61 2
+ 190 0018 17050000 		lla	a0,.LC0
+ 190      13050500 
+ 191 0020 97000000 		call	printf
+ 191      E7800000 
+  62:../src/lib/firmware.c **** 	printf("Running status: \r\n");
+ 192              		.loc 1 62 2
+ 193 0028 17050000 		lla	a0,.LC1
+ 193      13050500 
+ 194 0030 97000000 		call	printf
+ 194      E7800000 
+  63:../src/lib/firmware.c **** 	printf("Cycle counter ........: %u\r\n", num_cycles);
+ 195              		.loc 1 63 2
+ 196 0038 8325C4FE 		lw	a1,-20(s0)
+ 197 003c 17050000 		lla	a0,.LC2
+ 197      13050500 
+ 198 0044 97000000 		call	printf
+ 198      E7800000 
+  64:../src/lib/firmware.c **** 	printf("Instruction counter ..: %u\r\n", num_instr);
+ 199              		.loc 1 64 2
+ 200 004c 832584FE 		lw	a1,-24(s0)
+ 201 0050 17050000 		lla	a0,.LC3
+ 201      13050500 
+ 202 0058 97000000 		call	printf
+ 202      E7800000 
+  65:../src/lib/firmware.c **** 
+  66:../src/lib/firmware.c **** 	printf("CPI: ");
+ 203              		.loc 1 66 2
+ 204 0060 17050000 		lla	a0,.LC4
+ 204      13050500 
+ 205 0068 97000000 		call	printf
+ 205      E7800000 
+  67:../src/lib/firmware.c **** 	stats_print_dec((num_cycles / num_instr), 0, false);
+ 206              		.loc 1 67 2
+ 207 0070 0327C4FE 		lw	a4,-20(s0)
+ 208 0074 832784FE 		lw	a5,-24(s0)
+ 209 0078 B357F702 		divu	a5,a4,a5
+ 210 007c 0146     		li	a2,0
+ 211 007e 8145     		li	a1,0
+ 212 0080 3E85     		mv	a0,a5
+ 213 0082 97000000 		call	stats_print_dec
+ 213      E7800000 
+  68:../src/lib/firmware.c **** 	printf(".");
+ 214              		.loc 1 68 2
+ 215 008a 17050000 		lla	a0,.LC5
+ 215      13050500 
+ 216 0092 97000000 		call	printf
+ 216      E7800000 
+  69:../src/lib/firmware.c **** 	stats_print_dec(((100 * num_cycles) / num_instr) % 100, 2, true);
+ 217              		.loc 1 69 24
+ 218 009a 0327C4FE 		lw	a4,-20(s0)
+ 219 009e 93074006 		li	a5,100
+ 220 00a2 3307F702 		mul	a4,a4,a5
+ 221              		.loc 1 69 38
+ 222 00a6 832784FE 		lw	a5,-24(s0)
+ 223 00aa 3357F702 		divu	a4,a4,a5
+ 224              		.loc 1 69 2
+ 225 00ae 93074006 		li	a5,100
+ 226 00b2 B377F702 		remu	a5,a4,a5
+ 227 00b6 0546     		li	a2,1
+ 228 00b8 8945     		li	a1,2
+ 229 00ba 3E85     		mv	a0,a5
+ 230 00bc 97000000 		call	stats_print_dec
+ 230      E7800000 
+  70:../src/lib/firmware.c **** 	printf("\r\n");
+ 231              		.loc 1 70 2
+ 232 00c4 17050000 		lla	a0,.LC6
+ 232      13050500 
+ 233 00cc 97000000 		call	printf
+ 233      E7800000 
+  71:../src/lib/firmware.c **** 	printf("-------------------------------------\r\n");
+ 234              		.loc 1 71 2
+ 235 00d4 17050000 		lla	a0,.LC7
+ 235      13050500 
+ 236 00dc 97000000 		call	printf
+ 236      E7800000 
+  72:../src/lib/firmware.c **** 	printf("\r\n");
+ 237              		.loc 1 72 2
+ 238 00e4 17050000 		lla	a0,.LC6
+ 238      13050500 
+ 239 00ec 97000000 		call	printf
+ 239      E7800000 
+  73:../src/lib/firmware.c **** }
+ 240              		.loc 1 73 1
+ 241 00f4 0100     		nop
+ 242 00f6 F240     		lw	ra,28(sp)
+ 243              		.cfi_restore 1
+ 244 00f8 6244     		lw	s0,24(sp)
+ 245              		.cfi_restore 8
+ 246              		.cfi_def_cfa 2, 32
+ 247 00fa 0561     		addi	sp,sp,32
+ 248              		.cfi_def_cfa_offset 0
+ 249 00fc 8280     		jr	ra
+ 250              		.cfi_endproc
+ 251              	.LFE4:
+ 253              		.section	.text.delay,"ax",@progbits
+ 254              		.align	1
+ 255              		.globl	delay
+ 257              	delay:
+ 258              	.LFB5:
+  74:../src/lib/firmware.c **** 
+  75:../src/lib/firmware.c **** unsigned int delay( unsigned int delay_cycles)
+  76:../src/lib/firmware.c **** {
+ 259              		.loc 1 76 1
+ 260              		.cfi_startproc
+ 261 0000 7971     		addi	sp,sp,-48
+ 262              		.cfi_def_cfa_offset 48
+ 263 0002 06D6     		sw	ra,44(sp)
+ 264 0004 22D4     		sw	s0,40(sp)
+ 265              		.cfi_offset 1, -4
+ 266              		.cfi_offset 8, -8
+ 267 0006 0018     		addi	s0,sp,48
+ 268              		.cfi_def_cfa 8, 0
+ 269 0008 232EA4FC 		sw	a0,-36(s0)
+  77:../src/lib/firmware.c ****     unsigned int cycles_current;
+  78:../src/lib/firmware.c ****     unsigned int cycles_start;
+  79:../src/lib/firmware.c ****     unsigned int cycles = 0;
+ 270              		.loc 1 79 18
+ 271 000c 232604FE 		sw	zero,-20(s0)
+  80:../src/lib/firmware.c **** 
+  81:../src/lib/firmware.c ****     __asm__ volatile ("rdcycle %0;" : "=r"(cycles_start));
+ 272              		.loc 1 81 5
+ 273              	 #APP
+ 274              	# 81 "../src/lib/firmware.c" 1
+  82              	
+ 275              		rdcycle a5;
+ 276              	# 0 "" 2
+ 277              	 #NO_APP
+ 278 0014 2324F4FE 		sw	a5,-24(s0)
+ 279              	.L13:
+  83:../src/lib/firmware.c ****     do
+  84:../src/lib/firmware.c ****     {
+  85:../src/lib/firmware.c ****         __asm__ volatile ("rdcycle %0;" : "=r"(cycles_current));
+ 280              		.loc 1 85 9
+ 281              	 #APP
+ 282              	# 85 "../src/lib/firmware.c" 1
+  86              	        cycles = cycles_current - cycles_start;
+ 283              		rdcycle a5;
+ 284              	# 0 "" 2
+ 285              	 #NO_APP
+ 286 001c 2322F4FE 		sw	a5,-28(s0)
+ 287              		.loc 1 86 16
+ 288 0020 032744FE 		lw	a4,-28(s0)
+ 289 0024 832784FE 		lw	a5,-24(s0)
+ 290 0028 B307F740 		sub	a5,a4,a5
+ 291 002c 2326F4FE 		sw	a5,-20(s0)
+  87:../src/lib/firmware.c ****     } while(cycles < delay_cycles);
+ 292              		.loc 1 87 20 discriminator 1
+ 293 0030 0327C4FE 		lw	a4,-20(s0)
+ 294 0034 8327C4FD 		lw	a5,-36(s0)
+ 295 0038 E360F7FE 		bltu	a4,a5,.L13
+  88:../src/lib/firmware.c **** 
+  89:../src/lib/firmware.c ****     return cycles;
+ 296              		.loc 1 89 12
+ 297 003c 8327C4FE 		lw	a5,-20(s0)
+  90:../src/lib/firmware.c **** }
+ 298              		.loc 1 90 1
+ 299 0040 3E85     		mv	a0,a5
+ 300 0042 B250     		lw	ra,44(sp)
+ 301              		.cfi_restore 1
+ 302 0044 2254     		lw	s0,40(sp)
+ 303              		.cfi_restore 8
+ 304              		.cfi_def_cfa 2, 48
+ 305 0046 4561     		addi	sp,sp,48
+ 306              		.cfi_def_cfa_offset 0
+ 307 0048 8280     		jr	ra
+ 308              		.cfi_endproc
+ 309              	.LFE5:
+ 311              		.section	.text.memset_32,"ax",@progbits
+ 312              		.align	1
+ 313              		.globl	memset_32
+ 315              	memset_32:
+ 316              	.LFB6:
+  91:../src/lib/firmware.c **** 
+  92:../src/lib/firmware.c **** void memset_32(uint32_t* dest, uint32_t data, uint32_t length) //Length in 32bit
+  93:../src/lib/firmware.c **** {
+ 317              		.loc 1 93 1
+ 318              		.cfi_startproc
+ 319 0000 7971     		addi	sp,sp,-48
+ 320              		.cfi_def_cfa_offset 48
+ 321 0002 06D6     		sw	ra,44(sp)
+ 322 0004 22D4     		sw	s0,40(sp)
+ 323              		.cfi_offset 1, -4
+ 324              		.cfi_offset 8, -8
+ 325 0006 0018     		addi	s0,sp,48
+ 326              		.cfi_def_cfa 8, 0
+ 327 0008 232EA4FC 		sw	a0,-36(s0)
+ 328 000c 232CB4FC 		sw	a1,-40(s0)
+ 329 0010 232AC4FC 		sw	a2,-44(s0)
+  94:../src/lib/firmware.c **** 	uint32_t* dest_end = dest + 4 * length;
+ 330              		.loc 1 94 28
+ 331 0014 832744FD 		lw	a5,-44(s0)
+ 332 0018 9207     		slli	a5,a5,4
+ 333              		.loc 1 94 12
+ 334 001a 0327C4FD 		lw	a4,-36(s0)
+ 335 001e BA97     		add	a5,a4,a5
+ 336 0020 2326F4FE 		sw	a5,-20(s0)
+  95:../src/lib/firmware.c **** 
+  96:../src/lib/firmware.c **** 	while(dest != dest_end)
+ 337              		.loc 1 96 7
+ 338 0024 11A8     		j	.L16
+ 339              	.L17:
+  97:../src/lib/firmware.c **** 	{
+  98:../src/lib/firmware.c **** 		*dest++ = data;
+ 340              		.loc 1 98 8
+ 341 0026 8327C4FD 		lw	a5,-36(s0)
+ 342 002a 13874700 		addi	a4,a5,4
+ 343 002e 232EE4FC 		sw	a4,-36(s0)
+ 344              		.loc 1 98 11
+ 345 0032 032784FD 		lw	a4,-40(s0)
+ 346 0036 98C3     		sw	a4,0(a5)
+ 347              	.L16:
+  96:../src/lib/firmware.c **** 	{
+ 348              		.loc 1 96 13
+ 349 0038 0327C4FD 		lw	a4,-36(s0)
+ 350 003c 8327C4FE 		lw	a5,-20(s0)
+ 351 0040 E313F7FE 		bne	a4,a5,.L17
+  99:../src/lib/firmware.c **** 	}
+ 100:../src/lib/firmware.c **** }
+ 352              		.loc 1 100 1
+ 353 0044 0100     		nop
+ 354 0046 0100     		nop
+ 355 0048 B250     		lw	ra,44(sp)
+ 356              		.cfi_restore 1
+ 357 004a 2254     		lw	s0,40(sp)
+ 358              		.cfi_restore 8
+ 359              		.cfi_def_cfa 2, 48
+ 360 004c 4561     		addi	sp,sp,48
+ 361              		.cfi_def_cfa_offset 0
+ 362 004e 8280     		jr	ra
+ 363              		.cfi_endproc
+ 364              	.LFE6:
+ 366              		.text
+ 367              	.Letext0:
+ 368              		.file 2 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/machine/_default_types.h"
+ 369              		.file 3 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/sys/_stdint.h"
+ 370              		.file 4 "F:/gowin/GMD/toolchain/gowin/gcc_riscv/riscv-none-elf/include/stdio.h"
+ 371              		.file 5 "F:\\ALL_PROJECT\\gowin\\GMD_workspace\\my_1\\src\\bsp/wbuart.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 firmware.c
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:13     .text.stats_print_dec:00000000 stats_print_dec
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:17     .text.stats_print_dec:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:18     .text.stats_print_dec:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:18     .text.stats_print_dec:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:19     .text.stats_print_dec:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:22     .text.stats_print_dec:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:23     .text.stats_print_dec:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:25     .text.stats_print_dec:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:31     .text.stats_print_dec:00000016 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:34     .text.stats_print_dec:0000001e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:37     .text.stats_print_dec:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:40     .text.stats_print_dec:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:44     .text.stats_print_dec:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:46     .text.stats_print_dec:00000034 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:50     .text.stats_print_dec:00000040 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:53     .text.stats_print_dec:00000048 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:57     .text.stats_print_dec:0000004e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:60     .text.stats_print_dec:00000054 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:64     .text.stats_print_dec:0000005a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:67     .text.stats_print_dec:0000005e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:71     .text.stats_print_dec:0000006a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:74     .text.stats_print_dec:0000006e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:79     .text.stats_print_dec:0000007c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:84     .text.stats_print_dec:00000086 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:87     .text.stats_print_dec:0000008c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:90     .text.stats_print_dec:00000094 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:93     .text.stats_print_dec:00000096 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:97     .text.stats_print_dec:000000a0 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:100    .text.stats_print_dec:000000a8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:104    .text.stats_print_dec:000000b2 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:107    .text.stats_print_dec:000000ba .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:110    .text.stats_print_dec:000000c0 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:114    .text.stats_print_dec:000000c8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:123    .text.stats_print_dec:000000e4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:127    .text.stats_print_dec:000000f0 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:130    .text.stats_print_dec:000000f6 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:132    .text.stats_print_dec:000000f8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:133    .text.stats_print_dec:000000f8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:135    .text.stats_print_dec:000000fa .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:137    .text.stats_print_dec:000000fc .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:169    .text.stats:00000000 stats
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:172    .text.stats:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:173    .text.stats:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:173    .text.stats:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:174    .text.stats:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:177    .text.stats:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:178    .text.stats:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:180    .text.stats:00000008 .L0 
+../src/lib/firmware.c:59     .text.stats:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:190    .text.stats:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:193    .text.stats:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:196    .text.stats:00000038 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:200    .text.stats:0000004c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:204    .text.stats:00000060 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:207    .text.stats:00000070 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:215    .text.stats:0000008a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:218    .text.stats:0000009a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:222    .text.stats:000000a6 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:225    .text.stats:000000ae .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:232    .text.stats:000000c4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:235    .text.stats:000000d4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:238    .text.stats:000000e4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:241    .text.stats:000000f4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:243    .text.stats:000000f8 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:245    .text.stats:000000fa .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:246    .text.stats:000000fa .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:248    .text.stats:000000fc .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:250    .text.stats:000000fe .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:257    .text.delay:00000000 delay
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:260    .text.delay:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:261    .text.delay:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:261    .text.delay:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:262    .text.delay:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:265    .text.delay:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:266    .text.delay:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:268    .text.delay:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:271    .text.delay:0000000c .L0 
+../src/lib/firmware.c:81     .text.delay:00000010 .L0 
+../src/lib/firmware.c:85     .text.delay:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:288    .text.delay:00000020 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:293    .text.delay:00000030 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:297    .text.delay:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:299    .text.delay:00000040 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:301    .text.delay:00000044 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:303    .text.delay:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:304    .text.delay:00000046 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:306    .text.delay:00000048 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:308    .text.delay:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:315    .text.memset_32:00000000 memset_32
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:318    .text.memset_32:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:319    .text.memset_32:00000000 $xrv32i2p1_m2p0_c2p0_zicsr2p0_zmmul1p0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:319    .text.memset_32:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:320    .text.memset_32:00000002 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:323    .text.memset_32:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:324    .text.memset_32:00000006 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:326    .text.memset_32:00000008 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:331    .text.memset_32:00000014 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:334    .text.memset_32:0000001a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:338    .text.memset_32:00000024 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:341    .text.memset_32:00000026 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:345    .text.memset_32:00000032 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:349    .text.memset_32:00000038 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:353    .text.memset_32:00000044 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:356    .text.memset_32:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:358    .text.memset_32:0000004c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:359    .text.memset_32:0000004c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:361    .text.memset_32:0000004e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:363    .text.memset_32:00000050 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:00000044 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:00000072 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:0000007d .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:000000c3 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:00000105 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:00000143 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:00000173 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:0000017e .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:00000189 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:0000019a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:000001a4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1085   .debug_line_str:000001ac .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:140    .text.stats_print_dec:000000fc .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:253    .text.stats:000000fe .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:311    .text.delay:0000004a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:366    .text.memset_32:00000050 .L0 
+                     .debug_frame:00000000 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:82     .text.stats_print_dec:00000086 .L2
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:55     .text.stats_print_dec:0000004e .L3
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:72     .text.stats_print_dec:0000006e .L4
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:62     .text.stats_print_dec:0000005a .L5
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:65     .text.stats_print_dec:0000005e .L6
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:35     .text.stats_print_dec:00000020 .L7
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:121    .text.stats_print_dec:000000e4 .L8
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:112    .text.stats_print_dec:000000c8 .L9
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:91     .text.stats_print_dec:00000096 .L10
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:142    .rodata:00000000 .LC0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:190    .text.stats:00000018 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:145    .rodata:0000002c .LC1
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:193    .text.stats:00000028 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:148    .rodata:00000040 .LC2
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:197    .text.stats:0000003c .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:151    .rodata:00000060 .LC3
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:201    .text.stats:00000050 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:154    .rodata:00000080 .LC4
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:204    .text.stats:00000060 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:157    .rodata:00000088 .LC5
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:215    .text.stats:0000008a .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:160    .rodata:0000008c .LC6
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:232    .text.stats:000000c4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:163    .rodata:00000090 .LC7
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:235    .text.stats:000000d4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:238    .text.stats:000000e4 .L0 
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:279    .text.delay:00000018 .L13
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:347    .text.memset_32:00000038 .L16
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:339    .text.memset_32:00000026 .L17
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:655    .debug_abbrev:00000000 .Ldebug_abbrev0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1023   .debug_str:0000003c .LASF33
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1082   .debug_line_str:0000002e .LASF0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1080   .debug_line_str:00000000 .LASF1
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:993    .debug_rnglists:0000000c .LLRL0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1009   .debug_line:00000000 .Ldebug_line0
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1071   .debug_str:0000022a .LASF2
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1031   .debug_str:00000135 .LASF3
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1019   .debug_str:0000002c .LASF4
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1037   .debug_str:00000162 .LASF5
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1065   .debug_str:00000206 .LASF6
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1043   .debug_str:00000188 .LASF11
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1035   .debug_str:00000150 .LASF7
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1051   .debug_str:000001c2 .LASF8
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1047   .debug_str:000001a0 .LASF9
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1045   .debug_str:00000193 .LASF10
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1063   .debug_str:000001fd .LASF12
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1069   .debug_str:0000021e .LASF13
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1053   .debug_str:000001d0 .LASF14
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1055   .debug_str:000001d5 .LASF15
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1015   .debug_str:00000014 .LASF16
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1039   .debug_str:00000175 .LASF25
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:316    .text.memset_32:00000000 .LFB6
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:364    .text.memset_32:00000050 .LFE6
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1027   .debug_str:0000012a .LASF17
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1025   .debug_str:00000125 .LASF18
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1077   .debug_str:00000243 .LASF19
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1017   .debug_str:00000023 .LASF21
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1029   .debug_str:0000012f .LASF34
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:258    .text.delay:00000000 .LFB5
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:309    .text.delay:0000004a .LFE5
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1011   .debug_str:00000000 .LASF20
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1067   .debug_str:0000020f .LASF22
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1033   .debug_str:00000143 .LASF23
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1073   .debug_str:00000236 .LASF24
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1021   .debug_str:00000036 .LASF26
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:170    .text.stats:00000000 .LFB4
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:251    .text.stats:000000fe .LFE4
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1049   .debug_str:000001b7 .LASF27
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1061   .debug_str:000001f3 .LASF28
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1057   .debug_str:000001dc .LASF35
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:14     .text.stats_print_dec:00000000 .LFB3
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:138    .text.stats_print_dec:000000fc .LFE3
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1013   .debug_str:0000000d .LASF29
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1041   .debug_str:0000017f .LASF30
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1059   .debug_str:000001ec .LASF31
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:1075   .debug_str:0000023d .LASF32
+C:\Users\nesus\AppData\Local\Temp\ccKYLPdi.s:373    .debug_info:00000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+wbuart_outbyte
+printf
